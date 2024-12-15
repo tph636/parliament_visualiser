@@ -2,6 +2,9 @@ import requests
 import json
 import sqlite3
 import os 
+from db_util import connectToDb
+
+conn, cursor = connectToDb()
 
 # Fetch seating plan data
 def fetch_data(page):
@@ -24,12 +27,6 @@ combined_data = {
 
 #print(json.dumps(combined_data, indent=4, ensure_ascii=False))
 
-db_path = os.path.join(os.path.dirname(__file__), '..', 'databases', 'database.db')
-
-os.makedirs(os.path.dirname(db_path), exist_ok=True)
-conn = sqlite3.connect(db_path)
-cursor = conn.cursor()
-
 # Drop the table if it already exists
 cursor.execute('DROP TABLE IF EXISTS SeatingOfParliament')
 
@@ -50,6 +47,7 @@ for row in combined_data["rowData"]:
     cursor.execute('''
                    INSERT INTO SeatingOfParliament (hetekaId, seatNumber, lastname, firstname, party, minister)
                    VALUES (?, ?, ?, ?, ?, ?)''', (row[0], row[1], row[2], row[3], row[4], row[5]))
+
 
 # Commit the changes and close the connection
 conn.commit()
