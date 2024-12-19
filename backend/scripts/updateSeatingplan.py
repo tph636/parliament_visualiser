@@ -3,6 +3,7 @@ import json
 import sqlite3
 import os 
 from db_util import connectToDb
+from findPicture import findMemberPicture
 
 conn, cursor = connectToDb()
 
@@ -38,15 +39,30 @@ cursor.execute(f'''
                lastname TEXT,
                firstname TEXT,
                party TEXT,
-               minister TEXT
+               minister TEXT,
+               partyColor TEXT,
+               imagePath TEXT
                )''')
 
-# Insert combined data into the SeatingOfParliament table
+partyColors = {
+    "kok": "blue",
+    "sd": "red",
+    "vas": "pink",
+    "vihr": "lightgreen",
+    "kesk": "green",
+    "ps": "cyan",
+    "r": "yellow",
+    "kd": "purple",
+    "liik": "orange"
+}
 
+
+# Insert combined data into the SeatingOfParliament table
 for row in combined_data["rowData"]:
+    imagePath = findMemberPicture(str(row[0]), False) # Add the image path for the member (true for full resolution)
     cursor.execute('''
-                   INSERT INTO SeatingOfParliament (hetekaId, seatNumber, lastname, firstname, party, minister)
-                   VALUES (?, ?, ?, ?, ?, ?)''', (row[0], row[1], row[2], row[3], row[4], row[5]))
+                   INSERT INTO SeatingOfParliament (hetekaId, seatNumber, lastname, firstname, party, minister, partyColor, imagePath)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', (row[0], row[1], row[2], row[3], row[4], row[5], partyColors.get(row[4],"dimgrey"), imagePath))
 
 
 # Commit the changes and close the connection

@@ -1,11 +1,11 @@
 const express = require('express');
 const sqlite3 = require('sqlite3');
 const cors = require('cors');
-const helmet = require('helmet'); // Helmet helps you secure your Express apps
-
+const helmet = require('helmet');
+const path = require('path');
 const app = express();
 
-app.use(cors())
+app.use(cors());
 
 // Use Helmet to set various HTTP headers, including CSP
 app.use(helmet({
@@ -14,11 +14,17 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "http:", "https:"],
       connectSrc: ["'self'"],
     }
   }
 }));
+
+// Set Cross-Origin-Resource-Policy header
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+});
 
 const fetchAll = (db, query) => {
   return new Promise((resolve, reject) => {
@@ -33,17 +39,18 @@ const fetchAll = (db, query) => {
 };
 
 const fetchFirst = (db, query) => {
-    return new Promise((resolve, reject) => {
-      db.get(query, (err, rows) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(rows);
-        }
-      });
+  return new Promise((resolve, reject) => {
+    db.get(query, (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
     });
-  };
+  });
+};
 
+app.use('/tinyimages', express.static(path.join(__dirname, 'pictures', 'tinyMemberImages')));
 
 app.get('/api/SeatingOfParliament', async (request, response) => {
   const db = new sqlite3.Database('./databases/database.db');
@@ -59,7 +66,6 @@ app.get('/api/SeatingOfParliament', async (request, response) => {
   }
 });
 
-
 app.listen(3001, () => {
-  console.log("server running on port 3001");
+  console.log("Server running on port 3001");
 });

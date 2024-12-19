@@ -8,11 +8,13 @@
 .row {
     display: flex;
     justify-content: center;
+    border-bottom-left-radius: 200px;
+    border-bottom-right-radius: 200px;
     margin-bottom: 10px;
-    direction: ltr; /* Ensure left-to-right direction for correct seat layout */
+    direction: ltr;
 }
 
 .spacer {
-    width: 20px; /* Adjust the width of the spacer as needed */
+    width: 20px;
 }
   

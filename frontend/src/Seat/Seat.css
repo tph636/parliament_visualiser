@@ -1,22 +1,36 @@
 .circle {
     display: flex;
-    width: 20px; /* Adjust width as needed */
-    height: 20px; /* Adjust height as needed */
+    width: 30px; /* Adjust to your required size */
+    height: 30px; /* Adjust to your required size */
     background-color: white;
     border-radius: 50%;
-    border: 4px solid dimgrey;
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    margin: 0 auto; /* Center the circle container */
-}
-
-.seat-container {
-    text-align: center; /* Center align the entire container */
-}
-
-.text {
-    width: 20px; /* Match the circle width */
-    font-size: 10px; /* Adjust font size to fit within the width */
-    word-wrap: break-word; /* Ensure long words break to the next line */
-    margin: 0 auto; /* Center the text container */
-}
+    border: 3px solid dimgrey;
+    overflow: hidden; /* Ensure the image does not overflow the circle */
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .circle-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the circle without distortion */
+  }
+  
+  .seat-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .text {
+    width: 45px; /* Match the circle width */
+    font-size: 8px; /* Adjust font size to fit within the width */
+    white-space: normal; /* Prevent word breaking */
+    overflow: hidden; /* Hide any overflowed text */
+    hyphens: manual; /* Enable manual hyphenation */
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+    text-align: left; /* Align text to the left */
+    margin-top: 5px; /* Add some spacing between the circle and text */
+    text-align: center;
+  }
+  
