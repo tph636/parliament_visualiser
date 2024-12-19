@@ -1,12 +1,22 @@
 .circle {
     display: flex;
-    width: 20px;
-    height: 20px;
+    width: 20px; /* Adjust width as needed */
+    height: 20px; /* Adjust height as needed */
     background-color: white;
     border-radius: 50%;
     border: 4px solid dimgrey;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    margin: 0 auto; /* Center the circle container */
+}
+
+.seat-container {
+    text-align: center; /* Center align the entire container */
 }
 
 .text {
-    margin: auto;
+    width: 20px; /* Match the circle width */
+    font-size: 10px; /* Adjust font size to fit within the width */
+    word-wrap: break-word; /* Ensure long words break to the next line */
+    margin: 0 auto; /* Center the text container */
 }

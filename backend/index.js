@@ -1,8 +1,11 @@
 const express = require('express');
 const sqlite3 = require('sqlite3');
+const cors = require('cors');
 const helmet = require('helmet'); // Helmet helps you secure your Express apps
 
 const app = express();
+
+app.use(cors())
 
 // Use Helmet to set various HTTP headers, including CSP
 app.use(helmet({

@@ -2,7 +2,7 @@ import './Seatingplan.css'
 import React from 'react';
 import Seat from '../Seat/Seat';
 
-const Seatingplan = () => {
+const Seatingplan = ({members}) => {
 
   var plan = [
     [1], // Chairman
@@ -30,7 +30,7 @@ const Seatingplan = () => {
     const seats = []
     for (const c of row) {
       for (let i = 0; i < c; i++) {
-        seats.push(<Seat key={currentSeatIndex} seatIndex={currentSeatIndex} />)
+        seats.push(<Seat key={currentSeatIndex} seatIndex={currentSeatIndex} member={members.find(mem => mem.seatNumber===currentSeatIndex)}/>)
         currentSeatIndex -= 1
       }
 

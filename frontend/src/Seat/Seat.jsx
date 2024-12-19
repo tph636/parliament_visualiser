@@ -1,10 +1,13 @@
 import './Seat.css'
 
-const Seat = ({seatIndex}) => {
+const Seat = ({seatIndex, member}) => {
   return (
     <div className="seat-container">
       <div className="circle"></div>
-      <p className="text">{seatIndex}</p>
+      <p className="text">
+        {member.firstname} <br></br>
+        {member.lastname}
+      </p>
     </div>
 
   );
