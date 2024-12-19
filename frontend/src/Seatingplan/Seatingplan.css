@@ -1,0 +1,18 @@
+/* SeatingPlan.css */
+.seating-plan {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    direction: ltr; /* Ensure left-to-right direction for correct seat layout */
+}
+
+.spacer {
+    width: 20px; /* Adjust the width of the spacer as needed */
+}
+  
