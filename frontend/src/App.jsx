@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Seatingplan from './Seatingplan/Seatingplan';
+import './App.css';
 
 function App() {
   const [members, setMembers] = useState([]);
@@ -24,11 +25,12 @@ function App() {
   }, []);
 
   return (
-    <>
-      <div>
+    <div className='main-wrapper'>
+      <div className='left-col'>
         {membersLoaded ? (<Seatingplan members={members}/>) : (<p>Loading...</p>)}
       </div>
-    </>
+      <div className='right-col'></div>
+    </div>
   );
 }
 

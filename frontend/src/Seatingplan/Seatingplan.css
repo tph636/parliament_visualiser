@@ -1,39 +1,32 @@
+
+/* Ensure .seating-plan takes full width and maintains aspect ratio */
 .seating-plan {
+    flex-grow: 1;
     display: flex;
-    flex-direction: column;
-}
-
-.row {
-    display: flex;
+    position: relative;
     width: 100%;
-}
-
-.seatGroup {
-    display: flex;
-    flex-direction: row;
-    margin: 3px 10px
-}
-
-/* Align the contents of the first seatGroup to the right */
-.row .seatGroup:nth-child(1) {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-}
-
-/* If there is only one seatGroup (eg. the chairman) align center */
-.row .seatGroup:only-child {
-    justify-content: center;
-}
-
-
-.row .seatGroup:nth-child(4) {
-    flex: 1;
-}
-
-/* Center the whole row between the 2nd and 3rd seatGroups */
-.row .seatGroup:nth-child(2),
-.row .seatGroup:nth-child(3) {
-    display: flex;
-    justify-content: center;
-}
+    height: 0;
+    padding-bottom: calc(100% / 1.2); /* Adjust aspect ratio as needed */
+    border: 3px solid black;
+    min-width: 500px;
+  }
+  
+  /* Adjust chairman and seat positions and sizes to fit within .seating-plan */
+  .chairman,
+  .seat {
+    position: absolute;
+    width: calc(var(--seatWidth) * 8%); /* Size based on container width */
+    aspect-ratio: 1;
+  }
+  
+  .chairman {
+    left: 50%;
+    top: 5%;
+  }
+  
+  .seat {
+    left: calc(50% + var(--pointX) * 8%);
+    top: calc(var(--pointY) * 8%);
+  }
+  
+  

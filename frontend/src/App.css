@@ -1,0 +1,28 @@
+:root {
+    --right-width: 300px;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-wrapper {
+    display: flex;
+    height: 100%;
+}
+
+.left-col {
+    flex-grow: 1; /* Allow left-col to grow and take the remaining space */
+    min-width: 500px; /* Ensure left-col is at least 500px wide */
+    display: flex;
+    flex-direction: column;
+}
+
+.right-col {
+    width: var(--right-width);
+    display: flex;
+    flex-direction: column;
+}
