@@ -1,10 +1,10 @@
 .circle {
     display: flex;
-    width: 30px; /* Adjust to your required size */
-    height: 30px; /* Adjust to your required size */
+    width: 20px; /* Adjust to your required size */
+    height: 20px; /* Adjust to your required size */
     background-color: white;
     border-radius: 50%;
-    border: 3px solid dimgrey;
+    border: 2px solid;
     overflow: hidden; /* Ensure the image does not overflow the circle */
     justify-content: center;
     align-items: center;

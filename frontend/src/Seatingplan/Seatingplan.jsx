@@ -23,30 +23,32 @@ const Seatingplan = ({members, pictures}) => {
 
     var seatsInRow = row.reduce((sum, i) => sum + i, 0)
     seatIndex += seatsInRow
-
+    
     // In each row the seat numbers are in descending order, which is why we decrement this number
     var currentSeatIndex = seatIndex 
     
     const seats = []
-    for (const c of row) {
-      for (let i = 0; i < c; i++) {
-        seats.push(
+    for (const count of row) {
+      let seatGroup = []
+      for (let i = 0; i < count; i++) {
+        seatGroup.push(
         <Seat 
           key={currentSeatIndex} 
           seatIndex={currentSeatIndex} 
           member={members.find(mem => mem.seatNumber===currentSeatIndex)}
           />
+          
         )
         currentSeatIndex -= 1
       }
-
-      if (seatIndex - seatsInRow != currentSeatIndex){
-        seats.push(<div className='spacer'></div>)
-      }
+      seats.push(seatGroup)
+      //if (seatIndex - seatsInRow != currentSeatIndex){
+        //seats.push(<div className='spacer'></div>)
+      //}
     }
 
     return (
-      <div className='row'>{seats}</div>
+      <div className='row'>{seats.map((group)=><div className='seatGroup'>{group}</div>)}</div>
     )
   }
 
