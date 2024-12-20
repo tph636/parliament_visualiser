@@ -3,21 +3,20 @@
 }
 
 body {
-    height: 100%;
     margin: 0;
-    display: flex;
-    flex-direction: column;
 }
 
 .main-wrapper {
     display: flex;
-    height: 100%;
+    flex-direction: row;
+    height: 100vw;
+    width: 100vw;
 }
 
 .left-col {
-    flex-grow: 1; /* Allow left-col to grow and take the remaining space */
-    min-width: 500px; /* Ensure left-col is at least 500px wide */
+    flex-grow: 1;
     display: flex;
+    width: 1000px;
     flex-direction: column;
 }
 
@@ -26,3 +25,4 @@ body {
     display: flex;
     flex-direction: column;
 }
+

@@ -34,7 +34,19 @@ function ellipsePoint(a, b, arcLength) {
   return { x: ellipseX(theta), y: ellipseY(theta) };
 }
 
-
+// Generate the steps required to position a seat in the correct position on the ellipse
+function generateSteps(gapWidth, seatWidth, seatFromMiddle) {
+  const steps = [];
+  if (seatFromMiddle > 0) {
+    if (gapWidth > 0) {
+      steps.push(gapWidth);
+    }
+    for (let i = 0; i < seatFromMiddle; i++) {
+      steps.push(seatWidth);
+    }
+  }
+  return steps;
+}
 
 
 const Seatingplan = ({members, pictures}) => {
@@ -51,13 +63,13 @@ const Seatingplan = ({members, pictures}) => {
     [0,9,9,0]
   ]
 
-  // Eduskunnan ellipsin kaava xradius=3.6 yradius=2.8
-  var a = 2.8
-  var b = 3.6
+  // Eduskunnan ellipsin kaava a=xradius=3 b=yradius=2.5
+  var a = 3
+  var b = 2.5
   let ellipseArcLen = 20.185
   const seatWidth = ellipseArcLen/40;
-  const gapWidth = seatWidth;
-
+  const gapWidth = seatWidth*1.5;
+  const marginBetweenSeats = 0;
 
   let seatIndex = -1 // Index of the seat to which we will generate the seats
   let rowNum = 1 // Current row number
@@ -77,13 +89,10 @@ const Seatingplan = ({members, pictures}) => {
     const seats = [] // All the seats in a row to be rendered
 
     // The amount of seats on the left side of the middle corridor. 0 if only one seat (chariman)
-    let seatsBeforeMiddle = 0
-    if (row.length > 1) { seatsBeforeMiddle = row[0] + row[1] }
-
+    let seatsBeforeMiddle = row.length > 1 ? row[0] + row[1] : 0;
 
     // Process all seats of a row:
     for (const count of row) {
-      console.log("###############")
       let seatGroup = []
 
       for (let i = 0; i < count; i++) {
@@ -108,15 +117,15 @@ const Seatingplan = ({members, pictures}) => {
           -pointFromMiddle.x
         let pointY = pointFromMiddle.y
 
-        console.log(pointY)
-
         seatGroup.push(
           <div
           className={seatsInRow === 1 ? 'chairman' : 'seat'}
           key={currentSeatIndex} 
           style={{ 
-            '--seatWidth': seatWidth,
-            '--gapWidth': gapWidth,
+            '--ellipseA': a,
+            '--ellipseB': b,
+            '--seatWidth': `${seatWidth}`,
+            '--gapWidth': `${gapWidth}`,
             '--pointX': pointX,
             '--pointY': pointY
             }}
