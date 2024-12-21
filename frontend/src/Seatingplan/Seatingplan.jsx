@@ -3,12 +3,10 @@ import React from 'react';
 import Seat from '../Seat/Seat';
 
 function ellipsePoint(a, b, arcLength) {
-  // Function to calculate distance between two points
   function distance(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
   }
 
-  // Parametric equations for the ellipse
   function ellipseX(theta) {
     return a * Math.cos(theta);
   }
@@ -17,10 +15,13 @@ function ellipsePoint(a, b, arcLength) {
     return b * Math.sin(theta);
   }
 
-  // Starting from the top of the ellipse (theta = pi/2)
+  function ellipseAngle(theta) {
+    return Math.atan2(b * Math.cos(theta), -a * Math.sin(theta)); // Derivative of the parametric equations
+  }
+
   let theta = Math.PI / 2;
   let length = 0;
-  const step = 0.001; // Small step size for theta
+  const step = 0.001;
 
   while (length < arcLength) {
     const x1 = ellipseX(theta);
@@ -31,8 +32,9 @@ function ellipsePoint(a, b, arcLength) {
     length += distance(x1, y1, x2, y2);
   }
 
-  return { x: ellipseX(theta), y: ellipseY(theta) };
+  return { x: ellipseX(theta), y: ellipseY(theta), angle: ellipseAngle(theta) };
 }
+
 
 // Generate the steps required to position a seat in the correct position on the ellipse
 function generateSteps(gapWidth, seatWidth, seatFromMiddle) {
@@ -68,7 +70,7 @@ const Seatingplan = ({members, pictures}) => {
   var b = 2.5
   let ellipseArcLen = 20.185
   const seatWidth = ellipseArcLen/40;
-  const gapWidth = seatWidth*1.5;
+  const gapWidth = seatWidth;
   const marginBetweenSeats = 0;
 
   let seatIndex = -1 // Index of the seat to which we will generate the seats
@@ -149,7 +151,7 @@ const Seatingplan = ({members, pictures}) => {
     rowNum += 1
     
     let oldb = b
-    b += seatWidth + gapWidth
+    b += seatWidth + gapWidth / 2
     a = a*b/oldb
 
     return (
