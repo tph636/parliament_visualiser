@@ -2,13 +2,14 @@
 /* Ensure .seating-plan takes full width and maintains aspect ratio */
 .seating-plan {
     position: relative;
-    border: 3px solid black;
-    min-width: 500px;
-    max-width: 1000px;
-    max-height: 90vh;
     aspect-ratio: 1.5;
+    width: 90%;
     --plan-width: 100%;
     --plan-height: 100%;
+    background-color: white;
+    box-shadow: 0 0 5px grey;
+    margin-left: auto;
+    margin-right: auto;
 }
   
   /* Adjust chairman and seat positions and sizes to fit within .seating-plan */
@@ -26,8 +27,8 @@
   }
   
   .seat {
-    left: calc(50% + var(--pointX) * var(--plan-width)/15);
-    top: calc(var(--pointY) * var(--plan-width)/10);
+    left: calc(50% + var(--pointX) * var(--plan-width)/15); /*15 & 10 are the same as aspect ratio*/
+    top: calc(8% + var(--pointY) * var(--plan-width)/10);
   }
 
   

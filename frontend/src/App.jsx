@@ -5,6 +5,7 @@ import './App.css';
 function App() {
   const [members, setMembers] = useState([]);
   const [membersLoaded, setMembersLoaded] = useState(false); // Add loading state
+  const [selectedSeat, setSelectedSeat] = useState(null);
 
   const apiGet = async () => {
     try {
@@ -25,12 +26,16 @@ function App() {
   }, []);
 
   return (
-    <div className='main-wrapper'>
-      <div className='left-col'>
-        {membersLoaded ? (<Seatingplan members={members}/>) : (<p>Loading...</p>)}
+    <>
+      <header>Välihuuto</header>
+      <div className='main-content'>
+        {membersLoaded ? (<Seatingplan members={members} />) : (<p>Loading...</p>)}
+        <div className='member-list'>
+          
+        </div>
       </div>
-      <div className='right-col'></div>
-    </div>
+    </>
+
   );
 }
 
