@@ -12,9 +12,9 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "http:", "https:"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'"],
+      imgSrc: ["'self'"],
       connectSrc: ["'self'"],
     }
   }
@@ -58,6 +58,20 @@ app.get('/api/SeatingOfParliament', async (request, response) => {
   try {
     const seating = await fetchAll(db, 'SELECT * FROM SeatingOfParliament');
     response.json(seating); // Return the seating data as JSON
+  } catch (err) {
+    console.log(err);
+    response.status(500).send('Internal Server Error');
+  } finally {
+    db.close();
+  }
+});
+
+app.get('/api/MemberOfParliament', async (request, response) => {
+  const db = new sqlite3.Database('./databases/database.db');
+
+  try {
+    const members = await fetchAll(db, 'SELECT * FROM MemberOfParliament');
+    response.json(members); // Return the members data as JSON
   } catch (err) {
     console.log(err);
     response.status(500).send('Internal Server Error');

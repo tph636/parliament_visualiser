@@ -51,7 +51,7 @@ function generateSteps(gapWidth, seatWidth, seatFromMiddle) {
 }
 
 
-const Seatingplan = ({members, pictures}) => {
+const Seatingplan = ({ seats }) => {
 
   var plan = [
     [1], // Chairman
@@ -88,7 +88,7 @@ const Seatingplan = ({members, pictures}) => {
     
     let nthSeatInRow = 1 // Current seat from left to right
 
-    const seats = [] // All the seats in a row to be rendered
+    const rowSeats = [] // All the seats in a row to be rendered
 
     // The amount of seats on the left side of the middle corridor. 0 if only one seat (chariman)
     let seatsBeforeMiddle = row.length > 1 ? row[0] + row[1] : 0;
@@ -134,7 +134,7 @@ const Seatingplan = ({members, pictures}) => {
           >
             <Seat  
               seatIndex={currentSeatIndex} 
-              member={members.find(mem => mem.seatNumber===currentSeatIndex)}
+              seat={seats.find(mem => mem.seatNumber===currentSeatIndex)}
               />
           </div>
         )
@@ -144,7 +144,7 @@ const Seatingplan = ({members, pictures}) => {
       }
 
       // Add generated seats to the seats array
-      seats.push(seatGroup)
+      rowSeats.push(seatGroup)
 
     }
 
@@ -155,7 +155,7 @@ const Seatingplan = ({members, pictures}) => {
     a = a*b/oldb
 
     return (
-      <div className='row'>{seats.map((group)=><div className='seatGroup'>{group}</div>)}</div>
+      <div className='row'>{rowSeats.map((group)=><div className='seatGroup'>{group}</div>)}</div>
     )
   }
 
