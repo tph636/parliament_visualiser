@@ -17,7 +17,7 @@ def findMemberPicture(hetekaId, fullRes):
     for root, dirs, files in os.walk(search_dir):
         for file in files:
             # Check if the file name contains the hetekaId and ends with .jpg
-            if str(hetekaId) in file and file.endswith('.jpg'):
+            if '-' + str(hetekaId) + '.jpg' in file:
                 # Return the relative path from the backend directory
                 #relative_path = os.path.relpath(os.path.join(root, file), script_dir)
                 return file

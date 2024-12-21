@@ -2,9 +2,10 @@ import './Seat.css';
 import React from 'react';
 
 const Seat = ({ seatIndex, member }) => {
-
+  
   // Function to handle the click event
   const handleClick = () => {
+
     console.log(member.lastname)
   };
 
