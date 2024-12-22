@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const sqlite3 = require('sqlite3');
 const cors = require('cors');
@@ -73,6 +74,7 @@ app.get('/api/MemberOfParliament', async (request, response) => {
     const members = await fetchAll(db, 'SELECT * FROM MemberOfParliament');
     response.json(members); // Return the members data as JSON
   } catch (err) {
+    next(err)
     console.log(err);
     response.status(500).send('Internal Server Error');
   } finally {
@@ -80,6 +82,8 @@ app.get('/api/MemberOfParliament', async (request, response) => {
   }
 });
 
-app.listen(3001, () => {
+const PORT = process.env.PORT || 3001
+
+app.listen(PORT, () => {
   console.log("Server running on port 3001");
 });
