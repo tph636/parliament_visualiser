@@ -1,7 +1,4 @@
 import requests
-import json
-import sqlite3
-import os 
 from db_util import connectToDb
 from findPicture import findMemberPicture
 
