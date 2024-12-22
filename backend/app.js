@@ -1,22 +1,20 @@
-require('dotenv').config()
 const express = require('express');
-const sqlite3 = require('sqlite3');
 const cors = require('cors');
-const path = require('path');
+
 const app = express();
+
+const middleware = require('./utils/middleware')
 
 app.use(cors());
 
 const seatingOfParliamentRouter = require('./controllers/seatingofparliament')
-
 const memberOfParliamentRouter = require('./controllers/memberofparliament')
 
-
-app.use('/tinyimages', express.static(path.join(__dirname, 'pictures', 'tinyMemberImages')));
-
+app.use('/tinyimages', express.static('./pictures/tinyMemberImages'));
 app.use('/api/seatingOfParliament', seatingOfParliamentRouter)
-
 app.use('/api/MemberOfParliament', memberOfParliamentRouter)
 
+app.use(middleware.unknownEndPoint)
+app.use(middleware.errorHandler)
 
 module.exports = app
