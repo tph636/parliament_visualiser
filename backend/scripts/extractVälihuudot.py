@@ -39,7 +39,7 @@ def extract_välihuudot(file):
         speaking = []
         for i in speakingNotSplit:
             if " — " in i:
-                parts = i.split(" — ", 1)
+                parts = i.split(" — ")
                 speaking.extend(parts)
             else:
                 speaking.append(i)
