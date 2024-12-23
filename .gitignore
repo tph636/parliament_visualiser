@@ -1,23 +1,14 @@
-# Ignore environment variables
+# General
 .env
-
-# Ignore node_modules
 node_modules
-
-# Ignore build directory in frontend
-frontend/dist/
-
-# Ignore environment variables file
-.env
-
-# Ignore Python virtual environment in backend
 backend/venv/
-
-# Ignore system-specific files
 .DS_Store
 Thumbs.db
 
-
+# Data
+databases
+documents
+pictures
 
 # Logs
 logs
