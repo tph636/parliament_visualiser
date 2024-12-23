@@ -44,7 +44,7 @@ for filename in os.listdir(folder):
                         INSERT OR IGNORE INTO Valihuudot (firstname, lastname, valihuuto, ptkNum, date, huutoNum) 
                         VALUES (?, ?, ?, ?, ?, ?)
                     ''', (huuto.firstName, huuto.lastName, huuto.huuto, currentPtkNum, huuto.date, huuto.huutoNum))
-                    print(f'{huuto.firstName} {huuto.lastName}: {huuto.huuto} on {huuto.date} (Huuto #{huuto.huutoNum})')
+                    print(f'{huuto.firstName} {huuto.lastName}: {huuto.huuto} PTK({currentPtkNum}) {huuto.date} (Huuto #{huuto.huutoNum})')
             except Exception as e:
                 print(f"Failed to process {file_path}: {e}")
 
