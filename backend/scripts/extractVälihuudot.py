@@ -2,8 +2,9 @@ import fitz
 import re
 from välihuuto import Välihuuto
 
-# Jos henkilöllä on kaksiosainen sukunimi esim. Miapetra Kumpula-Natri ja pdf:ssä
+# TODO: Jos henkilöllä on kaksiosainen sukunimi esim. Miapetra Kumpula-Natri ja pdf:ssä
 # sukunimi on jaettu kahdelle eri riville niin sukunimestä tulee KumpulaNatri.
+# Sama ongelma on etunimillä.
 
 def extract_välihuudot(file):
     doc = fitz.open(stream=file.read(), filetype="pdf")
