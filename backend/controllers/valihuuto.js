@@ -22,4 +22,18 @@ valihuutoRouter.get('/:memberName/amount', async (request, response) => {
   }
 });
 
+valihuutoRouter.get('/amount', async (request, response) => {
+    const db = getDatabase();
+    try {
+      const query = `SELECT firstname, lastname, COUNT(*) AS count FROM Valihuudot GROUP BY firstname, lastname`;
+      const valihuutoAmount = await fetchAll(db, query);
+      // Return the data as JSON
+      response.json(valihuutoAmount); 
+    } catch (err) {
+      response.status(500).send('Internal Server Error');
+    } finally {
+      db.close();
+    }
+  });
+  
 module.exports = valihuutoRouter;
