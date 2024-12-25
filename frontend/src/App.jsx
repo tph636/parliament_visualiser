@@ -32,6 +32,8 @@ function App() {
       setMembersLoaded(true);
     }
   };
+  
+  
 
   useEffect(() => {
     apiGetSeats();
@@ -42,14 +44,13 @@ function App() {
     <>
       <header>Välihuuto</header>
       <div className='main-content'>
-
         {seatsLoaded ? (<Seatingplan seats={seats} />) : ''}
-
-        {(seatsLoaded && membersLoaded) 
-          ? <CardList seats={seats} members={members} />
-          : ''
-        }
-        
+        <div className='member-list'>
+          {(seatsLoaded && membersLoaded) 
+            ? <CardList seats={seats} members={members} />
+            : ''
+          }
+        </div>
       </div>
     </>
   );

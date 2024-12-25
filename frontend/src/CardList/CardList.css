@@ -1,7 +1,71 @@
 .card-list {
+    background-color: white;
+    box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.1);
     margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 13px;
+}
+
+.cards {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 10px;
     width: 100%;
 }
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .search-bar {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-width: 100%;
+    flex-grow: 1;
+  }
+  
+  .sort-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  /* Hide the dropdown arrow */
+  .dropdown::after {
+    content: '';
+    display: none;
+  }
+  
+  /* Hover effect to display options */
+  .dropdown:hover option {
+    display: block;
+    background-color: white;
+    border: 1px solid #ccc;
+  }
+  
+  /* Dropdown options */
+  .dropdown option {
+    display: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  

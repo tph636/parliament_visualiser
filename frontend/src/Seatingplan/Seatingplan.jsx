@@ -52,7 +52,6 @@ function generateSteps(gapWidth, seatWidth, seatFromMiddle) {
 
 
 const Seatingplan = ({ seats }) => {
-
   var plan = [
     [1], // Chairman
     [5,3,3,5], // 1st. row
