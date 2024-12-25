@@ -9,6 +9,7 @@ const CardList = ({ seats, members }) => {
   const [valihuutoAmount, setValihuutoAmount] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('valihuuto-descending');
+  const [parliamentGroup, setparliamentGroup] = useState('Kaikki puolueet')
 
 
   /* Fetch the amount of välihuuto for each member */
@@ -32,7 +33,11 @@ const CardList = ({ seats, members }) => {
       const member = members.find(mem => mem.personId === seat.hetekaId);
       if (!member) return false;
       const fullName = `${member.firstname} ${member.lastname}`.toLowerCase();
-      return fullName.includes(searchTerm.toLowerCase());
+      if (parliamentGroup != 'Kaikki eduskuntaryhmät') {
+        return fullName.includes(searchTerm.toLowerCase()) && ( member.parliamentGroup == parliamentGroup)
+      } else {
+        return fullName.includes(searchTerm.toLowerCase())
+      }
     })
     .sort((a, b) => {
       const memberA = members.find(mem => mem.personId === a.hetekaId);
@@ -65,6 +70,14 @@ const CardList = ({ seats, members }) => {
           onChange={e => setSearchTerm(e.target.value)}
           className="search-bar"
         />
+        <div className='parliamentGroup-dropdown'>
+          <select id="parliamentGroup" value={parliamentGroup} onChange={e => setparliamentGroup(e.target.value)} className="dropdown">
+            {["Kaikki eduskuntaryhmät", ...new Set(members.map(mem => mem.parliamentGroup))].map(group => (
+              <option key={group} value={group}>{group}</option>
+            ))}
+          </select> 
+        </div>
+
         <div className='sort-dropdown'>
           <select id="sortOrder" value={sortOrder} onChange={e => setSortOrder(e.target.value)} className="dropdown">
             <option value="valihuuto-ascending">Vähiten välihuutoja</option>
@@ -77,10 +90,9 @@ const CardList = ({ seats, members }) => {
       <div className="cards">
         {filteredSeats.map(seat => {
           const member = members.find(mem => mem.personId === seat.hetekaId);
-          const huuto = valihuutoAmount.find(huuto => huuto.firstname === member?.firstname && huuto.lastname === member?.lastname);
-          const birthYear = member ? member.birthYear : 'N/A';
+          const huuto = valihuutoAmount.find(huuto => huuto.firstname === member.firstname && huuto.lastname === member.lastname);
           return (
-            <Card key={seat.seatNumber} seat={seat} member={member} valihuutoAmount={huuto || { count: 0 }} birthYear={birthYear} />
+            <Card key={seat.seatNumber} seat={seat} member={member} valihuutoAmount={huuto || { count: 0 }} />
           );
         })}
       </div>

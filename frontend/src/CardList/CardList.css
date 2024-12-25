@@ -29,7 +29,7 @@
     flex-grow: 1;
   }
   
-  .sort-dropdown {
+  .sort-dropdown .party-dropdown{
     position: relative;
     display: inline-block;
   }
