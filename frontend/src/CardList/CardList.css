@@ -27,20 +27,14 @@
     border-radius: 4px;
     flex-grow: 1;
   }
-  
-  .sort-dropdown, .party-dropdown{
-    
-  }
-  
+
   .dropdown {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: white;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+
     cursor: pointer;
     width: 100%;
   }
