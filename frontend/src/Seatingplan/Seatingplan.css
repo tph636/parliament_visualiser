@@ -30,9 +30,3 @@
   top: calc(8% + var(--pointY) * var(--plan-width) / 10);
 }
 
-/* Hide .seating-plan when screen width is less than 400px */
-@media (max-width: 700px) {
-  .seating-plan {
-      display: none;
-  }
-}

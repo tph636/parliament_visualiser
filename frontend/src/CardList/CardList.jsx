@@ -9,7 +9,7 @@ const CardList = ({ seats, members }) => {
   const [valihuutoAmount, setValihuutoAmount] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('valihuuto-descending');
-  const [parliamentGroup, setparliamentGroup] = useState('Kaikki puolueet')
+  const [parliamentGroup, setparliamentGroup] = useState('Kaikki eduskuntaryhmät')
 
 
   /* Fetch the amount of välihuuto for each member */
@@ -62,7 +62,9 @@ const CardList = ({ seats, members }) => {
 
   return (
     <div className='card-list'>
+
       <div className='filter-container'>
+        
         <input
           type="text"
           placeholder="Etsi kansanedustajaa"
@@ -70,6 +72,7 @@ const CardList = ({ seats, members }) => {
           onChange={e => setSearchTerm(e.target.value)}
           className="search-bar"
         />
+
         <div className='parliamentGroup-dropdown'>
           <select id="parliamentGroup" value={parliamentGroup} onChange={e => setparliamentGroup(e.target.value)} className="dropdown">
             {["Kaikki eduskuntaryhmät", ...new Set(members.map(mem => mem.parliamentGroup))].map(group => (
@@ -86,7 +89,9 @@ const CardList = ({ seats, members }) => {
             <option value="age-ascending">Vanhin</option>
           </select>
         </div>
+
       </div>
+
       <div className="cards">
         {filteredSeats.map(seat => {
           const member = members.find(mem => mem.personId === seat.hetekaId);
@@ -96,6 +101,7 @@ const CardList = ({ seats, members }) => {
           );
         })}
       </div>
+
     </div>
   );
 };

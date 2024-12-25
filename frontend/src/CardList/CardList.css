@@ -25,13 +25,11 @@
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    max-width: 100%;
     flex-grow: 1;
   }
   
-  .sort-dropdown .party-dropdown{
-    position: relative;
-    display: inline-block;
+  .sort-dropdown, .party-dropdown{
+    
   }
   
   .dropdown {
@@ -45,7 +43,6 @@
     -moz-appearance: none;
     cursor: pointer;
     width: 100%;
-    max-width: 200px;
   }
   
   /* Hide the dropdown arrow */
