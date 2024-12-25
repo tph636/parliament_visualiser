@@ -12,7 +12,7 @@ const Seat = ({ seatIndex, seat }) => {
   return (
     <div className="seat-container">
       <div className="circle" style={{ borderColor: seat.partyColor }} onClick={handleClick}>
-        <img src={`http://localhost:3001/tinyimages/${seat.imagePath}`} alt={`Seat ${seatIndex}`} className="circle-image" />
+        <img src={`http://localhost:3001/tinyimages/${seat.imagePath}`} className="circle-image" />
       </div>
     </div>
   );

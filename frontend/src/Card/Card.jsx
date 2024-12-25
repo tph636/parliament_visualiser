@@ -6,7 +6,7 @@ const Card = ({ seat, member, valihuutoAmount }) => {
     <div className="card">
       <img
         src={`http://localhost:3001/tinyimages/${seat.imagePath}`}
-        alt="Edustajan kuva"
+        alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="card-image"
         style={{
           border: `4px solid ${seat.partyColor}`
