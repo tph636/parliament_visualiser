@@ -2,10 +2,6 @@ import fitz
 import re
 from välihuuto import Välihuuto
 
-# TODO: Jos henkilöllä on kaksiosainen sukunimi esim. Miapetra Kumpula-Natri ja pdf:ssä
-# sukunimi on jaettu kahdelle eri riville niin sukunimestä tulee KumpulaNatri.
-# Sama ongelma on etunimillä.
-
 def extract_välihuudot(file):
     doc = fitz.open(stream=file.read(), filetype="pdf")
 
@@ -31,7 +27,12 @@ def extract_välihuudot(file):
                 first_date = date_match.group(1)
 
         # All text inside square brackets eg. [Ben Zyskowicz: Höpö höpö!], [Puhemies koputtaa] and remove newline
-        in_square_brackets = list(map(lambda n: n.replace('-\n', '').replace('\n', ' '), huuto_pattern.findall(text)))
+        def removeNewLineFromName(text): # If a two-part name is split across two lines handle that eg. Kumpula-\nNatri
+            pattern = re.compile(r'([A-ZÄÖÅ][a-zäöå]*-)\n([A-ZÄÖÅ][a-zäöå]*)')
+            replacement = r'\1\2'
+            return re.sub(pattern, replacement, text)
+            
+        in_square_brackets = list(map(lambda n: removeNewLineFromName(n).replace('-\n', '').replace('\n', ' '), huuto_pattern.findall(text)))
         
         # Include only sentences where someone is speaking eg. [Ben Zyskowicz: Höpö höpö!], [Sosiaalidemokraat- tien ryhmästä: Ja lausumia!]
         speakingNotSplit = [huuto for huuto in in_square_brackets if ": " in huuto]

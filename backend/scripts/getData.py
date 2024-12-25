@@ -7,7 +7,9 @@ conn, cursor = connectToDb()
 #cursor.execute('''DROP TABLE valihuudot''').fetchall()
 #statement = str(cursor.execute('''SELECT firstname, lastname, COUNT(*) FROM Valihuudot GROUP BY firstname, lastname ORDER BY COUNT(*) DESC''').fetchall())
 #statement = str(cursor.execute('''Select party, COUNT(*) FROM Valihuudot, SeatingOfParliament WHERE Valihuudot.firstname=SeatingOfParliament.firstname AND Valihuudot.lastname=SeatingOfParliament.lastname GROUP BY party''').fetchall())
-statement = str(cursor.execute('''SELECT COUNT(*) FROM Valihuudot WHERE firstname="Ben" AND lastname="Zyskowicz"''').fetchall())
+#statement = str(cursor.execute('''SELECT COUNT(*) FROM Valihuudot WHERE firstname="Ben" AND lastname="Zyskowicz"''').fetchall())
+statement = str(cursor.execute('''SELECT DISTINCT(lastname) FROM valihuudot''').fetchall())
+
 print(statement[:])
 
 conn.close()
