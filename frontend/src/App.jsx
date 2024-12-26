@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Seatingplan from './Seatingplan/Seatingplan';
 import CardList from './CardList/CardList';
+import MemberInfo from './MemberInfo/MemberInfo';
 import './App.css';
 
 function App() {
@@ -32,8 +34,6 @@ function App() {
       setMembersLoaded(true);
     }
   };
-  
-  
 
   useEffect(() => {
     apiGetSeats();
@@ -41,18 +41,25 @@ function App() {
   }, []);
 
   return (
-    <>
+    <Router>
       <header>Välihuuto</header>
       <div className='main-content'>
-        {seatsLoaded ? (<Seatingplan seats={seats} />) : ''}
-        <div className='member-list'>
-          {(seatsLoaded && membersLoaded) 
-            ? <CardList seats={seats} members={members} />
-            : ''
-          }
-        </div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                {seatsLoaded && <Seatingplan seats={seats} />}
+                {seatsLoaded && membersLoaded && (
+                  <CardList seats={seats} members={members} />
+                )}
+              </>
+            }
+          />
+          <Route path="/:hetekaId" element={<MemberInfo members={members} />} />
+        </Routes>
       </div>
-    </>
+    </Router>
   );
 }
 

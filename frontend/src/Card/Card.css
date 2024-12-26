@@ -1,4 +1,6 @@
 .card {
+    text-decoration: inherit;
+    color: inherit;
     display: flex;
     align-items: center;
     border: 2px solid hsl(0, 0%, 80%);

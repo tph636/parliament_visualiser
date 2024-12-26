@@ -5,7 +5,7 @@ import './CardList.css';
 
 /* CardList chooses which members will be shown based on the given filters */
 
-const CardList = ({ seats, members }) => {
+const CardList = ({ seats, members, onCardClick}) => {
   const [valihuutoAmount, setValihuutoAmount] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('valihuuto-descending');
@@ -97,7 +97,7 @@ const CardList = ({ seats, members }) => {
           const member = members.find(mem => mem.personId === seat.hetekaId);
           const huuto = valihuutoAmount.find(huuto => huuto.firstname === member.firstname && huuto.lastname === member.lastname);
           return (
-            <Card key={seat.seatNumber} seat={seat} member={member} valihuutoAmount={huuto || { count: 0 }} />
+            <Card key={seat.seatNumber} seat={seat} member={member} valihuutoAmount={huuto || { count: 0 }} onCardClick={onCardClick} />
           );
         })}
       </div>
