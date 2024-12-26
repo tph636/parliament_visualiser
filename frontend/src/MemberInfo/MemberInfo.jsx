@@ -15,7 +15,7 @@ const MemberInfo = ({ members }) => {
     <div className='member-info'>
       <h2>{member.firstname} {member.lastname}</h2>
       <p>Eduskuntaryhmä: {member.parliamentGroup}</p>
-      <p>Välihuutoja: </p>
+      <p>Välihuutoja: {member.valihuuto_count}</p>
     </div>
   );
 };
