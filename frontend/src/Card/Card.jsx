@@ -2,7 +2,7 @@ import './Card.css';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Card = ({ seat, member, valihuutoAmount }) => {
+const Card = ({ seat, member }) => {
   const navigate = useNavigate();
 
   const handleCardClick = (e) => {
@@ -24,7 +24,7 @@ const Card = ({ seat, member, valihuutoAmount }) => {
         <h2>{member.firstname} {member.lastname}</h2>
         <p>{member.birthYear}</p>
         <p>{member.parliamentGroup}</p>
-        <p>Välihuutoja: {valihuutoAmount.count}</p>
+        <p>Välihuutoja: {member.valihuuto_count}</p>
       </div>
     </a>
   );

@@ -5,7 +5,29 @@ const { DOMParser } = require('xmldom'); // Import DOMParser for node environmen
 memberOfParliamentRouter.get('', async (request, response) => {
   const db = getDatabase();
   try {
-    const members = await fetchAll(db, 'SELECT personId, lastname, firstname, party, minister, XmlDataFi FROM MemberOfParliament');
+    const members = await fetchAll(db, `SELECT 
+                                          MemberOfParliament.personId, 
+                                          MemberOfParliament.lastname, 
+                                          MemberOfParliament.firstname, 
+                                          MemberOfParliament.party, 
+                                          MemberOfParliament.minister, 
+                                          COUNT(Valihuudot.valihuuto) AS valihuuto_count, 
+                                          MemberOfParliament.XmlDataFi 
+                                        FROM 
+                                          MemberOfParliament 
+                                        LEFT JOIN 
+                                          Valihuudot 
+                                        ON 
+                                          MemberOfParliament.firstname = Valihuudot.firstname 
+                                        AND 
+                                          MemberOfParliament.lastname = Valihuudot.lastname 
+                                        GROUP BY 
+                                          MemberOfParliament.personId, 
+                                          MemberOfParliament.lastname, 
+                                          MemberOfParliament.firstname, 
+                                          MemberOfParliament.party, 
+                                          MemberOfParliament.minister, 
+                                          MemberOfParliament.XmlDataFi`);
 
     // Parse XML data and append birthYear and parliamentGroup for each member
     const updatedMembers = members.map(member => {
@@ -21,7 +43,8 @@ memberOfParliamentRouter.get('', async (request, response) => {
         firstname: member.firstname,
         minister: member.minister,
         birthYear: birthDate ? new Date(birthDate).getFullYear() : null,
-        parliamentGroup: parliamentGroup || null
+        parliamentGroup: parliamentGroup || null,
+        valihuuto_count: member.valihuuto_count
       };
     });
 

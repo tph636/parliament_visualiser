@@ -6,26 +6,10 @@ import './CardList.css';
 /* CardList chooses which members will be shown based on the given filters */
 
 const CardList = ({ seats, members, onCardClick}) => {
-  const [valihuutoAmount, setValihuutoAmount] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('valihuuto-descending');
   const [parliamentGroup, setparliamentGroup] = useState('Kaikki eduskuntaryhmät')
 
-
-  /* Fetch the amount of välihuuto for each member */
-  const apiGetValihuudot = async () => {
-    try {
-      const response = await fetch('http://localhost:3001/api/valihuudot/amount');
-      const data = await response.json();
-      setValihuutoAmount(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  useEffect(() => {
-    apiGetValihuudot();
-  }, []);
 
   // Filter and sort seats based on search term and sort order
   const filteredSeats = seats
@@ -42,8 +26,8 @@ const CardList = ({ seats, members, onCardClick}) => {
     .sort((a, b) => {
       const memberA = members.find(mem => mem.personId === a.hetekaId);
       const memberB = members.find(mem => mem.personId === b.hetekaId);
-      const huutoA = valihuutoAmount.find(huuto => huuto.firstname === memberA?.firstname && huuto.lastname === memberA?.lastname)?.count || 0;
-      const huutoB = valihuutoAmount.find(huuto => huuto.firstname === memberB?.firstname && huuto.lastname === memberB?.lastname)?.count || 0;
+      const huutoA = memberA.valihuuto_count || 0;
+      const huutoB = memberB.valihuuto_count || 0;
       const birthYearA = memberA.birthYear;
       const birthYearB = memberB.birthYear;
 
@@ -95,7 +79,7 @@ const CardList = ({ seats, members, onCardClick}) => {
       <div className="cards">
         {filteredSeats.map(seat => {
           const member = members.find(mem => mem.personId === seat.hetekaId);
-          const huuto = valihuutoAmount.find(huuto => huuto.firstname === member.firstname && huuto.lastname === member.lastname);
+          const huuto = member.valihuuto_count || 0;
           return (
             <Card key={seat.seatNumber} seat={seat} member={member} valihuutoAmount={huuto || { count: 0 }} onCardClick={onCardClick} />
           );
