@@ -2,10 +2,9 @@ import React from 'react';
 import { Link } from '@remix-run/react';
 import "./Card.css";
 
-
 const Card = ({ seat, member }) => {
   return (
-    <Link to={`/${seat.hetekaId}`} className="card">
+    <Link to={`/${seat.hetekaId}`} className="card" state={{ seat, member }}>
       <img
         src={`http://localhost:3001/tinyimages/${seat.imagePath}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}

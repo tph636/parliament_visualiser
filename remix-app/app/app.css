@@ -28,6 +28,10 @@ header {
     padding: 13px;
 }
 
+.member-image {
+    width: 200px;
+    height: auto;
+}
 
 /* Make card grid switch to single column when screen width is less than 900px */
 @media (max-width: 900px) {
