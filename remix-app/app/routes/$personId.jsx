@@ -18,7 +18,7 @@ export default function MemberInfo() {
   }
 
   return (
-    <div className="main-content">
+    <div className="member-info">
       <h2>{member.firstname} {member.lastname}</h2>
       <p>Eduskuntaryhmä: {member.parliamentGroup}</p>
       <p>Välihuutoja: {member.valihuuto_count}</p>

@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    padding: 0;
     background-color: rgb(235,233,232);
 }
 
@@ -40,24 +41,5 @@ header {
         margin: 0;
         width: 100vw;
         min-width: initial;
-    }
-    .seating-plan {
-        display: none;
-    }
-    .cards {
-        grid-template-columns: 1fr;
-    }
-    .card-list {
-        margin: 0;
-    }
-    .filter-container {
-        flex-direction: column; 
-        align-items: stretch; 
-    } 
-    .search-bar, .sort-dropdown, .party-dropdown { 
-        max-width: none; 
-        position: relative;
-        display: inline-block;
-        flex-grow: 1;
     }
 }

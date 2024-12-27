@@ -1,62 +1,78 @@
 .card-list {
-    background-color: white;
-    box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.1);
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 13px;
+  background-color: white;
+  box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.1);
+  margin-top: 10px;
+  padding: 13px;
 }
 
 .cards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
 }
 
 .filter-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .search-bar {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    flex-grow: 1;
-  }
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
 
-  .dropdown {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: white;
+.search-bar {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex-grow: 1;
+}
 
-    cursor: pointer;
-    width: 100%;
+.dropdown {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Hide the dropdown arrow */
+.dropdown::after {
+  content: '';
+  display: none;
+}
+
+/* Hover effect to display options */
+.dropdown:hover option {
+  display: block;
+  background-color: white;
+  border: 1px solid #ccc;
+}
+
+/* Dropdown options */
+.dropdown option {
+  display: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@media (max-width: 550px) {
+  .card-list {
+    margin: 0 !important;
   }
-  
-  /* Hide the dropdown arrow */
-  .dropdown::after {
-    content: '';
-    display: none;
+  .cards {
+    grid-template-columns: 1fr !important;
   }
-  
-  /* Hover effect to display options */
-  .dropdown:hover option {
-    display: block;
-    background-color: white;
-    border: 1px solid #ccc;
+  .filter-container {
+    flex-direction: column !important; 
+    align-items: stretch !important; 
+  } 
+  .search-bar, .sort-dropdown, .party-dropdown { 
+    max-width: none !important; 
+    position: relative !important;
+    display: inline-block !important;
+    flex-grow: 1 !important;
   }
-  
-  /* Dropdown options */
-  .dropdown option {
-    display: none;
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
+}

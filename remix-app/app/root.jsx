@@ -28,9 +28,11 @@ export default function App() {
       </head>
       <body>
         <header>Välihuuto</header>
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
+        <dev className="main-content">
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+        </dev>
       </body>
     </html>
   );

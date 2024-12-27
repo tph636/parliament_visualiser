@@ -23,10 +23,8 @@ export default function Index() {
 
   return (
     <>
-      <div className='main-content'>
-        <Seatingplan seats={seats} />
-        <CardList seats={seats} members={members} />
-      </div>
+      <Seatingplan seats={seats} />
+      <CardList seats={seats} members={members} />
     </>
   );
 }
