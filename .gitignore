@@ -1,4 +1,5 @@
 # General
+build
 .env
 node_modules
 backend/venv/

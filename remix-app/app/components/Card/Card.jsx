@@ -1,17 +1,11 @@
-import './Card.css';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from '@remix-run/react';
+import "./Card.css";
+
 
 const Card = ({ seat, member }) => {
-  const navigate = useNavigate();
-
-  const handleCardClick = (e) => {
-    e.preventDefault();
-    navigate(`/${seat.hetekaId}`);
-  };
-
   return (
-    <a className="card" href='#' onClick={handleCardClick}>
+    <Link to={`/${seat.hetekaId}`} className="card">
       <img
         src={`http://localhost:3001/tinyimages/${seat.imagePath}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
@@ -26,7 +20,7 @@ const Card = ({ seat, member }) => {
         <p>{member.parliamentGroup}</p>
         <p>Välihuutoja: {member.valihuuto_count}</p>
       </div>
-    </a>
+    </Link>
   );
 };
 
