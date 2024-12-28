@@ -1,6 +1,6 @@
 import { useLoaderData } from "@remix-run/react";
 
-// Loader function to fetch both member and seat data
+// Loader function to fetch member data
 export const loader = async ({ params }) => {
   const memberResponse = await fetch(`http://localhost:3001/api/member_of_parliament/${params.personId}`);
   if (!memberResponse.ok) {

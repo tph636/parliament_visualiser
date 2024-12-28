@@ -1,12 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '../Card/Card';
 import './CardList.css';
 
-/* CardList chooses which members will be shown based on the given filters */
 const CardList = ({ members, onCardClick }) => {
+  // Initialize state with default values
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('valihuuto-descending');
   const [parliamentGroup, setParliamentGroup] = useState('Kaikki eduskuntaryhmät');
+
+  // Restore state from sessionStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedSearch = sessionStorage.getItem('searchTerm');
+      const storedSortOrder = sessionStorage.getItem('sortOrder');
+      const storedParliamentGroup = sessionStorage.getItem('parliamentGroup');
+
+      if (storedSearch) setSearchTerm(storedSearch);
+      if (storedSortOrder) setSortOrder(storedSortOrder);
+      if (storedParliamentGroup) setParliamentGroup(storedParliamentGroup);
+    }
+  }, []);
+
+  // Save state to sessionStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('searchTerm', searchTerm);
+      sessionStorage.setItem('sortOrder', sortOrder);
+      sessionStorage.setItem('parliamentGroup', parliamentGroup);
+    }
+  }, [searchTerm, sortOrder, parliamentGroup]);
+
+
 
   // Filter and sort members based on search term and sort order
   const filteredMembers = members
@@ -63,7 +87,7 @@ const CardList = ({ members, onCardClick }) => {
           </select>
         </div>
       </div>
-      <div className="cards">
+      <div className="cards" key={`${searchTerm}-${sortOrder}-${parliamentGroup}`}>
         {filteredMembers.map(member => {
           const huuto = member.valihuuto_count || 0;
           return (
