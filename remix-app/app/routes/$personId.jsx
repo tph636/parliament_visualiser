@@ -2,13 +2,13 @@ import { useLoaderData } from "@remix-run/react";
 
 // Loader function to fetch both member and seat data
 export const loader = async ({ params }) => {
-  const memberResponse = await fetch(`http://localhost:3001/api/MemberOfParliament/${params.personId}`);
+  const memberResponse = await fetch(`http://localhost:3001/api/MemberOfParliament/${params.person_id}`);
   if (!memberResponse.ok) {
     throw new Response("Not Found", { status: 404 });
   }
   const member = await memberResponse.json();
 
-  const seatResponse = await fetch(`http://localhost:3001/api/seatingOfParliament/${params.personId}`);
+  const seatResponse = await fetch(`http://localhost:3001/api/seatingOfParliament/${params.person_id}`);
   if (!seatResponse.ok) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -23,15 +23,15 @@ export default function MemberInfo() {
   return (
     <div className="member-info">
       <img
-        src={`http://localhost:3001/memberImage/${seat.imagePath}`}
+        src={`http://localhost:3001/memberImage/${seat.image_path}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="member-image"
         style={{
-          border: `4px solid ${seat.partycolor}`
+          border: `4px solid ${seat.party_color}`
         }}
       />
       <h2>{member.firstname} {member.lastname}</h2>
-      <p>Eduskuntaryhmä: {member.parliamentGroup}</p>
+      <p>Eduskuntaryhmä: {member.parliament_group}</p>
       <p>Välihuutoja: {member.valihuuto_count}</p>
     </div>
   );
