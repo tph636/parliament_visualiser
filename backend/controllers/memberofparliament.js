@@ -8,15 +8,22 @@ memberOfParliamentRouter.get('', async (request, response) => {
                                       member_of_parliament.person_id, 
                                       member_of_parliament.lastname, 
                                       member_of_parliament.firstname, 
-                                      member_of_parliament.party, 
                                       member_of_parliament.minister, 
+                                      seating_of_parliament.party,
+                                      seating_of_parliament.party_color,
+                                      seating_of_parliament.image_path,
+                                      seating_of_parliament.seat_number,
                                       COUNT(valihuudot.valihuuto) AS valihuuto_count, 
                                       member_of_parliament.xmldata_fi 
                                     FROM 
-                                      member_of_parliament 
-                                    LEFT JOIN 
-                                      valihuudot 
-                                    ON 
+                                      member_of_parliament
+                                    LEFT JOIN
+                                      seating_of_parliament
+                                    ON
+                                      member_of_parliament.person_id = seating_of_parliament.heteka_id
+                                    LEFT JOIN
+                                      valihuudot
+                                    ON
                                       member_of_parliament.firstname = valihuudot.firstname 
                                     AND 
                                       member_of_parliament.lastname = valihuudot.lastname 
@@ -24,8 +31,11 @@ memberOfParliamentRouter.get('', async (request, response) => {
                                       member_of_parliament.person_id, 
                                       member_of_parliament.lastname, 
                                       member_of_parliament.firstname, 
-                                      member_of_parliament.party, 
                                       member_of_parliament.minister, 
+                                      seating_of_parliament.party,
+                                      seating_of_parliament.party_color,
+                                      seating_of_parliament.image_path,
+                                      seating_of_parliament.seat_number, 
                                       member_of_parliament.xmldata_fi`);
 
     // Parse XML data and append birth_year and parliament_group for each member
@@ -41,9 +51,13 @@ memberOfParliamentRouter.get('', async (request, response) => {
         lastname: member.lastname,
         firstname: member.firstname,
         minister: member.minister,
+        party: member.party,
+        party_color: member.party_color,
+        image_path: member.image_path,
+        seat_number: member.seat_number,
+        valihuuto_count: member.valihuuto_count,
         birth_year: birthDate ? new Date(birthDate).getFullYear() : null,
-        parliament_group: parliamentGroup || null,
-        valihuuto_count: member.valihuuto_count
+        parliament_group: parliamentGroup || null
       };
     });
 
@@ -53,6 +67,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
   }
 });
 
+
 memberOfParliamentRouter.get('/:person_id', async (request, response) => {
   const { person_id } = request.params;
   try {
@@ -60,26 +75,36 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
                                       member_of_parliament.person_id, 
                                       member_of_parliament.lastname, 
                                       member_of_parliament.firstname, 
-                                      member_of_parliament.party, 
                                       member_of_parliament.minister, 
+                                      seating_of_parliament.party,
+                                      seating_of_parliament.party_color,
+                                      seating_of_parliament.image_path,
+                                      seating_of_parliament.seat_number,
                                       COUNT(valihuudot.valihuuto) AS valihuuto_count, 
                                       member_of_parliament.xmldata_fi 
                                     FROM 
-                                      member_of_parliament 
-                                    LEFT JOIN 
-                                      valihuudot 
-                                    ON 
+                                      member_of_parliament
+                                    LEFT JOIN
+                                      seating_of_parliament
+                                    ON
+                                      member_of_parliament.person_id = seating_of_parliament.heteka_id
+                                    LEFT JOIN
+                                      valihuudot
+                                    ON
                                       member_of_parliament.firstname = valihuudot.firstname 
                                     AND 
                                       member_of_parliament.lastname = valihuudot.lastname 
-                                    WHERE 
+                                    WHERE
                                       member_of_parliament.person_id = $1
                                     GROUP BY 
                                       member_of_parliament.person_id, 
                                       member_of_parliament.lastname, 
                                       member_of_parliament.firstname, 
-                                      member_of_parliament.party, 
-                                      member_of_parliament.minister, 
+                                      member_of_parliament.minister,
+                                      seating_of_parliament.party,
+                                      seating_of_parliament.party_color,
+                                      seating_of_parliament.image_path,
+                                      seating_of_parliament.seat_number, 
                                       member_of_parliament.xmldata_fi`, [person_id]);
 
     // Check if member exists
@@ -99,9 +124,13 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
       lastname: member.lastname,
       firstname: member.firstname,
       minister: member.minister,
+      party: member.party,
+      party_color: member.party_color,
+      image_path: member.image_path,
+      seat_number: member.seat_number,
+      valihuuto_count: member.valihuuto_count,
       birth_year: birthDate ? new Date(birthDate).getFullYear() : null,
-      parliament_group: parliamentGroup || null,
-      valihuuto_count: member.valihuuto_count
+      parliament_group: parliamentGroup || null
     };
 
     response.json(updatedMember); // Return the updated member data

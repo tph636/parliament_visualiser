@@ -2,16 +2,16 @@ import React from 'react';
 import { Link } from '@remix-run/react';
 import "./Card.css";
 
-const Card = ({ seat, member }) => {
+const Card = ({ member }) => {
   return (
-    <Link to={`/${member.person_id}`} className="card" state={{ seat }}>
+    <Link to={`/${member.person_id}`} className="card" state={{ member }}>
       <img
         loading='lazy'
-        src={`http://localhost:3001/tinyimages/${seat.image_path}`}
+        src={`http://localhost:3001/tinyimages/${member.image_path}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="card-image"
         style={{
-          border: `4px solid ${seat.party_color}`
+          border: `4px solid ${member.party_color}`
         }}
       />
       <div className="card-text">

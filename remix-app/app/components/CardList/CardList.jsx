@@ -3,16 +3,14 @@ import Card from '../Card/Card';
 import './CardList.css';
 
 /* CardList chooses which members will be shown based on the given filters */
-const CardList = ({ seats, members, onCardClick }) => {
+const CardList = ({ members, onCardClick }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('valihuuto-descending');
   const [parliamentGroup, setParliamentGroup] = useState('Kaikki eduskuntaryhmät');
 
-  // Filter and sort seats based on search term and sort order
-  const filteredSeats = seats
-    .filter(seat => {
-      const member = members.find(mem => mem.person_id === seat.heteka_id);
-      if (!member) return false;
+  // Filter and sort members based on search term and sort order
+  const filteredMembers = members
+    .filter(member => {
       const fullName = `${member.firstname} ${member.lastname}`.toLowerCase();
       if (parliamentGroup !== 'Kaikki eduskuntaryhmät') {
         return fullName.includes(searchTerm.toLowerCase()) && (member.parliament_group === parliamentGroup);
@@ -21,12 +19,10 @@ const CardList = ({ seats, members, onCardClick }) => {
       }
     })
     .sort((a, b) => {
-      const memberA = members.find(mem => mem.person_id === a.heteka_id);
-      const memberB = members.find(mem => mem.person_id === b.heteka_id);
-      const huutoA = memberA.valihuuto_count || 0;
-      const huutoB = memberB.valihuuto_count || 0;
-      const birthYearA = memberA.birth_year;
-      const birthYearB = memberB.birth_year;
+      const huutoA = a.valihuuto_count || 0;
+      const huutoB = b.valihuuto_count || 0;
+      const birthYearA = a.birth_year;
+      const birthYearB = b.birth_year;
 
       if (sortOrder === 'valihuuto-ascending') {
         return huutoA - huutoB;
@@ -68,11 +64,10 @@ const CardList = ({ seats, members, onCardClick }) => {
         </div>
       </div>
       <div className="cards">
-        {filteredSeats.map(seat => {
-          const member = members.find(mem => mem.person_id === seat.heteka_id);
+        {filteredMembers.map(member => {
           const huuto = member.valihuuto_count || 0;
           return (
-            <Card key={seat.seat_number} seat={seat} member={member} valihuutoAmount={huuto || { count: 0 }} onCardClick={onCardClick} />
+            <Card key={member.person_id} member={member} valihuutoAmount={huuto} onCardClick={onCardClick} />
           );
         })}
       </div>

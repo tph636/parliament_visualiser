@@ -1,19 +1,19 @@
 import './Seat.css';
 import React from 'react';
 
-const Seat = ({ seat }) => {
+const Seat = ({ member }) => {
   
   // Function to handle the click event
   const handleClick = () => {
-    console.log(seat.lastname);
+    console.log(member.lastname);
   };
 
   return (
     <div className="seat-container">
-      <div className="circle" style={{ backgroundColor: seat.party_color }} onClick={handleClick}>
+      <div className="circle" style={{ backgroundColor: member.party_color }} onClick={handleClick}>
       </div>
       <div className="infobox">
-          <p>{seat.firstname} {seat.lastname}</p>
+          <p>{member.firstname} {member.lastname}</p>
       </div>
     </div>
   );

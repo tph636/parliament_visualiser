@@ -35,7 +35,7 @@ function ellipsePoint(a, b, arcLength) {
   return { x: ellipseX(theta), y: ellipseY(theta), angle: ellipseAngle(theta) };
 }
 
-const Seatingplan = ({ seats }) => {
+const Seatingplan = ({ members }) => {
   const plan = [
     [1],
     [5, 3, 3, 5],
@@ -99,7 +99,7 @@ const Seatingplan = ({ seats }) => {
             >
             <Seat
               seatIndex={currentSeatIndex}
-              seat={seats.find(mem => mem.seat_number === currentSeatIndex)}
+              member={members.find(mem => mem.seat_number === currentSeatIndex)}
             />
           </div>
         );

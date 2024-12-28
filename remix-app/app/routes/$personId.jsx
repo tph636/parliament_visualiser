@@ -7,26 +7,20 @@ export const loader = async ({ params }) => {
     throw new Response("Not Found", { status: 404 });
   }
   const member = await memberResponse.json();
-
-  const seatResponse = await fetch(`http://localhost:3001/api/seating_of_parliament/${params.personId}`);
-  if (!seatResponse.ok) {
-    throw new Response("Not Found", { status: 404 });
-  }
-  const seat = await seatResponse.json();
-  return { member, seat };
+  return { member };
 };
 
 export default function MemberInfo() {
-  const { member, seat } = useLoaderData();
+  const { member } = useLoaderData();
 
   return (
     <div className="member-info">
       <img
-        src={`http://localhost:3001/memberImage/${seat.image_path}`}
+        src={`http://localhost:3001/memberImage/${member.image_path}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="member-image"
         style={{
-          border: `4px solid ${seat.party_color}`
+          border: `4px solid ${member.party_color}`
         }}
       />
       <h2>{member.firstname} {member.lastname}</h2>
