@@ -4,8 +4,9 @@ import "./Card.css";
 
 const Card = ({ seat, member }) => {
   return (
-    <Link to={`/${seat.hetekaId}`} className="card" state={{ seat, member }}>
+    <Link to={`/${seat.hetekaId}`} className="card" state={{ seat }}>
       <img
+        loading='lazy'
         src={`http://localhost:3001/tinyimages/${seat.imagePath}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="card-image"

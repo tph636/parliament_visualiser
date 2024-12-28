@@ -1,24 +1,24 @@
-import { useLoaderData, useLocation } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 
-// If you need to fetch additional data
+// Loader function to fetch both member and seat data
 export const loader = async ({ params }) => {
-  const response = await fetch(`http://localhost:3001/api/MemberOfParliament/${params.personId}`);
-  if (!response.ok) {
+  const memberResponse = await fetch(`http://localhost:3001/api/MemberOfParliament/${params.personId}`);
+  if (!memberResponse.ok) {
     throw new Response("Not Found", { status: 404 });
   }
-  const member = await response.json();
-  return member;
+  const member = await memberResponse.json();
+
+  const seatResponse = await fetch(`http://localhost:3001/api/seatingOfParliament/${params.personId}`);
+  if (!seatResponse.ok) {
+    throw new Response("Not Found", { status: 404 });
+  }
+  const seat = await seatResponse.json();
+
+  return { member, seat };
 };
 
 export default function MemberInfo() {
-  const location = useLocation();
-  const member = location.state.member;
-  const seat = location.state.seat;
-
-  // Render a loading state or placeholder if data is not yet available
-  if (!member || !seat) {
-    return <div>Member not found</div>;
-  }
+  const { member, seat } = useLoaderData();
 
   return (
     <div className="member-info">
@@ -26,6 +26,9 @@ export default function MemberInfo() {
         src={`http://localhost:3001/memberImage/${seat.imagePath}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="member-image"
+        style={{
+          border: `4px solid ${seat.partyColor}`
+        }}
       />
       <h2>{member.firstname} {member.lastname}</h2>
       <p>Eduskuntaryhmä: {member.parliamentGroup}</p>

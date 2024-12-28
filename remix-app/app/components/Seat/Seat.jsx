@@ -1,18 +1,20 @@
 import './Seat.css';
 import React from 'react';
 
-const Seat = ({ seatIndex, seat }) => {
+const Seat = ({ seat }) => {
   
   // Function to handle the click event
   const handleClick = () => {
-
     console.log(seat.lastname)
   };
 
   return (
     <div className="seat-container">
-      <div className="circle" style={{ borderColor: seat.partyColor }} onClick={handleClick}>
-        <img src={`http://localhost:3001/tinyimages/${seat.imagePath}`} className="circle-image" />
+      <div className="circle" style={{ backgroundColor: seat.partyColor }} onClick={handleClick}>
+
+      </div>
+      <div className="infobox">
+          <p>{seat.firstname} {seat.lastname}</p>
       </div>
     </div>
   );

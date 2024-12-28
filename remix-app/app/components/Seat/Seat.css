@@ -1,18 +1,29 @@
 .circle {
-    height: 100%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    border: 3px solid;
-    overflow: hidden;
+  height: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin: 3px;
+  box-shadow: 0 0 7px hsla(0, 0%, 0%, 0.9);
+}
 
-  }
-  
 .circle-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  
+.infobox {
+  display: none;
+  position: absolute;
+  top: -100px; 
+  left: -100px;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 100px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  z-index: -1; /* High z-index for infobox */
+}
 
-  
+.seat-container:hover .infobox {
+  display: block; 
+}

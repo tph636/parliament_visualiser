@@ -8,6 +8,7 @@
   background-color: white;
   box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.1);
   margin: auto;
+  z-index: 1;
 }
 
 /* Adjust chairman and seat positions and sizes to fit within .seating-plan */
@@ -28,6 +29,7 @@
   left: calc(50% + var(--pointX) * var(--plan-width) / 15); /* 15 & 10 are the same as aspect ratio */
   top: calc(8% + var(--pointY) * var(--plan-width) / 10);
 }
+
 
 @media (max-width: 550px) {
 
