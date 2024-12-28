@@ -84,7 +84,6 @@ const Seatingplan = ({ seats }) => {
           pointFromMiddle.x : 
           -pointFromMiddle.x;
         const pointY = pointFromMiddle.y;
-
         seatGroup.push(
           <div
             className={seatsInRow === 1 ? 'chairman' : 'seat'}
@@ -97,10 +96,10 @@ const Seatingplan = ({ seats }) => {
               '--pointX': pointX,
               '--pointY': pointY
             }}
-          >
+            >
             <Seat
               seatIndex={currentSeatIndex}
-              seat={seats.find(mem => mem.seatNumber === currentSeatIndex)}
+              seat={seats.find(mem => mem.seat_number === currentSeatIndex)}
             />
           </div>
         );

@@ -27,7 +27,7 @@ export default function MemberInfo() {
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="member-image"
         style={{
-          border: `4px solid ${seat.partyColor}`
+          border: `4px solid ${seat.partycolor}`
         }}
       />
       <h2>{member.firstname} {member.lastname}</h2>

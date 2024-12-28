@@ -4,20 +4,20 @@ import "./Card.css";
 
 const Card = ({ seat, member }) => {
   return (
-    <Link to={`/${seat.hetekaId}`} className="card" state={{ seat }}>
+    <Link to={`/${seat.heteka_id}`} className="card" state={{ seat }}>
       <img
         loading='lazy'
-        src={`http://localhost:3001/tinyimages/${seat.imagePath}`}
+        src={`http://localhost:3001/tinyimages/${seat.image_path}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="card-image"
         style={{
-          border: `4px solid ${seat.partyColor}`
+          border: `4px solid ${seat.party_color}`
         }}
       />
       <div className="card-text">
         <h2>{member.firstname} {member.lastname}</h2>
-        <p>{member.birthYear}</p>
-        <p>{member.parliamentGroup}</p>
+        <p>{member.birth_year}</p>
+        <p>{member.parliament_group}</p>
         <p>Välihuutoja: {member.valihuuto_count}</p>
       </div>
     </Link>

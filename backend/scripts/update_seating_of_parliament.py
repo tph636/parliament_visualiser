@@ -26,22 +26,22 @@ combined_data = {
 #print(json.dumps(combined_data, indent=4, ensure_ascii=False))
 
 # Drop the table if it already exists
-cursor.execute('DROP TABLE IF EXISTS SeatingOfParliament')
+cursor.execute('DROP TABLE IF EXISTS seating_of_parliament')
 
-# Create the seatingplan table with appropriate columns
+# Create the seating plan table with appropriate columns
 cursor.execute(f'''
-               CREATE TABLE SeatingOfParliament (
-               hetekaId INTEGER PRIMARY KEY,
-               seatNumber INTEGER,
+               CREATE TABLE seating_of_parliament (
+               heteka_id INTEGER PRIMARY KEY,
+               seat_number INTEGER,
                lastname TEXT,
                firstname TEXT,
                party TEXT,
                minister TEXT,
-               partyColor TEXT,
-               imagePath TEXT
+               party_color TEXT,
+               image_path TEXT
                )''')
 
-partyColors = {
+party_colors = {
     "kok": "blue",
     "sd": "red",
     "vas": "pink",
@@ -53,14 +53,12 @@ partyColors = {
     "liik": "orange"
 }
 
-
-# Insert combined data into the SeatingOfParliament table
+# Insert combined data into the seating_of_parliament table
 for row in combined_data["rowData"]:
-    imagePath = findMemberPicture(str(row[0]), False) # Add the image path for the member (true for full resolution)
+    image_path = findMemberPicture(str(row[0]), False) # Add the image path for the member (true for full resolution)
     cursor.execute('''
-                   INSERT INTO SeatingOfParliament (hetekaId, seatNumber, lastname, firstname, party, minister, partyColor, imagePath)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', (row[0], row[1], row[2], row[3], row[4], row[5], partyColors.get(row[4],"dimgrey"), imagePath))
-
+                   INSERT INTO seating_of_parliament (heteka_id, seat_number, lastname, firstname, party, minister, party_color, image_path)
+                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''', (row[0], row[1], row[2], row[3], row[4], row[5], party_colors.get(row[4],"dimgrey"), image_path))
 
 # Commit the changes and close the connection
 conn.commit()

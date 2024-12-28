@@ -10,14 +10,14 @@ conn, cursor = connectToDb()
 
 # Create the table if it does not exist
 # Jos henkilö huutaa saman huudon esimerkiksi kaksi kertaa päivässä niin huutoNum erottaa kyseiset huudot
-cursor.execute('''CREATE TABLE IF NOT EXISTS Valihuudot (
+cursor.execute('''CREATE TABLE IF NOT EXISTS valihuudot (
                firstname TEXT,
                lastname TEXT,
                valihuuto TEXT,
-               ptkNum INTEGER,
+               ptk_num INTEGER,
                date TEXT,
-               huutoNum INTEGER,
-               PRIMARY KEY (firstname, lastname, valihuuto, date, huutoNum)
+               huuto_num INTEGER,
+               PRIMARY KEY (firstname, lastname, valihuuto, date, huuto_num)
 )
 ''')
 
@@ -41,8 +41,9 @@ for filename in os.listdir(folder):
                 välihuudot = extract_välihuudot(file)
                 for huuto in välihuudot:
                     cursor.execute('''
-                        INSERT OR IGNORE INTO Valihuudot (firstname, lastname, valihuuto, ptkNum, date, huutoNum) 
-                        VALUES (?, ?, ?, ?, ?, ?)
+                        INSERT INTO valihuudot (firstname, lastname, valihuuto, ptk_num, date, huuto_num) 
+                        VALUES (%s, %s, %s, %s, %s, %s)
+                        ON CONFLICT (firstname, lastname, valihuuto, date, huuto_num) DO NOTHING
                     ''', (huuto.firstName, huuto.lastName, huuto.huuto, currentPtkNum, huuto.date, huuto.huutoNum))
                     print(f'{huuto.firstName} {huuto.lastName}: {huuto.huuto} PTK({currentPtkNum}) {huuto.date} (Huuto #{huuto.huutoNum})')
             except Exception as e:

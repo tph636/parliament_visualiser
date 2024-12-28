@@ -4,8 +4,8 @@ import CardList from '../components/CardList/CardList';
 
 // Loader function to fetch data
 export const loader = async () => {
-  const seatsResponse = await fetch('http://localhost:3001/api/SeatingOfParliament');
-  const membersResponse = await fetch('http://localhost:3001/api/MemberOfParliament');
+  const seatsResponse = await fetch('http://localhost:3001/api/seating_of_parliament');
+  const membersResponse = await fetch('http://localhost:3001/api/member_of_parliament');
 
   if (!seatsResponse.ok || !membersResponse.ok) {
     throw new Response("Failed to fetch data", { status: 500 });

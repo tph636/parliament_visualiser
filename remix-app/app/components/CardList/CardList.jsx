@@ -1,35 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Card from '../Card/Card';
 import './CardList.css';
 
-
 /* CardList chooses which members will be shown based on the given filters */
-
-const CardList = ({ seats, members, onCardClick}) => {
+const CardList = ({ seats, members, onCardClick }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('valihuuto-descending');
-  const [parliamentGroup, setparliamentGroup] = useState('Kaikki eduskuntaryhmät')
-
+  const [parliamentGroup, setParliamentGroup] = useState('Kaikki eduskuntaryhmät');
 
   // Filter and sort seats based on search term and sort order
   const filteredSeats = seats
     .filter(seat => {
-      const member = members.find(mem => mem.personId === seat.hetekaId);
+      const member = members.find(mem => mem.person_id === seat.heteka_id);
       if (!member) return false;
       const fullName = `${member.firstname} ${member.lastname}`.toLowerCase();
-      if (parliamentGroup != 'Kaikki eduskuntaryhmät') {
-        return fullName.includes(searchTerm.toLowerCase()) && ( member.parliamentGroup == parliamentGroup)
+      if (parliamentGroup !== 'Kaikki eduskuntaryhmät') {
+        return fullName.includes(searchTerm.toLowerCase()) && (member.parliament_group === parliamentGroup);
       } else {
-        return fullName.includes(searchTerm.toLowerCase())
+        return fullName.includes(searchTerm.toLowerCase());
       }
     })
     .sort((a, b) => {
-      const memberA = members.find(mem => mem.personId === a.hetekaId);
-      const memberB = members.find(mem => mem.personId === b.hetekaId);
+      const memberA = members.find(mem => mem.person_id === a.heteka_id);
+      const memberB = members.find(mem => mem.person_id === b.heteka_id);
       const huutoA = memberA.valihuuto_count || 0;
       const huutoB = memberB.valihuuto_count || 0;
-      const birthYearA = memberA.birthYear;
-      const birthYearB = memberB.birthYear;
+      const birthYearA = memberA.birth_year;
+      const birthYearB = memberB.birth_year;
 
       if (sortOrder === 'valihuuto-ascending') {
         return huutoA - huutoB;
@@ -46,9 +43,7 @@ const CardList = ({ seats, members, onCardClick}) => {
 
   return (
     <div className='card-list'>
-
       <div className='filter-container'>
-        
         <input
           type="text"
           placeholder="Etsi kansanedustajaa"
@@ -56,15 +51,13 @@ const CardList = ({ seats, members, onCardClick}) => {
           onChange={e => setSearchTerm(e.target.value)}
           className="search-bar"
         />
-
         <div className='parliamentGroup-dropdown'>
-          <select id="parliamentGroup" value={parliamentGroup} onChange={e => setparliamentGroup(e.target.value)} className="dropdown">
-            {["Kaikki eduskuntaryhmät", ...new Set(members.map(mem => mem.parliamentGroup))].map(group => (
+          <select id="parliamentGroup" value={parliamentGroup} onChange={e => setParliamentGroup(e.target.value)} className="dropdown">
+            {["Kaikki eduskuntaryhmät", ...new Set(members.map(mem => mem.parliament_group))].map(group => (
               <option key={group} value={group}>{group}</option>
             ))}
-          </select> 
+          </select>
         </div>
-
         <div className='sort-dropdown'>
           <select id="sortOrder" value={sortOrder} onChange={e => setSortOrder(e.target.value)} className="dropdown">
             <option value="valihuuto-ascending">Vähiten välihuutoja</option>
@@ -73,19 +66,16 @@ const CardList = ({ seats, members, onCardClick}) => {
             <option value="age-ascending">Vanhin</option>
           </select>
         </div>
-
       </div>
-
       <div className="cards">
         {filteredSeats.map(seat => {
-          const member = members.find(mem => mem.personId === seat.hetekaId);
+          const member = members.find(mem => mem.person_id === seat.heteka_id);
           const huuto = member.valihuuto_count || 0;
           return (
-            <Card key={seat.seatNumber} seat={seat} member={member} valihuutoAmount={huuto || { count: 0 }} onCardClick={onCardClick} />
+            <Card key={seat.seat_number} seat={seat} member={member} valihuutoAmount={huuto || { count: 0 }} onCardClick={onCardClick} />
           );
         })}
       </div>
-
     </div>
   );
 };

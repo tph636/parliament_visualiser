@@ -1,35 +1,42 @@
-const sqlite3 = require('sqlite3')
+const { Pool } = require('pg');
+require('dotenv').config(); // Load environment variables from .env file
 
-const getDatabase = () => {
-  return new sqlite3.Database('./databases/database.db');
-};
+// Configure your PostgreSQL connection parameters
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+  password: process.env.DB_PASSWORD, // If needed
+});
 
-const fetchAll = (db, query, params = []) => {
+// Function to fetch all rows from a query
+const fetchAll = (query, params = []) => {
   return new Promise((resolve, reject) => {
-    db.all(query, params, (err, rows) => {
+    pool.query(query, params, (err, result) => {
       if (err) {
         reject(err);
       } else {
-        resolve(rows);
+        resolve(result.rows);
       }
     });
   });
 };
 
-const fetchFirst = (db, query, params = []) => {
+// Function to fetch the first row from a query
+const fetchFirst = (query, params = []) => {
   return new Promise((resolve, reject) => {
-    db.get(query, params, (err, row) => {
+    pool.query(query, params, (err, result) => {
       if (err) {
         reject(err);
       } else {
-        resolve(row);
+        resolve(result.rows[0]);
       }
     });
   });
 };
 
 module.exports = {
-  getDatabase,
   fetchAll,
-  fetchFirst
+  fetchFirst,
 };

@@ -1,33 +1,27 @@
 const seatingOfParliamentRouter = require('express').Router();
-const { getDatabase, fetchAll } = require('../utils/dbUtils');
+const { fetchAll, fetchFirst } = require('../utils/dbUtils');
 
 // Route to fetch all seating data
 seatingOfParliamentRouter.get('', async (request, response) => {
-  const db = getDatabase();
   try {
-    const seating = await fetchAll(db, 'SELECT * FROM SeatingOfParliament');
+    const seating = await fetchAll('SELECT * FROM seating_of_parliament');
     response.json(seating); // Return the seating data as JSON
   } catch (err) {
     response.status(500).send('Internal Server Error');
-  } finally {
-    db.close();
   }
 });
 
-// Route to fetch seating data by personId (hetekaId)
-seatingOfParliamentRouter.get('/:personId', async (request, response) => {
-  const db = getDatabase();
-  const { personId } = request.params;
+// Route to fetch seating data by person_id (heteka_id)
+seatingOfParliamentRouter.get('/:person_id', async (request, response) => {
+  const { person_id } = request.params;
   try {
-    const seating = await fetchAll(db, 'SELECT * FROM SeatingOfParliament WHERE hetekaId = ?', [personId]);
-    if (seating.length === 0) {
+    const seating = await fetchFirst('SELECT * FROM seating_of_parliament WHERE heteka_id = $1', [person_id]);
+    if (!seating) {
       return response.status(404).json({ message: 'Seating data not found' });
     }
-    response.json(seating[0]); // Return the seating data as JSON
+    response.json(seating); // Return the seating data as JSON
   } catch (err) {
     response.status(500).send('Internal Server Error');
-  } finally {
-    db.close();
   }
 });
 

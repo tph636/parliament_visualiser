@@ -1,49 +1,48 @@
 const memberOfParliamentRouter = require('express').Router();
-const { getDatabase, fetchAll } = require('../utils/dbUtils');
+const { fetchAll, fetchFirst } = require('../utils/dbUtils');
 const { DOMParser } = require('xmldom'); // Import DOMParser for node environment
 
 memberOfParliamentRouter.get('', async (request, response) => {
-  const db = getDatabase();
   try {
-    const members = await fetchAll(db, `SELECT 
-                                          MemberOfParliament.personId, 
-                                          MemberOfParliament.lastname, 
-                                          MemberOfParliament.firstname, 
-                                          MemberOfParliament.party, 
-                                          MemberOfParliament.minister, 
-                                          COUNT(Valihuudot.valihuuto) AS valihuuto_count, 
-                                          MemberOfParliament.XmlDataFi 
-                                        FROM 
-                                          MemberOfParliament 
-                                        LEFT JOIN 
-                                          Valihuudot 
-                                        ON 
-                                          MemberOfParliament.firstname = Valihuudot.firstname 
-                                        AND 
-                                          MemberOfParliament.lastname = Valihuudot.lastname 
-                                        GROUP BY 
-                                          MemberOfParliament.personId, 
-                                          MemberOfParliament.lastname, 
-                                          MemberOfParliament.firstname, 
-                                          MemberOfParliament.party, 
-                                          MemberOfParliament.minister, 
-                                          MemberOfParliament.XmlDataFi`);
+    const members = await fetchAll(`SELECT 
+                                      member_of_parliament.person_id, 
+                                      member_of_parliament.lastname, 
+                                      member_of_parliament.firstname, 
+                                      member_of_parliament.party, 
+                                      member_of_parliament.minister, 
+                                      COUNT(valihuudot.valihuuto) AS valihuuto_count, 
+                                      member_of_parliament.xmldata_fi 
+                                    FROM 
+                                      member_of_parliament 
+                                    LEFT JOIN 
+                                      valihuudot 
+                                    ON 
+                                      member_of_parliament.firstname = valihuudot.firstname 
+                                    AND 
+                                      member_of_parliament.lastname = valihuudot.lastname 
+                                    GROUP BY 
+                                      member_of_parliament.person_id, 
+                                      member_of_parliament.lastname, 
+                                      member_of_parliament.firstname, 
+                                      member_of_parliament.party, 
+                                      member_of_parliament.minister, 
+                                      member_of_parliament.xmldata_fi`);
 
-    // Parse XML data and append birthYear and parliamentGroup for each member
+    // Parse XML data and append birth_year and parliament_group for each member
     const updatedMembers = members.map(member => {
       const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(member.XmlDataFi, 'text/xml');
+      const xmlDoc = parser.parseFromString(member.xmldata_fi, 'text/xml');
       const birthDate = xmlDoc.getElementsByTagName('SyntymaPvm')[0]?.childNodes[0]?.nodeValue;
       const parliamentGroup = xmlDoc.getElementsByTagName('NykyinenEduskuntaryhma')[0]?.getElementsByTagName('Nimi')[0]?.childNodes[0]?.nodeValue;
 
       // Return member without XmlDataFi
       return {
-        personId: member.personId,
+        person_id: member.person_id,
         lastname: member.lastname,
         firstname: member.firstname,
         minister: member.minister,
-        birthYear: birthDate ? new Date(birthDate).getFullYear() : null,
-        parliamentGroup: parliamentGroup || null,
+        birth_year: birthDate ? new Date(birthDate).getFullYear() : null,
+        parliament_group: parliamentGroup || null,
         valihuuto_count: member.valihuuto_count
       };
     });
@@ -51,69 +50,63 @@ memberOfParliamentRouter.get('', async (request, response) => {
     response.json(updatedMembers); // Return the updated member data
   } catch (err) {
     response.status(500).send('Internal Server Error');
-  } finally {
-    db.close();
   }
 });
 
-memberOfParliamentRouter.get('/:personId', async (request, response) => {
-  const db = getDatabase();
-  const { personId } = request.params;
+memberOfParliamentRouter.get('/:person_id', async (request, response) => {
+  const { person_id } = request.params;
   try {
-    const members = await fetchAll(db, `SELECT 
-                                          MemberOfParliament.personId, 
-                                          MemberOfParliament.lastname, 
-                                          MemberOfParliament.firstname, 
-                                          MemberOfParliament.party, 
-                                          MemberOfParliament.minister, 
-                                          COUNT(Valihuudot.valihuuto) AS valihuuto_count, 
-                                          MemberOfParliament.XmlDataFi 
-                                        FROM 
-                                          MemberOfParliament 
-                                        LEFT JOIN 
-                                          Valihuudot 
-                                        ON 
-                                          MemberOfParliament.firstname = Valihuudot.firstname 
-                                        AND 
-                                          MemberOfParliament.lastname = Valihuudot.lastname 
-                                        WHERE 
-                                          MemberOfParliament.personId = ?
-                                        GROUP BY 
-                                          MemberOfParliament.personId, 
-                                          MemberOfParliament.lastname, 
-                                          MemberOfParliament.firstname, 
-                                          MemberOfParliament.party, 
-                                          MemberOfParliament.minister, 
-                                          MemberOfParliament.XmlDataFi`, [personId]);
+    const member = await fetchFirst(`SELECT 
+                                      member_of_parliament.person_id, 
+                                      member_of_parliament.lastname, 
+                                      member_of_parliament.firstname, 
+                                      member_of_parliament.party, 
+                                      member_of_parliament.minister, 
+                                      COUNT(valihuudot.valihuuto) AS valihuuto_count, 
+                                      member_of_parliament.xmldata_fi 
+                                    FROM 
+                                      member_of_parliament 
+                                    LEFT JOIN 
+                                      valihuudot 
+                                    ON 
+                                      member_of_parliament.firstname = valihuudot.firstname 
+                                    AND 
+                                      member_of_parliament.lastname = valihuudot.lastname 
+                                    WHERE 
+                                      member_of_parliament.person_id = $1
+                                    GROUP BY 
+                                      member_of_parliament.person_id, 
+                                      member_of_parliament.lastname, 
+                                      member_of_parliament.firstname, 
+                                      member_of_parliament.party, 
+                                      member_of_parliament.minister, 
+                                      member_of_parliament.xmldata_fi`, [person_id]);
 
     // Check if member exists
-    if (members.length === 0) {
+    if (!member) {
       return response.status(404).json({ message: 'Member not found' });
     }
 
-    // Parse XML data and append birthYear and parliamentGroup for the member
-    const member = members[0];
+    // Parse XML data and append birth_year and parliament_group for the member
     const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(member.XmlDataFi, 'text/xml');
+    const xmlDoc = parser.parseFromString(member.xmldata_fi, 'text/xml');
     const birthDate = xmlDoc.getElementsByTagName('SyntymaPvm')[0]?.childNodes[0]?.nodeValue;
     const parliamentGroup = xmlDoc.getElementsByTagName('NykyinenEduskuntaryhma')[0]?.getElementsByTagName('Nimi')[0]?.childNodes[0]?.nodeValue;
 
     // Return member without XmlDataFi
     const updatedMember = {
-      personId: member.personId,
+      person_id: member.person_id,
       lastname: member.lastname,
       firstname: member.firstname,
       minister: member.minister,
-      birthYear: birthDate ? new Date(birthDate).getFullYear() : null,
-      parliamentGroup: parliamentGroup || null,
+      birth_year: birthDate ? new Date(birthDate).getFullYear() : null,
+      parliament_group: parliamentGroup || null,
       valihuuto_count: member.valihuuto_count
     };
 
     response.json(updatedMember); // Return the updated member data
   } catch (err) {
     response.status(500).send('Internal Server Error');
-  } finally {
-    db.close();
   }
 });
 

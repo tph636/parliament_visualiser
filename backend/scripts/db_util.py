@@ -1,9 +1,18 @@
-import sqlite3
+import psycopg2
 import os
 
 def connectToDb():
-    db_path = os.path.join(os.path.dirname(__file__), '..', 'databases', 'database.db')
-    os.makedirs(os.path.dirname(db_path), exist_ok=True)
-    conn = sqlite3.connect(db_path)
+    # Define your PostgreSQL database connection parameters
+    conn_params = {
+        'dbname': 'vhproduction',
+        'user': 'tomi',
+        'host': 'localhost',
+        'port': 5432
+    }
+    
+    # Establish the connection
+    conn = psycopg2.connect(**conn_params)
     cursor = conn.cursor()
     return conn, cursor
+
+
