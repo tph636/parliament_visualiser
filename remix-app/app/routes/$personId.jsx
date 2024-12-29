@@ -16,7 +16,7 @@ export default function MemberInfo() {
   return (
     <div className="member-info">
       <img
-        src={`http://localhost:3001/memberImage/${member.image_path}`}
+        src={`https://avoindata.eduskunta.fi/${member.picture_url}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="member-image"
         style={{

@@ -2,6 +2,7 @@ const memberOfParliamentRouter = require('express').Router();
 const { fetchAll, fetchFirst } = require('../utils/dbUtils');
 const { DOMParser } = require('xmldom'); // Import DOMParser for node environment
 
+// Route to get all members of parliament
 memberOfParliamentRouter.get('', async (request, response) => {
   try {
     const members = await fetchAll(`SELECT 
@@ -11,7 +12,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
                                       member_of_parliament.minister, 
                                       seating_of_parliament.party,
                                       seating_of_parliament.party_color,
-                                      seating_of_parliament.image_path,
+                                      seating_of_parliament.picture_url,
                                       seating_of_parliament.seat_number,
                                       COUNT(valihuudot.valihuuto) AS valihuuto_count, 
                                       member_of_parliament.xmldata_fi 
@@ -34,7 +35,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
                                       member_of_parliament.minister, 
                                       seating_of_parliament.party,
                                       seating_of_parliament.party_color,
-                                      seating_of_parliament.image_path,
+                                      seating_of_parliament.picture_url,
                                       seating_of_parliament.seat_number, 
                                       member_of_parliament.xmldata_fi`);
 
@@ -53,7 +54,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
         minister: member.minister,
         party: member.party,
         party_color: member.party_color,
-        image_path: member.image_path,
+        picture_url: member.picture_url, // Use picture_url
         seat_number: member.seat_number,
         valihuuto_count: member.valihuuto_count,
         birth_year: birthDate ? new Date(birthDate).getFullYear() : null,
@@ -67,7 +68,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
   }
 });
 
-
+// Route to get a specific member of parliament by person_id
 memberOfParliamentRouter.get('/:person_id', async (request, response) => {
   const { person_id } = request.params;
   try {
@@ -78,7 +79,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
                                       member_of_parliament.minister, 
                                       seating_of_parliament.party,
                                       seating_of_parliament.party_color,
-                                      seating_of_parliament.image_path,
+                                      seating_of_parliament.picture_url,
                                       seating_of_parliament.seat_number,
                                       COUNT(valihuudot.valihuuto) AS valihuuto_count, 
                                       member_of_parliament.xmldata_fi 
@@ -103,7 +104,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
                                       member_of_parliament.minister,
                                       seating_of_parliament.party,
                                       seating_of_parliament.party_color,
-                                      seating_of_parliament.image_path,
+                                      seating_of_parliament.picture_url,
                                       seating_of_parliament.seat_number, 
                                       member_of_parliament.xmldata_fi`, [person_id]);
 
@@ -126,11 +127,11 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
       minister: member.minister,
       party: member.party,
       party_color: member.party_color,
-      image_path: member.image_path,
+      picture_url: member.picture_url, // Use picture_url
       seat_number: member.seat_number,
       valihuuto_count: member.valihuuto_count,
       birth_year: birthDate ? new Date(birthDate).getFullYear() : null,
-      parliament_group: parliamentGroup || null
+      parliament_group: parliamentGroup || null,
     };
 
     response.json(updatedMember); // Return the updated member data
