@@ -7,8 +7,8 @@ const middleware = require('./utils/middleware')
 
 app.use(cors());
 
-app.use('/tinyimages', express.static('./pictures/tinyMemberImages'));
-app.use('/memberImage', express.static('./pictures/memberImages'));
+app.use('/low-res', express.static('./images/low-res'));
+app.use('/high-res', express.static('./images/high-res'));
 
 app.use(middleware.requestLogger)
 

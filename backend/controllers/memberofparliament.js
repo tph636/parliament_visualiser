@@ -12,7 +12,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
                                       member_of_parliament.minister, 
                                       seating_of_parliament.party,
                                       seating_of_parliament.party_color,
-                                      seating_of_parliament.picture_url,
+                                      seating_of_parliament.image,
                                       seating_of_parliament.seat_number,
                                       COUNT(valihuudot.valihuuto) AS valihuuto_count, 
                                       member_of_parliament.xmldata_fi 
@@ -35,7 +35,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
                                       member_of_parliament.minister, 
                                       seating_of_parliament.party,
                                       seating_of_parliament.party_color,
-                                      seating_of_parliament.picture_url,
+                                      seating_of_parliament.image,
                                       seating_of_parliament.seat_number, 
                                       member_of_parliament.xmldata_fi`);
 
@@ -54,7 +54,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
         minister: member.minister,
         party: member.party,
         party_color: member.party_color,
-        picture_url: member.picture_url, // Use picture_url
+        image: member.image,
         seat_number: member.seat_number,
         valihuuto_count: member.valihuuto_count,
         birth_year: birthDate ? new Date(birthDate).getFullYear() : null,
@@ -79,7 +79,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
                                       member_of_parliament.minister, 
                                       seating_of_parliament.party,
                                       seating_of_parliament.party_color,
-                                      seating_of_parliament.picture_url,
+                                      seating_of_parliament.image,
                                       seating_of_parliament.seat_number,
                                       COUNT(valihuudot.valihuuto) AS valihuuto_count, 
                                       member_of_parliament.xmldata_fi 
@@ -104,7 +104,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
                                       member_of_parliament.minister,
                                       seating_of_parliament.party,
                                       seating_of_parliament.party_color,
-                                      seating_of_parliament.picture_url,
+                                      seating_of_parliament.image,
                                       seating_of_parliament.seat_number, 
                                       member_of_parliament.xmldata_fi`, [person_id]);
 
@@ -127,7 +127,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
       minister: member.minister,
       party: member.party,
       party_color: member.party_color,
-      picture_url: member.picture_url, // Use picture_url
+      image: member.image,
       seat_number: member.seat_number,
       valihuuto_count: member.valihuuto_count,
       birth_year: birthDate ? new Date(birthDate).getFullYear() : null,

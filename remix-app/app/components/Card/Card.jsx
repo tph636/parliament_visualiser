@@ -7,7 +7,7 @@ const Card = ({ member }) => {
     <Link to={`/${member.person_id}`} className="card" state={{ member }}>
       <img
         loading='lazy'
-        src={`https://avoindata.eduskunta.fi/${member.picture_url}`}
+        src={`http://localhost:3001/low-res/${member.image}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="card-image"
         style={{

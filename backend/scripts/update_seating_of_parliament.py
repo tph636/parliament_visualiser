@@ -14,7 +14,7 @@ def fetch_data():
 # Drop the table if it already exists
 cursor.execute('DROP TABLE IF EXISTS seating_of_parliament')
 
-# Create the seating plan table with the new party_color column
+# Create the seating plan table with the new party_color and image columns
 cursor.execute('''
     CREATE TABLE seating_of_parliament (
         heteka_id INTEGER PRIMARY KEY,
@@ -23,12 +23,12 @@ cursor.execute('''
         firstname TEXT,
         party TEXT,
         minister BOOLEAN,
-        picture_url TEXT,
+        image TEXT,
         party_color TEXT
     )
 ''')
 
-
+# Fetch the data
 data = fetch_data()
 
 # Dictionary mapping party to colors
@@ -47,10 +47,14 @@ party_colors = {
 # Insert data into the table
 for member in data:
     party_color = party_colors.get(member['party'], 'grey')  # Default to 'grey' if party not found
+
+    # Extract just the picture name from the picture URL
+    picture_name = member['pictureUrl'].split('/')[-1]
+
     cursor.execute('''
-        INSERT INTO seating_of_parliament (heteka_id, seat_number, lastname, firstname, party, minister, picture_url, party_color)
+        INSERT INTO seating_of_parliament (heteka_id, seat_number, lastname, firstname, party, minister, image, party_color)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-    ''', (member['hetekaId'], member['seatNumber'], member['lastname'], member['firstname'], member['party'], member['minister'], member['pictureUrl'], party_color))
+    ''', (member['hetekaId'], member['seatNumber'], member['lastname'], member['firstname'], member['party'], member['minister'], picture_name, party_color))
 
 # Commit the changes
 conn.commit()
