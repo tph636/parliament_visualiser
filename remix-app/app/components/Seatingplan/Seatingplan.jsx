@@ -1,5 +1,5 @@
 import './Seatingplan.css';
-import React from 'react';
+import React, { useState } from 'react';
 import Seat from '../Seat/Seat';
 
 function ellipsePoint(a, b, arcLength) {
@@ -36,6 +36,9 @@ function ellipsePoint(a, b, arcLength) {
 }
 
 const Seatingplan = ({ members }) => {
+  const [hoveredSeat, setHoveredSeat] = useState(null);
+  const [infoboxPosition, setInfoboxPosition] = useState({ top: 0, left: 0 });
+
   const plan = [
     [1],
     [5, 3, 3, 5],
@@ -51,11 +54,21 @@ const Seatingplan = ({ members }) => {
   let a = 3;
   let b = 2.5;
   const ellipseArcLen = 20.185;
-  const seatWidth = ellipseArcLen / 40;
-  const gapWidth = seatWidth;
+  const seatWidth = ellipseArcLen / 50; // Width of the seat
+  const gapWidth = seatWidth * 2; // Gap between seat groups (width of the hallway)
+  const margin = seatWidth / 5; // Gap between each individual seat
 
   let seatIndex = -1;
   let rowNum = 1;
+
+  const handleMouseEnter = (member, event) => {
+    setHoveredSeat(member);
+    const rect = event.target.getBoundingClientRect();
+    setInfoboxPosition({
+      top: rect.top + window.scrollY - 100, // Positioning it 5px above
+      left: rect.left + window.scrollX + rect.width / 2, // Centering it horizontally
+    });
+  };
 
   const generateRow = (row, rowIndex) => {
     const seatsInRow = row.reduce((sum, i) => sum + i, 0);
@@ -63,45 +76,50 @@ const Seatingplan = ({ members }) => {
     let currentSeatIndex = seatIndex;
     let nthSeatInRow = 1;
 
-    const rowSeats = [];
-    const seatsBeforeMiddle = row.length > 1 ? row[0] + row[1] : 0;
+    const rowSeats = []; // Append Seat components here
 
+    const seatsBeforeMiddle = row.length > 1 ? row[0] + row[1] : 0; // Seats before the middle hallway
+
+    // Start generating seats from left to right. countIndex tells the seat group of the current row
     for (let countIndex = 0; countIndex < row.length; countIndex++) {
       const count = row[countIndex];
       const seatGroup = [];
 
+      // Generate all the seats in a seat group
       for (let i = 0; i < count; i++) {
+
+        // Number of the seat starting from the middle hallway
         const seatFromMiddle = nthSeatInRow <= seatsBeforeMiddle ? 
           Math.abs(nthSeatInRow - seatsBeforeMiddle) + 1 : 
           Math.abs(nthSeatInRow - seatsBeforeMiddle);
 
+        // Distance from the middle hallway
         const distFromMiddle = row[1] < seatFromMiddle ? 
-          gapWidth + seatWidth * seatFromMiddle : 
-          seatWidth * seatFromMiddle;
+          gapWidth / 2 + seatWidth * seatFromMiddle + margin * seatFromMiddle : 
+          seatWidth * seatFromMiddle + margin * seatFromMiddle;
 
         const pointFromMiddle = ellipsePoint(a, b, distFromMiddle);
         const pointX = nthSeatInRow <= seatsBeforeMiddle ? 
           pointFromMiddle.x : 
           -pointFromMiddle.x;
         const pointY = pointFromMiddle.y;
+
+        const member = members.find(mem => mem.seat_number === currentSeatIndex);
+
         seatGroup.push(
-          <div
-            className={seatsInRow === 1 ? 'chairman' : 'seat'}
+          <Seat
             key={`seat-${currentSeatIndex}`}
             style={{
-              '--ellipseA': a,
-              '--ellipseB': b,
-              '--seatWidth': `${seatWidth}`,
-              '--gapWidth': `${gapWidth}`,
+              '--seatWidth': seatWidth,
               '--pointX': pointX,
               '--pointY': pointY
             }}
-            >
-            <Seat
-              seatIndex={currentSeatIndex}
-              member={members.find(mem => mem.seat_number === currentSeatIndex)}
-            />
-          </div>
+            type={seatsInRow === 1 ? 'chairman' : 'seat'}
+            seatIndex={currentSeatIndex}
+            member={member}
+            onMouseEnter={(e) => handleMouseEnter(member, e)}
+            onMouseLeave={() => setHoveredSeat(null)}
+          />
         );
 
         nthSeatInRow += 1;
@@ -126,6 +144,12 @@ const Seatingplan = ({ members }) => {
   return (
     <div className="seating-plan">
       {plan.map((row, rowIndex) => generateRow(row, rowIndex))}
+      {hoveredSeat && (
+        <div className="infobox" style={{ top: `${infoboxPosition.top}px`, left: `${infoboxPosition.left}px`, transform: 'translateX(-50%) translateY(-100%)' }}>
+          <p>{hoveredSeat.firstname} {hoveredSeat.lastname}</p>
+          <p>{hoveredSeat.party}</p>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import './Seat.css';
 import React from 'react';
 
-const Seat = ({ member }) => {
+const Seat = ({ member, type, style, onMouseEnter, onMouseLeave }) => {
   
   // Function to handle the click event
   const handleClick = () => {
@@ -9,12 +9,13 @@ const Seat = ({ member }) => {
   };
 
   return (
-    <div className="seat-container">
-      <div className="circle" style={{ backgroundColor: member.party_color }} onClick={handleClick}>
-      </div>
-      <div className="infobox">
-          <p>{member.firstname} {member.lastname}</p>
-      </div>
+    <div 
+      className={type} 
+      style={{ backgroundColor: member.party_color, ...style }} 
+      onClick={handleClick} 
+      onMouseEnter={onMouseEnter} 
+      onMouseLeave={onMouseLeave}
+    >
     </div>
   );
 }

@@ -1,29 +1,23 @@
-.circle {
-  height: 100%;
+@import '../Seatingplan/Seatingplan.css';
+
+.chairman,
+.seat {
+  width: calc(var(--seatWidth) * var(--plan-width) / 15);
+  position: absolute;
   aspect-ratio: 1;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
-  margin: 3px;
   box-shadow: 0 0 7px hsla(0, 0%, 0%, 0.9);
 }
 
-.circle-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.chairman {
+  left: 50%;
+  top: 10%;
 }
 
-.infobox {
-  display: none;
-  position: absolute;
-  top: -100px; 
-  left: -100px;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 100px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  z-index: -1; /* High z-index for infobox */
+.seat {
+  left: calc(50% + var(--pointX) * var(--plan-width) / 15);
+  top: calc(var(--pointY) * var(--plan-height) / 10);
 }
 
-.seat-container:hover .infobox {
-  display: block; 
-}
+

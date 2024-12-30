@@ -1,33 +1,23 @@
 /* Ensure .seating-plan takes full width and maintains aspect ratio */
 .seating-plan {
   position: relative;
-  aspect-ratio: 1.5;
   width: 100%;
   --plan-width: 100%;
   --plan-height: 100%;
+  aspect-ratio: 1.5;
   background-color: white;
   box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.1);
   margin: auto;
-  z-index: 1;
 }
 
-/* Adjust chairman and seat positions and sizes to fit within .seating-plan */
-.chairman,
-.seat {
+
+.infobox {
   position: absolute;
-  width: calc(var(--seatWidth) * var(--plan-width) / 15);
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-}
-
-.chairman {
-  left: 50%;
-  top: 10%;
-}
-
-.seat {
-  left: calc(50% + var(--pointX) * var(--plan-width) / 15); /* 15 & 10 are the same as aspect ratio */
-  top: calc(8% + var(--pointY) * var(--plan-width) / 10);
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  display: block;
 }
 
 
