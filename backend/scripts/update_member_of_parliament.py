@@ -37,15 +37,15 @@ cursor.execute('DROP TABLE IF EXISTS member_of_parliament')
 # Create the MemberOfParliament table with appropriate columns
 cursor.execute(f'''
                CREATE TABLE member_of_parliament (
-               person_id INTEGER PRIMARY KEY,
-               lastname TEXT,
-               firstname TEXT,
-               party TEXT,
-               minister TEXT,
-               xmldata TEXT,
-               xmldata_sv TEXT,
-               xmldata_fi TEXT,
-               xmldata_en TEXT
+               person_id INTEGER PRIMARY KEY NOT NULL,
+               lastname TEXT NOT NULL,
+               firstname TEXT NOT NULL,
+               party TEXT NOT NULL,
+               minister TEXT NOT NULL,
+               xmldata XML,
+               xmldata_sv XML NOT NULL,
+               xmldata_fi XML NOT NULL,
+               xmldata_en XML NOT NULL
                )''')
 
 # Insert combined data into the MemberOfParliament table
