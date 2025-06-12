@@ -15,7 +15,7 @@ valihuutoRouter.get('/:memberName/count', async (request, response) => {
     // Return the data as JSON
     response.json(valihuutoCount); 
   } catch (err) {
-    response.status(500).send('Internal Server Error');
+    response.status(500).send(`Internal Server Error: ${err.message}`);
   }
 });
 
@@ -26,7 +26,7 @@ valihuutoRouter.get('/count', async (request, response) => {
     // Return the data as JSON
     response.json(valihuutoCount); 
   } catch (err) {
-    response.status(500).send('Internal Server Error');
+    response.status(500).send(`Internal Server Error: ${err.message}`);
   }
 });
 

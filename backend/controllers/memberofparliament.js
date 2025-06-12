@@ -10,6 +10,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
                                       member_of_parliament.lastname, 
                                       member_of_parliament.firstname, 
                                       member_of_parliament.minister, 
+                                      seating_of_parliament.heteka_id,
                                       seating_of_parliament.party,
                                       seating_of_parliament.party_color,
                                       seating_of_parliament.image,
@@ -30,14 +31,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
                                       member_of_parliament.lastname = valihuudot.lastname 
                                     GROUP BY 
                                       member_of_parliament.person_id, 
-                                      member_of_parliament.lastname, 
-                                      member_of_parliament.firstname, 
-                                      member_of_parliament.minister, 
-                                      seating_of_parliament.party,
-                                      seating_of_parliament.party_color,
-                                      seating_of_parliament.image,
-                                      seating_of_parliament.seat_number, 
-                                      member_of_parliament.xmldata_fi`);
+                                      seating_of_parliament.heteka_id`);
 
     // Parse XML data and append birth_year and parliament_group for each member
     const updatedMembers = members.map(member => {
@@ -64,6 +58,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
 
     response.json(updatedMembers); // Return the updated member data
   } catch (err) {
+    console.error('Error:', err.message);
     response.status(500).send('Internal Server Error');
   }
 });
@@ -77,6 +72,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
                                       member_of_parliament.lastname, 
                                       member_of_parliament.firstname, 
                                       member_of_parliament.minister, 
+                                      seating_of_parliament.heteka_id,
                                       seating_of_parliament.party,
                                       seating_of_parliament.party_color,
                                       seating_of_parliament.image,
@@ -99,14 +95,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
                                       member_of_parliament.person_id = $1
                                     GROUP BY 
                                       member_of_parliament.person_id, 
-                                      member_of_parliament.lastname, 
-                                      member_of_parliament.firstname, 
-                                      member_of_parliament.minister,
-                                      seating_of_parliament.party,
-                                      seating_of_parliament.party_color,
-                                      seating_of_parliament.image,
-                                      seating_of_parliament.seat_number, 
-                                      member_of_parliament.xmldata_fi`, [person_id]);
+                                      seating_of_parliament.heteka_id`, [person_id]);
 
     // Check if member exists
     if (!member) {
@@ -136,6 +125,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
 
     response.json(updatedMember); // Return the updated member data
   } catch (err) {
+    console.error('Error:', err.message);
     response.status(500).send('Internal Server Error');
   }
 });

@@ -11,6 +11,12 @@ export const loader = async () => {
   return { members };
 };
 
+export const headers = () => { 
+  return { 
+    "Cache-Control": "max-age=3600"
+  };
+};
+
 // Main component
 export default function Index() {
   const { members } = useLoaderData();

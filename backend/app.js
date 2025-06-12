@@ -1,23 +1,28 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
-const middleware = require('./utils/middleware')
+const middleware = require('./utils/middleware');
 
 app.use(cors());
 
-app.use('/low-res', express.static('./images/low-res'));
-app.use('/high-res', express.static('./images/high-res'));
+app.use('/low-res', express.static(path.join(__dirname, 'images/low-res'), {
+  maxAge: '30d'
+}));
+app.use('/high-res', express.static(path.join(__dirname, 'images/high-res'), {
+  maxAge: '30d'
+}));
 
-app.use(middleware.requestLogger)
+app.use(middleware.requestLogger);
 
-const memberOfParliamentRouter = require('./controllers/memberofparliament')
-const valihuutoRouter = require('./controllers/valihuuto')
-app.use('/api/member_of_parliament', memberOfParliamentRouter)
-app.use('/api/valihuudot', valihuutoRouter)
+const memberOfParliamentRouter = require('./controllers/memberofparliament');
+const valihuutoRouter = require('./controllers/valihuuto');
+app.use('/api/member_of_parliament', memberOfParliamentRouter);
+app.use('/api/valihuudot', valihuutoRouter);
 
-app.use(middleware.unknownEndPoint)
-app.use(middleware.errorHandler)
+app.use(middleware.unknownEndPoint);
+app.use(middleware.errorHandler);
 
-module.exports = app
+module.exports = app;
