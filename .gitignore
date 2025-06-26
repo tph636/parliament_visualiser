@@ -42,3 +42,27 @@ dist-ssr
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+
+# Docker-related files
+*.log
+*.pid
+*.sock
+
+# Docker Compose override files
+docker-compose.override.yml
+
+# Docker volumes or bind mounts
+volumes/
+data/
+tmp/
+
+# Environment files (if used)
+.env
+.env.*
+
+# Build artifacts
+*.tar
+*.gz
+*.img
+*.bak
+
