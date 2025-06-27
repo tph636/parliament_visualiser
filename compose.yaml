@@ -1,25 +1,19 @@
 services:
   postgres:
     image: postgres:16
-    container_name: postgres
+    env_file: .env
     ports:
-      - "${DB_PORT}:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - .env.backend
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
 
   backend:
-    container_name: backend
     build: ./backend
-    env_file:
-      - .env.backend
+    env_file: .env
+    environment:
+      PORT: ${BACKEND_PORT:-3000}  # Forces internal port to match external
     ports:
-      - "${BACKEND_PORT}:${BACKEND_PORT}"
+      - "${BACKEND_PORT:-3000}:3000"
     volumes:
       - shared_assets:/app/assets
     depends_on:
@@ -27,28 +21,25 @@ services:
 
   data_management:
     build: ./data_management
-    env_file:
-      - .env.backend
+    env_file: .env
     volumes:
       - shared_assets:/app/assets
-    command: tail -f /dev/null
-    depends_on: 
+    command: tail -f /dev/null  # Keeps container running
+    depends_on:
       - postgres
 
   remix-app:
     build: ./remix-app
-    env_file:
-      - ./remix-app/.env
+    env_file: .env
     environment:
-      PORT: ${FRONTEND_PORT}
+      PORT: ${FRONTEND_PORT:-3001}  # Forces internal port to match external
     ports:
-      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+      - "${FRONTEND_PORT:-3001}:3001"
     depends_on:
       - backend
 
   nginx:
     image: nginx:alpine
-    container_name: nginx
     ports:
       - "80:80"
       - "443:443"
@@ -57,7 +48,7 @@ services:
     depends_on:
       - remix-app
       - backend
-      
+
 volumes:
   postgres_data:
   shared_assets:
