@@ -14,7 +14,7 @@ def get_latest_downloaded_number(folder):
     return max_number
 
 def main(args=None):
-    folder = '../assets/documents/2024'
+    folder = './assets/documents/2024'
     base_url = 'https://s3-eu-west-1.amazonaws.com/eduskunta-avoindata-documents-prod/vaski%2FPTK-{}%2B2024-vp.pdf'
     
     if not os.path.exists(folder):

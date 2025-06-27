@@ -32,6 +32,8 @@ services:
     volumes:
       - shared_assets:/app/assets
     command: tail -f /dev/null
+    depends_on: 
+      - postgres
 
   remix-app:
     build: ./remix-app
