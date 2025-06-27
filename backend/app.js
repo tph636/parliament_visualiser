@@ -8,12 +8,16 @@ const middleware = require('./utils/middleware');
 
 app.use(cors());
 
-app.use('/low-res', express.static(path.join(__dirname, 'images/low-res'), {
-  maxAge: '30d'
-}));
-app.use('/high-res', express.static(path.join(__dirname, 'images/high-res'), {
-  maxAge: '30d'
-}));
+app.use(
+  '/images/low-res',
+  express.static('/app/assets/images/low-res', { maxAge: '30d' })
+);
+
+app.use(
+  '/images/high-res',
+  express.static('/app/assets/images/high-res', { maxAge: '30d' })
+);
+
 
 app.use(middleware.requestLogger);
 

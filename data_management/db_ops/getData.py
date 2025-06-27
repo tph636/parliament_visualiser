@@ -1,4 +1,4 @@
-from db_util import connectToDb
+from db_ops.db_util import connectToDb
 
 conn, cursor = connectToDb()
 #statement = str(cursor.execute('''SELECT XmlDataFi FROM MemberOfParliament WHERE personId=1109''').fetchall()[0])

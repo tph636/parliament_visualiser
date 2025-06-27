@@ -3,7 +3,8 @@ build
 images
 .env
 node_modules
-backend/venv/
+.venv
+venv
 .DS_Store
 Thumbs.db
 
@@ -42,6 +43,8 @@ dist-ssr
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.egg-info/
+
 
 # Docker-related files
 *.log

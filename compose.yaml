@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-db
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env.backend
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+
+  backend:
+    container_name: backend
+    build: ./backend
+    env_file:
+      - .env.backend
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - shared_assets:/app/assets
+    depends_on:
+      - postgres
+
+  data_management:
+    build: ./data_management
+    env_file:
+      - .env.backend
+    volumes:
+      - shared_assets:/app/assets
+    command: tail -f /dev/null
+
+  remix-app:
+    build: ./remix-app
+    env_file:
+      - ./remix-app/.env
+    environment:
+      PORT: ${FRONTEND_PORT}
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    depends_on:
+      - backend
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - remix-app
+      - backend
+      
+volumes:
+  postgres_data:
+  shared_assets:

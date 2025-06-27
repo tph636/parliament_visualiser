@@ -1,6 +1,6 @@
 import fitz
 import re
-from välihuuto import Välihuuto
+from db_ops.välihuuto import Välihuuto
 
 def extract_välihuudot(file):
     doc = fitz.open(stream=file.read(), filetype="pdf")

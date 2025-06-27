@@ -4,7 +4,7 @@ import CardList from '../components/CardList/CardList';
 
 // Loader function to fetch data
 export const loader = async () => {
-  const membersResponse = await fetch('http://localhost:3001/api/member_of_parliament');
+  const membersResponse = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/member_of_parliament`);
 
   const members = await membersResponse.json();
 

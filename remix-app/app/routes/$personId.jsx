@@ -2,7 +2,7 @@ import { useLoaderData } from "@remix-run/react";
 
 // Loader function to fetch member data
 export const loader = async ({ params }) => {
-  const memberResponse = await fetch(`http://localhost:3001/api/member_of_parliament/${params.personId}`);
+  const membersResponse = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/member_of_parliament`);
   if (!memberResponse.ok) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -22,7 +22,7 @@ export default function MemberInfo() {
   return (
     <div className="member-info">
       <img
-        src={`http://localhost:3001/high-res/${member.image}`}
+        src={`${import.meta.env.VITE_BACKEND_API_URL}/images/high-res/${member.image}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="member-image"
         style={{

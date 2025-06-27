@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "data_management"
+version = "0.1.0"
+description = "Scripts to manage PostgreSQL database and download assets"
+authors = [{ name = "Your Name" }]
+dependencies = [
+  "requests",
+  "PyMuPDF",
+  "pillow",
+  "psycopg2-binary",
+  "python-dotenv"
+]
+
+[tool.setuptools.packages.find]
+include = ["db_ops", "asset_tools"]
+exclude = ["assets"]
+

@@ -7,7 +7,7 @@ const Card = ({ member }) => {
     <Link to={`/${member.person_id}`} className="card" state={{ member }}>
       <img
         loading='lazy'
-        src={`http://localhost:3001/low-res/${member.image}`}
+        src={`${import.meta.env.VITE_BACKEND_API_URL}/images/low-res/${member.image}`}
         alt={`Edustajan ${member.firstname} ${member.lastname} kuva`}
         className="card-image"
         style={{
