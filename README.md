@@ -69,7 +69,7 @@ Before you begin, ensure you have the following installed on your system:
 
   # Remix app
   FRONTEND_PORT=3001
-  VITE_BACKEND_API_URL=http://localhost:3000
+  VITE_BACKEND_API_URL=/api
   INTERNAL_BACKEND_API_URL=http://backend:3000
   ```
 

@@ -3,25 +3,36 @@ services:
     env_file: .env.prod
     expose:
       - "${DB_PORT:-5432}"
+    networks:
+      - app-network
 
   backend:
     build:
-      context: .
+      context: ./backend
       target: production
     env_file: .env.prod
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
+    networks:
+      - app-network
 
   data_management:
+    build:
+      context: ./data_management
+      target: production
     env_file: .env.prod
+    networks:
+      - app-network
 
   remix-app:
     build:
-      context: .
+      context: ./remix-app
       target: production
     env_file: .env.prod
     ports:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    networks:
+      - app-network
 
   nginx:
     image: nginx:alpine
@@ -33,3 +44,9 @@ services:
     depends_on:
       - remix-app
       - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    name: parliament_visualiser_app-network
