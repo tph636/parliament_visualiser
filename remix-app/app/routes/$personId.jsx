@@ -2,7 +2,10 @@ import { useLoaderData } from "@remix-run/react";
 
 // Loader function to fetch member data
 export const loader = async ({ params }) => {
-  const membersResponse = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/member_of_parliament`);
+  const baseURL = process.env.INTERNAL_BACKEND_API_URL;
+
+  const membersResponse = await fetch(`${baseURL}/api/member_of_parliament`);
+  
   if (!memberResponse.ok) {
     throw new Response("Not Found", { status: 404 });
   }

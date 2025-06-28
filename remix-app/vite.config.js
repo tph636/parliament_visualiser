@@ -1,7 +1,13 @@
 import { vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
 
+// Load env variables
+const PORT = parseInt(process.env.PORT, 10);
+
 export default defineConfig({
+  server: {
+    port: PORT,
+  },
   plugins: [
     remix({
       future: {

@@ -4,7 +4,9 @@ import CardList from '../components/CardList/CardList';
 
 // Loader function to fetch data
 export const loader = async () => {
-  const membersResponse = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/member_of_parliament`);
+  const baseURL = process.env.INTERNAL_BACKEND_API_URL;
+
+  const membersResponse = await fetch(`${baseURL}/api/member_of_parliament`);
 
   const members = await membersResponse.json();
 

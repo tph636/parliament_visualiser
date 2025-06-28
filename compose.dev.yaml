@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  postgres:
+    env_file: .env.dev
+    ports:
+      - "${DB_PORT:-5432}:${DB_PORT:-5432}"
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      target: development
+    env_file: .env.dev
+    environment:
+      - PORT=${BACKEND_PORT}
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    networks:
+      - app-network
+
+  data_management:
+    build:
+      context: ./data_management
+      target: development
+    env_file: .env.dev
+    networks:
+      - app-network
+
+  remix-app:
+    build:
+      context: ./remix-app
+      target: development
+    env_file: .env.dev
+    environment:
+      - PORT=${FRONTEND_PORT}
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    networks:
+      - app-network
