@@ -1,3 +1,7 @@
+TODO: 
+* Do not download duplicate images if download_images.py is ran twice
+* Fix image width of cards for different party members
+
 # Docker Setup Guide
 
 This guide will help you set up and use the Docker environment for this project.
