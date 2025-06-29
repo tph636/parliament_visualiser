@@ -12,6 +12,8 @@ CMD ["npm", "run", "dev"]
 
 # Production stage
 FROM base AS production
+ARG VITE_BACKEND_API_URL
+ENV VITE_BACKEND_API_URL=${VITE_BACKEND_API_URL}
 ENV NODE_ENV=production
 COPY . .
 RUN npm run build

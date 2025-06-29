@@ -28,6 +28,8 @@ services:
     build:
       context: ./remix-app
       target: production
+      args:
+        VITE_BACKEND_API_URL: "https://mysite.com"
     env_file: .env.prod
     ports:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
