@@ -11,7 +11,7 @@ Before you begin, ensure you have the following installed on your system:
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
 
-## Setup Instructions
+## Setup and Usage Instructions
 
 
 1. **Clone the Repository:**
@@ -77,8 +77,33 @@ Before you begin, ensure you have the following installed on your system:
 
 3. **Build and Start the Containers:**
 
-   To build and start the containers in a development environment, use the following command:
+   Build and start development:
 
    ```bash
    docker compose --env-file .env.dev -f compose.yaml -f compose.dev.yaml up --build -d
    ```
+
+   Build and start production:
+
+   ```bash
+   docker compose --env-file .env.dev -f compose.yaml -f compose.dev.yaml up --build -d
+   ```
+
+
+4. **Temporarily Stop and Start Containers (used in production to disable access to the site)**
+
+   Stop production:
+
+   ```bash
+   docker compose --env-file .env.prod -f compose.yaml -f compose.prod.yaml stop
+   ```
+
+   Start production:
+
+   ```bash
+   docker compose --env-file .env.prod -f compose.yaml -f compose.prod.yaml start
+   ```
+
+5. **Additional information**
+
+   Ports can be disabled on the system; docker will automatically open ports when the containers are started
