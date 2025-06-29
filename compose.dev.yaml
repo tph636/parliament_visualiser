@@ -3,6 +3,8 @@ services:
     env_file: .env.dev
     ports:
       - "${DB_PORT:-5432}:${DB_PORT:-5432}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - app-network
 
@@ -15,6 +17,8 @@ services:
       - PORT=${BACKEND_PORT}
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - shared_assets:/app/assets
     networks:
       - app-network
 
@@ -23,6 +27,8 @@ services:
       context: ./data_management
       target: development
     env_file: .env.dev
+    volumes:
+      - shared_assets:/app/assets
     networks:
       - app-network
 
@@ -37,3 +43,11 @@ services:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     networks:
       - app-network
+
+volumes:
+  postgres_data:
+  shared_assets:
+
+networks:
+  app-network:
+    name: parliament_visualiser_app-network
