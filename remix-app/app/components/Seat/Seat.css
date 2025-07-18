@@ -1,23 +1,20 @@
-@import '../Seatingplan/Seatingplan.css';
-
-.chairman,
-.seat {
-  width: calc(var(--seatWidth) * var(--plan-width) / 15);
-  position: absolute;
+.seat,
+.chairman {
+  pointer-events: auto;
+  user-select: none;
   aspect-ratio: 1;
-  transform: translate(-50%, -50%);
   border-radius: 50%;
   box-shadow: 0 0 7px hsla(0, 0%, 0%, 0.9);
+  cursor: pointer;
+  transform: translate(-50%, -50%); /* Shifts seat so its center aligns with its position */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.chairman {
-  left: 50%;
-  top: 10%;
+/* 🌟 Hover effect */
+.seat:hover,
+.chairman:hover {
+  transform: translate(-50%, -50%) scale(1.2); /* combines center shift with gentle enlargement */
+  box-shadow:
+    0 0 14px hsla(0, 0%, 0%, 0.6),
+    0 0 8px hsla(220, 100%, 70%, 0.6); /* stacked shadow for punchier glow */
 }
-
-.seat {
-  left: calc(50% + var(--pointX) * var(--plan-width) / 15);
-  top: calc(var(--pointY) * var(--plan-height) / 10);
-}
-
-

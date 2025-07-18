@@ -40,9 +40,9 @@ const Seatingplan = ({ members }) => {
   const [infoboxPosition, setInfoboxPosition] = useState({ top: 0, left: 0 });
 
   const plan = [
-    [1],
-    [5, 3, 3, 5],
-    [7, 4, 4, 7],
+    [1],          // Chairman
+    [5, 3, 3, 5], // 1st. row
+    [7, 4, 4, 7], // 2nd. row ...
     [8, 5, 5, 8],
     [10, 6, 6, 10],
     [8, 7, 7, 8],
@@ -53,22 +53,27 @@ const Seatingplan = ({ members }) => {
 
   let a = 3;
   let b = 2.5;
-  const ellipseArcLen = 20.185;
-  const seatWidth = ellipseArcLen / 50; // Width of the seat
+  const ellipseArcLen = 15;
+  const seatWidth = ellipseArcLen / 37; // Width of the seat
   const gapWidth = seatWidth * 2; // Gap between seat groups (width of the hallway)
-  const margin = seatWidth / 5; // Gap between each individual seat
+  const margin = seatWidth * 0.2; // Gap between each individual seat
 
   let seatIndex = -1;
   let rowNum = 1;
 
   const handleMouseEnter = (member, event) => {
     setHoveredSeat(member);
-    const rect = event.target.getBoundingClientRect();
+
+    const container = document.querySelector('.seating-plan');
+    const containerRect = container.getBoundingClientRect();
+    const seatRect = event.target.getBoundingClientRect();
+
     setInfoboxPosition({
-      top: rect.top + window.scrollY - 100, // Positioning it 5px above
-      left: rect.left + window.scrollX + rect.width / 2, // Centering it horizontally
+      top: seatRect.top - containerRect.top - 10, // slightly above
+      left: seatRect.left - containerRect.left + seatRect.width / 2 // centered horizontally
     });
   };
+
 
   const generateRow = (row, rowIndex) => {
     const seatsInRow = row.reduce((sum, i) => sum + i, 0);
@@ -107,19 +112,33 @@ const Seatingplan = ({ members }) => {
         const member = members.find(mem => mem.seat_number === currentSeatIndex);
 
         seatGroup.push(
-          <Seat
-            key={`seat-${currentSeatIndex}`}
-            style={{
-              '--seatWidth': seatWidth,
-              '--pointX': pointX,
-              '--pointY': pointY
-            }}
-            type={seatsInRow === 1 ? 'chairman' : 'seat'}
-            seatIndex={currentSeatIndex}
-            member={member}
-            onMouseEnter={(e) => handleMouseEnter(member, e)}
-            onMouseLeave={() => setHoveredSeat(null)}
-          />
+<Seat
+  key={`seat-${currentSeatIndex}`}
+  style={{
+    position: "absolute", // Allows each seat to be placed freely within the seating-plan container
+
+    // Set the seat’s width as a percentage of the container, based on seatWidth and scaling factor
+    width: `${(seatWidth * 100) / 15}%`,
+
+
+    // Position seat horizontally:
+    // Chairman is centered at 50%; other seats are offset based on their elliptical X coordinate
+    left: `${seatsInRow === 1 ? 50 : 50 + (pointX * 100) / 15}%`,
+
+    // Position seat vertically:
+    // Chairman is manually placed at 10%; other seats use their elliptical Y coordinate, plus offset to push them lower
+    top: `${seatsInRow === 1 ? 10 : (pointY * 100) / 10}%`,
+
+
+  }}
+  type={seatsInRow === 1 ? "chairman" : "seat"} // Assign special type if seat is chairman
+  seatIndex={currentSeatIndex} // Unique seat identifier
+  member={member} // Member data for that seat
+  onMouseEnter={(e) => handleMouseEnter(member, e)} // Show tooltip on hover
+  onMouseLeave={() => setHoveredSeat(null)} // Hide tooltip when mouse leaves
+/>
+
+
         );
 
         nthSeatInRow += 1;

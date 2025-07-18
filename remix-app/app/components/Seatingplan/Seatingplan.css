@@ -2,8 +2,6 @@
 .seating-plan {
   position: relative;
   width: 100%;
-  --plan-width: 100%;
-  --plan-height: 100%;
   aspect-ratio: 1.5;
   background-color: white;
   box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.1);
@@ -13,11 +11,13 @@
 
 .infobox {
   position: absolute;
+  transform: translateX(-50%) translateY(-100%);
   background-color: white;
   border: 1px solid #ccc;
   padding: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  display: block;
+  white-space: nowrap;
+  z-index: 10;
 }
 
 
