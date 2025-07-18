@@ -90,7 +90,7 @@ Before you begin, ensure you have the following installed on your system:
    Build and start production:
 
    ```bash
-   docker compose --env-file .env.dev -f compose.yaml -f compose.dev.yaml up --build -d
+   docker compose --env-file .env.prod -f compose.yaml -f compose.prod.yaml up --build -d
    ```
 
 
