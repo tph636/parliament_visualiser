@@ -4,7 +4,7 @@ import { useLoaderData } from "@remix-run/react";
 export const loader = async ({ params }) => {
   const baseURL = process.env.INTERNAL_BACKEND_API_URL;
 
-  const membersResponse = await fetch(`${baseURL}/api/member_of_parliament`);
+  const memberResponse = await fetch(`${baseURL}/api/member_of_parliament`);
   
   if (!memberResponse.ok) {
     throw new Response("Not Found", { status: 404 });
