@@ -39,6 +39,7 @@ const Seatingplan = ({ members }) => {
   const [hoveredSeat, setHoveredSeat] = useState(null);
   const [infoboxPosition, setInfoboxPosition] = useState({ top: 0, left: 0 });
 
+  // Top-down seating plan; each row is split into 4 sections just like in the parliament
   const plan = [
     [1],          // Chairman
     [5, 3, 3, 5], // 1st. row
@@ -103,42 +104,45 @@ const Seatingplan = ({ members }) => {
           gapWidth / 2 + seatWidth * seatFromMiddle + margin * seatFromMiddle : 
           seatWidth * seatFromMiddle + margin * seatFromMiddle;
 
+        // Calculate the coordinates for the seat on the ellipse
         const pointFromMiddle = ellipsePoint(a, b, distFromMiddle);
-        const pointX = nthSeatInRow <= seatsBeforeMiddle ? 
+
+        // Seat x-coordinate (either on the left or right of the middle hallway)
+        const seat_x = nthSeatInRow <= seatsBeforeMiddle ? 
           pointFromMiddle.x : 
           -pointFromMiddle.x;
-        const pointY = pointFromMiddle.y;
+
+        // Seat y-coordinate
+        const seat_y = pointFromMiddle.y;
 
         const member = members.find(mem => mem.seat_number === currentSeatIndex);
 
         seatGroup.push(
-<Seat
-  key={`seat-${currentSeatIndex}`}
-  style={{
-    position: "absolute", // Allows each seat to be placed freely within the seating-plan container
+          <Seat
+            key={`seat-${currentSeatIndex}`}
+            style={{
+              position: "absolute", // Allows each seat to be placed freely within the seating-plan container
 
-    // Set the seat’s width as a percentage of the container, based on seatWidth and scaling factor
-    width: `${(seatWidth * 100) / 15}%`,
-
-
-    // Position seat horizontally:
-    // Chairman is centered at 50%; other seats are offset based on their elliptical X coordinate
-    left: `${seatsInRow === 1 ? 50 : 50 + (pointX * 100) / 15}%`,
-
-    // Position seat vertically:
-    // Chairman is manually placed at 10%; other seats use their elliptical Y coordinate, plus offset to push them lower
-    top: `${seatsInRow === 1 ? 10 : (pointY * 100) / 10}%`,
+              // Set the seat’s width as a percentage of the container, based on seatWidth and scaling factor
+              width: `${(seatWidth * 100) / 15}%`,
 
 
-  }}
-  type={seatsInRow === 1 ? "chairman" : "seat"} // Assign special type if seat is chairman
-  seatIndex={currentSeatIndex} // Unique seat identifier
-  member={member} // Member data for that seat
-  onMouseEnter={(e) => handleMouseEnter(member, e)} // Show tooltip on hover
-  onMouseLeave={() => setHoveredSeat(null)} // Hide tooltip when mouse leaves
-/>
+              // Position seat horizontally:
+              // Chairman is centered at 50%; other seats are offset based on their elliptical X coordinate
+              left: `${seatsInRow === 1 ? 50 : 50 + (seat_x * 100) / 15}%`,
+
+              // Position seat vertically:
+              // Chairman is manually placed at 10%; other seats use their elliptical Y coordinate, plus offset to push them lower
+              top: `${seatsInRow === 1 ? 10 : (seat_y * 100) / 10}%`,
 
 
+            }}
+            type={seatsInRow === 1 ? "chairman" : "seat"} // Assign special type if seat is chairman
+            seatIndex={currentSeatIndex} // Unique seat identifier
+            member={member} // Member data for that seat
+            onMouseEnter={(e) => handleMouseEnter(member, e)}
+            onMouseLeave={() => setHoveredSeat(null)} 
+          />
         );
 
         nthSeatInRow += 1;
@@ -148,6 +152,8 @@ const Seatingplan = ({ members }) => {
       rowSeats.push(<div className='seatGroup' key={`group-${rowIndex}-${countIndex}`}>{seatGroup}</div>);
     }
 
+
+    // Make the ellipse larger for the next row by updating a and b
     rowNum += 1;
     const oldb = b;
     b += seatWidth + gapWidth / 2;
