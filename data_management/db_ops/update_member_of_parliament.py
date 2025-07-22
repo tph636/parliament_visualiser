@@ -1,6 +1,32 @@
 import requests
 from time import sleep
 from db_ops.db_util import connectToDb
+import xml.etree.ElementTree as ET
+
+def extract_birth_year(xml_str):
+    if not xml_str:
+        return None
+    try:
+        root = ET.fromstring(xml_str)
+        birth_date_elem = root.find('.//SyntymaPvm')
+        if birth_date_elem is not None and birth_date_elem.text:
+            try:
+                return int(birth_date_elem.text[:4])
+            except Exception:
+                return None
+        return None
+    except Exception:
+        return None
+
+def extract_parliament_group(xml_str):
+    if not xml_str:
+        return None
+    try:
+        root = ET.fromstring(xml_str)
+        group_elem = root.find('.//NykyinenEduskuntaryhma/Nimi')
+        return group_elem.text if group_elem is not None else None
+    except Exception:
+        return None
 
 def main(args=None):
     conn, cursor = connectToDb()
@@ -45,21 +71,28 @@ def main(args=None):
             xmldata XML,
             xmldata_sv XML NOT NULL,
             xmldata_fi XML NOT NULL,
-            xmldata_en XML NOT NULL
+            xmldata_en XML NOT NULL,
+            birth_year INTEGER,
+            parliament_group TEXT
         )
     ''')
 
     # Insert new data
     for row in combined_data["rowData"]:
+        xmldata_fi = row[7]
+        birth_year = extract_birth_year(xmldata_fi)
+        parliament_group = extract_parliament_group(xmldata_fi)
         cursor.execute('''
             INSERT INTO member_of_parliament (
                 person_id, lastname, firstname, party, minister,
-                xmldata, xmldata_sv, xmldata_fi, xmldata_en
+                xmldata, xmldata_sv, xmldata_fi, xmldata_en,
+                birth_year, parliament_group
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         ''', (
             row[0], row[1], row[2], row[3], row[4],
-            row[5], row[6], row[7], row[8]
+            row[5], row[6], row[7], row[8],
+            birth_year, parliament_group
         ))
 
     conn.commit()
