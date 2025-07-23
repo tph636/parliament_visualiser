@@ -33,7 +33,6 @@ memberOfParliamentRouter.get('', async (request, response) => {
                                       member_of_parliament.person_id, 
                                       seating_of_parliament.heteka_id`);
 
-    // No XML parsing needed, just return the relevant fields
     const updatedMembers = members.map(member => ({
       person_id: member.person_id,
       lastname: member.lastname,
@@ -48,7 +47,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
       parliament_group: member.parliament_group
     }));
 
-    response.json(updatedMembers); // Return the updated member data
+    response.json(updatedMembers)
   } catch (err) {
     console.error('Error:', err.message);
     response.status(500).send('Internal Server Error');
@@ -90,7 +89,6 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
                                       member_of_parliament.person_id, 
                                       seating_of_parliament.heteka_id`, [person_id]);
 
-    // Check if member exists
     if (!member) {
       return response.status(404).json({ message: 'Member not found' });
     }
@@ -109,7 +107,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
       parliament_group: member.parliament_group,
     };
 
-    response.json(updatedMember); // Return the updated member data
+    response.json(updatedMember);
   } catch (err) {
     console.error('Error:', err.message);
     response.status(500).send('Internal Server Error');
