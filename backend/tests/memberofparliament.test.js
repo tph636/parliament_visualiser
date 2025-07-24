@@ -27,7 +27,7 @@ describe("/api/member_of_parliament", () => {
     pool = require("../utils/dbUtils").pool;
 
     // Create and connect a client manually to run setup
-    client = new Client({
+    const client = new Client({
       host: container.getHost(),
       port: container.getPort(),
       database: container.getDatabase(),
