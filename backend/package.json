@@ -5,7 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development node index.js",
-    "test": "NODE_ENV=test node --test"
+    "test": "jest --runInBand"
   },
   "author": "",
   "license": "ISC",
@@ -15,11 +15,14 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "helmet": "^8.0.0",
-    "pg": "^8.13.1",
     "sqlite3": "^5.1.7",
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
-    "testcontainers": "^11.3.2"
+    "@testcontainers/postgresql": "^11.4.0",
+    "jest": "^30.0.5",
+    "pg": "^8.16.3",
+    "supertest": "^7.1.4",
+    "testcontainers": "^11.4.0"
   }
 }

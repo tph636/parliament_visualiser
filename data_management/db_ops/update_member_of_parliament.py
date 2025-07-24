@@ -10,13 +10,10 @@ def extract_birth_year(xml_str):
         root = ET.fromstring(xml_str)
         birth_date_elem = root.find('.//SyntymaPvm')
         if birth_date_elem is not None and birth_date_elem.text:
-            try:
-                return int(birth_date_elem.text[:4])
-            except Exception:
-                return None
-        return None
+            return int(birth_date_elem.text[:4])
     except Exception:
-        return None
+        pass
+    return None
 
 def extract_parliament_group(xml_str):
     if not xml_str:
@@ -49,17 +46,10 @@ def main(args=None):
     cursor.execute("SELECT heteka_id FROM seating_of_parliament")
     member_ids = cursor.fetchall()
 
-    # Fetch row data for all members
+    # Fetch row data
     row_data = [row for id in member_ids for row in fetch_data(id[0])["rowData"]]
-    table_data = fetch_data(member_ids[0][0])  # Get table metadata
 
-    combined_data = {
-        "tableName": table_data["tableName"],
-        "columnNames": table_data["columnNames"],
-        "rowData": row_data
-    }
-
-    # Drop existing table and recreate it
+    # Drop and recreate the member_of_parliament table
     cursor.execute("DROP TABLE IF EXISTS member_of_parliament")
     cursor.execute('''
         CREATE TABLE member_of_parliament (
@@ -68,30 +58,23 @@ def main(args=None):
             firstname TEXT NOT NULL,
             party TEXT NOT NULL,
             minister TEXT NOT NULL,
-            xmldata XML,
-            xmldata_sv XML NOT NULL,
-            xmldata_fi XML NOT NULL,
-            xmldata_en XML NOT NULL,
             birth_year INTEGER,
             parliament_group TEXT
         )
     ''')
 
-    # Insert new data
-    for row in combined_data["rowData"]:
+    for row in row_data:
         xmldata_fi = row[7]
         birth_year = extract_birth_year(xmldata_fi)
         parliament_group = extract_parliament_group(xmldata_fi)
         cursor.execute('''
             INSERT INTO member_of_parliament (
                 person_id, lastname, firstname, party, minister,
-                xmldata, xmldata_sv, xmldata_fi, xmldata_en,
                 birth_year, parliament_group
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
         ''', (
             row[0], row[1], row[2], row[3], row[4],
-            row[5], row[6], row[7], row[8],
             birth_year, parliament_group
         ))
 

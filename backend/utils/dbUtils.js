@@ -39,4 +39,5 @@ const fetchFirst = (query, params = []) => {
 module.exports = {
   fetchAll,
   fetchFirst,
+  pool
 };
