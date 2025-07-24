@@ -48,7 +48,7 @@ describe("/api/member_of_parliament", () => {
   it("should return all members of parliament", async () => {
     const response = await supertest(app).get("/api/member_of_parliament");
     expect(response.statusCode).toBe(200);
-    expect(response.body.length).toBe(3);
+    expect(response.body.length).toBe(4);
     for (const member of response.body) {
       expect(member).toHaveProperty("person_id");
       expect(member).toHaveProperty("firstname");

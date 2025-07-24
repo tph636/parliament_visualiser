@@ -68,6 +68,14 @@ async function populateMembers(client) {
       minister: false,
       birth_year: 1982,
       parliament_group: 'National Coalition'
+    },
+    {
+      person_id: 4,
+      firstname: 'Eero',
+      lastname: 'Nieminen',
+      minister: false,
+      birth_year: 1990,
+      parliament_group: 'Centre'
     }
   ];
 
@@ -118,6 +126,16 @@ async function populateSeating(client) {
       minister: false,
       image: 'jari.jpg',
       party_color: 'blue'
+    },
+    {
+      heteka_id: 4,
+      seat_number: 104,
+      lastname: 'Nieminen',
+      firstname: 'Eero',
+      party: 'kesk',
+      minister: false,
+      image: 'eero.jpg',
+      party_color: 'orange'
     }
   ];
 

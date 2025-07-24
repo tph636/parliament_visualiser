@@ -17,11 +17,14 @@ app.use(
   express.static('/app/assets/images/high-res', { maxAge: '30d' })
 );
 
-
 app.use(middleware.requestLogger);
 
+// Routers
 const memberOfParliamentRouter = require('./controllers/memberofparliament');
+const valihuutoRouter = require('./controllers/valihuuto');
+
 app.use('/api/member_of_parliament', memberOfParliamentRouter);
+app.use('/api/valihuudot', valihuutoRouter);
 
 app.use(middleware.unknownEndPoint);
 app.use(middleware.errorHandler);
