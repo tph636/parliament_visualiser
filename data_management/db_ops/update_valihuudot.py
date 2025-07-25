@@ -27,6 +27,7 @@ def main(args=None):
 
     # Regular expression to match the filenames
     pattern = re.compile(r'PTK-(\d+)\+2024-vp\.pdf')
+    count = 1
 
     # Process files in the documents folder
     for filename in os.listdir(folder):
@@ -35,7 +36,6 @@ def main(args=None):
             currentPtkNum = int(match.group(1))
             file_path = os.path.join(folder, filename)
             print(f"Processing: {file_path}")
-
             # Open and process the PDF file
             with open(file_path, 'rb') as file:
                 try:
@@ -52,7 +52,8 @@ def main(args=None):
                             huuto.firstName, huuto.lastName, huuto.huuto,
                             currentPtkNum, huuto.date, huuto.huutoNum
                         ))
-                        print(f'{huuto.firstName} {huuto.lastName}: {huuto.huuto} PTK({currentPtkNum}) {huuto.date} (Huuto #{huuto.huutoNum})')
+                        print(f'{count}. {huuto.firstName} {huuto.lastName}: {huuto.huuto} PTK({currentPtkNum}) {huuto.date} (Huuto #{huuto.huutoNum})')
+                        count += 1
                 except Exception as e:
                     print(f"Failed to process {file_path}: {e}")
 

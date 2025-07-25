@@ -5,16 +5,11 @@ from db_ops.välihuuto import Välihuuto
 def extract_välihuudot(file):
     doc = fitz.open(stream=file.read(), filetype="pdf")
 
-    # Regular expression to find lines that start with a full name followed by a double colon and end with a sentence all encapsulated in square brackets
-    huuto_pattern = re.compile(r'\[([^\[\]]+)\]')
-    
     # Regular expression to find the first date in the form d.m.y
     date_pattern = re.compile(r'\b(\d{1,2}\.\d{1,2}\.\d{4})\b')
 
     välihuudot = []
     first_date = None
-
-    # Dictionary to track the number of occurrences of each huuto for each person
     huuto_count = {}
 
     for page in doc:
@@ -26,44 +21,35 @@ def extract_välihuudot(file):
             if date_match:
                 first_date = date_match.group(1)
 
-        # All text inside square brackets eg. [Ben Zyskowicz: Höpö höpö!], [Puhemies koputtaa] and remove newline
-        def removeNewLineFromName(text): # If a two-part name is split across two lines handle that eg. Kumpula-\nNatri
-            pattern = re.compile(r'([A-ZÄÖÅ][a-zäöå]*-)\n([A-ZÄÖÅ][a-zäöå]*)')
-            replacement = r'\1\2'
-            return re.sub(pattern, replacement, text)
-            
-        in_square_brackets = list(map(lambda n: removeNewLineFromName(n).replace('-\n', '').replace('\n', ' '), huuto_pattern.findall(text)))
-        
-        # Include only sentences where someone is speaking eg. [Ben Zyskowicz: Höpö höpö!], [Sosiaalidemokraat- tien ryhmästä: Ja lausumia!]
-        speakingNotSplit = [huuto for huuto in in_square_brackets if ": " in huuto]
-        
-        # Split sentences where two people are speaking eg. [Ben Zyskowicz: Höpö höpö! - Krista Kiuru: Kyllä!]
-        speaking = []
-        for i in speakingNotSplit:
-            if " — " in i:
-                parts = i.split(" — ")
-                speaking.extend(parts)
-            else:
-                speaking.append(i)
+        # 1. Extract all bracketed sections
+        brackets = re.findall(r'\[([^\[\]]+)\]', text, re.DOTALL)
 
-        # Regular expression pattern to match Finnish names followed by ": "
-        pattern = re.compile(r"^[A-ZÅÄÖ][a-zA-ZäöåÄÖÅ]*[-]?[A-ZÄÖÅ]?[a-zA-ZäöåÄÖÅ]* [A-ZÅÄÖ][a-zA-ZäöåÄÖÅ]*[-]?[A-ZÄÖÅ]?[a-zA-ZäöåÄÖÅ]*: ")
-        matches = [s for s in speaking if pattern.match(s)]
-
-        for match in matches:
-
-            full_name, sentence = match.split(": ", 1)
-
-            firstName, lastName = full_name.split(' ', 1)
-
-            # Track the number of occurrences of this huuto for this person
-            if full_name not in huuto_count:
-                huuto_count[full_name] = {}
-            if sentence not in huuto_count[full_name]:
-                huuto_count[full_name][sentence] = 0
-            huuto_count[full_name][sentence] += 1
-            huutoNum = huuto_count[full_name][sentence]
-
-            välihuudot.append(Välihuuto(firstName, lastName, sentence, first_date, huutoNum))
-    
+        for bracket in brackets:
+            # 2. Clean up hyphenated names split across lines (regex replacement)
+            bracket = re.sub(r'([A-ZÄÖÅ][a-zäöå]*-)\n([A-ZÄÖÅ][a-zäöå]*)', r'\1\2', bracket)
+            # 3. Remove hyphen+newline and replace newlines with space (regex replacement)
+            bracket = re.sub(r'-\n', '', bracket)
+            bracket = re.sub(r'\n', ' ', bracket)
+            # 4. Split multiple speakers (regex split)
+            speakers = re.split(r'\s—\s', bracket)
+            for speaker in speakers:
+                # 5. Match name and sentence (regex match)
+                # Require both first and last name, each starting with a capital letter
+                m = re.match(r'^([A-ZÅÄÖ][a-zA-ZäöåÄÖÅ\-]+\s[A-ZÅÄÖ][a-zA-ZäöåÄÖÅ\-]+): (.+)$', speaker)
+                if m:
+                    name, sentence = m.groups()
+                    name = re.sub(r'\s+', ' ', name).strip()  # Clean up extra spaces
+                    # Try to split name into first and last (regex split)
+                    name_parts = re.split(r'\s+', name, maxsplit=1)
+                    if len(name_parts) == 2:
+                        firstName, lastName = name_parts
+                        # Track the number of occurrences of this huuto for this person
+                        full_name = f"{firstName} {lastName}".strip()
+                        if full_name not in huuto_count:
+                            huuto_count[full_name] = {}
+                        if sentence not in huuto_count[full_name]:
+                            huuto_count[full_name][sentence] = 0
+                        huuto_count[full_name][sentence] += 1
+                        huutoNum = huuto_count[full_name][sentence]
+                        välihuudot.append(Välihuuto(firstName, lastName, sentence.strip(), first_date, huutoNum))
     return välihuudot
