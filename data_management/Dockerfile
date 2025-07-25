@@ -21,4 +21,7 @@ ENTRYPOINT ["/entrypoint.sh"]
 FROM base AS production
 
 COPY . .
-CMD cron && bash
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
