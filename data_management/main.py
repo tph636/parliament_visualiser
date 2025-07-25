@@ -14,12 +14,17 @@ def main():
     parser_download_images = subparsers.add_parser('download_documents_2024', help='Download 2024 PTK documents from the web')
     parser_download_images.set_defaults(func='asset_tools.download_documents_2024.main')
 
-    # Dynamically add subcommands for each update file in db_ops
-    for filename in os.listdir('db_ops'):
-        if filename.endswith('.py') and filename.startswith('update'):
-            module_name = filename[:-3]
-            parser_update = subparsers.add_parser(module_name, help=f'Run {module_name} update script')
-            parser_update.set_defaults(func=f'db_ops.{module_name}.main')
+    # Subcommand for updating member of parliament
+    parser_update_member = subparsers.add_parser('update_member_of_parliament', help='Update member of parliament data')
+    parser_update_member.set_defaults(func='db_ops.update_member_of_parliament.main')
+
+    # Subcommand for updating seating of parliament
+    parser_update_seating = subparsers.add_parser('update_seating_of_parliament', help='Update seating of parliament data')
+    parser_update_seating.set_defaults(func='db_ops.update_seating_of_parliament.main')
+
+    # Subcommand for updating valihuudot
+    parser_update_valihuudot = subparsers.add_parser('update_valihuudot', help='Update valihuudot data')
+    parser_update_valihuudot.set_defaults(func='db_ops.update_valihuudot.main')
 
     # Parse and execute
     args = parser.parse_args()

@@ -15,7 +15,6 @@ services:
 
   data_management:
     build: ./data_management
-    command: tail -f /dev/null
     depends_on:
       - postgres
     networks:

@@ -13,7 +13,10 @@ RUN pip install --upgrade pip && pip install .
 FROM base AS development
 
 COPY . .
-CMD cron && bash
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
 FROM base AS production
 

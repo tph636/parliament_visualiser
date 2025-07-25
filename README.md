@@ -108,6 +108,19 @@ Before you begin, ensure you have the following installed on your system:
    docker compose --env-file .env.prod -f compose.yaml -f compose.prod.yaml start
    ```
 
+5. **Completely reset the containers and their volumes**
+
+   ```bash
+   docker compose down
+   docker volume prune -f
+   docker compose down -v
+
+   # (Optional) Remove Images (if you want a full rebuild)
+   docker compose down --rmi all -v
+   ```
+
+   After build as normal
+   
 5. **Additional information**
 
    Ports can be disabled on the system; docker will automatically open ports when the containers are started
