@@ -9,6 +9,7 @@ valihuutoRouter.get('/:person_id/:page', async (request, response) => {
   const offset = (pageNumber - 1) * limit;
 
   try {
+    // Fetch paginated results
     const valihuudot = await fetchAll(`
       SELECT 
         v.firstname,
@@ -30,16 +31,26 @@ valihuutoRouter.get('/:person_id/:page', async (request, response) => {
       LIMIT $2 OFFSET $3
     `, [person_id, limit, offset]);
 
+    // Fetch total count
+    const countResult = await fetchFirst(`
+      SELECT COUNT(*) AS total
+      FROM valihuudot v
+      INNER JOIN member_of_parliament m
+      ON m.firstname = v.firstname AND m.lastname = v.lastname
+      WHERE m.person_id = $1
+    `, [person_id]);
+    const total = parseInt(countResult.total, 10);
+
     response.json({
       person_id,
       page: pageNumber,
-      results: valihuudot
+      results: valihuudot,
+      total // <-- Add this line
     });
   } catch (err) {
-    console.error('Error:', err);
+    console.error('Error:', err.message);
     response.status(500).send('Internal Server Error');
   }
 });
-
 
 module.exports = valihuutoRouter;

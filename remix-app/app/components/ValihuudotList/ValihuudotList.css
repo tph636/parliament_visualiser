@@ -1,0 +1,62 @@
+/* Existing pagination styles remain unchanged */
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 1rem auto;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.pagination li {
+  cursor: pointer;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  padding: 0;
+}
+
+.pagination li.active {
+  background-color: #0077cc;
+  color: white;
+}
+
+/* New styles for the table to match the pagination look */
+.valihuudot-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 2rem auto 0 auto;
+  background: transparent;
+}
+
+.valihuudot-table th,
+.valihuudot-table td {
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+
+.valihuudot-table tbody tr {
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+
+.pagination-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+}
+
+.valihuudot-table td:nth-child(2), 
+.valihuudot-table th:nth-child(2) {
+  text-align: left;
+  width: 100%;
+}
+

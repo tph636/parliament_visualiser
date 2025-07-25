@@ -49,7 +49,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
 
     response.json(updatedMembers)
   } catch (err) {
-    console.error('Error:', err);
+    console.error('Error:', err.message);
     response.status(500).send('Internal Server Error');
   }
 });
@@ -109,7 +109,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
 
     response.json(updatedMember);
   } catch (err) {
-    console.error('Error:', err);
+    console.error('Error:', err.message);
     response.status(500).send('Internal Server Error');
   }
 });

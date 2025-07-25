@@ -1,5 +1,7 @@
 import { useLoaderData } from "@remix-run/react";
 import PersonInfo from "../components/PersonInfo/PersonInfo";
+import ValihuudotList from "../components/ValihuudotList/ValihuudotList";
+import { useEffect, useState } from 'react';
 
 export const loader = async ({ params }) => {
   const baseURL = process.env.INTERNAL_BACKEND_API_URL;
@@ -19,9 +21,19 @@ export const headers = () => ({
 
 export default function MemberPage() {
   const { member } = useLoaderData();
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   return (
     <>
       <PersonInfo member={member} />
+
+      {isHydrated && (
+        <ValihuudotList personId={member.person_id} />
+      )}
     </>
   );
 }
