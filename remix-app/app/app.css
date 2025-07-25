@@ -16,22 +16,14 @@ header {
 }
 
 .main-content {
+    background-color: white;
     display: flex;
     flex-direction: column;
     width: 900px;
     margin: 10px auto;
 }
 
-.member-info {
-    background-color: white;
-    box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.1);
-    padding: 13px;
-}
 
-.member-image {
-    width: 200px;
-    height: auto;
-}
 
 /* Make card grid switch to single column when screen width is less than 900px */
 @media (max-width: 900px) {

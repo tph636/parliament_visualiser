@@ -24,9 +24,9 @@ export default function Index() {
   const { members } = useLoaderData();
 
   return (
-    <>
+    <div className="main-content">
       <Seatingplan members={members} />
       <CardList members={members} />
-    </>
+    </div>
   );
 }

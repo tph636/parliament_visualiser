@@ -41,12 +41,11 @@ const ValihuudotList = ({ personId }) => {
   return (
     
     <div className="valihuudot-container">
-      <h2>Valihuudot</h2>
       <table className="valihuudot-table">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Statement</th>
+            <th>Päiväys</th>
+            <th>Välihuuto</th>
             <th>PTK</th>
           </tr>
         </thead>
@@ -82,8 +81,8 @@ const ValihuudotList = ({ personId }) => {
       </table>
       {pageCount > 1 && (
         <ReactPaginate
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
+          previousLabel={"⬅"}
+          nextLabel={"➡"}
           breakLabel={"..."}
           breakClassName={"break-me"}
           pageCount={pageCount}

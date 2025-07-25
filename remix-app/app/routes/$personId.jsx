@@ -30,10 +30,12 @@ export default function MemberPage() {
   return (
     <>
       <PersonInfo member={member} />
+      <div className="main-content">
+        {isHydrated && (
+          <ValihuudotList personId={member.person_id} />
+        )}
+      </div>
 
-      {isHydrated && (
-        <ValihuudotList personId={member.person_id} />
-      )}
     </>
   );
 }
