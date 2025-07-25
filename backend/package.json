@@ -27,7 +27,6 @@
     "eslint-plugin-react": "^7.37.5",
     "globals": "^16.3.0",
     "jest": "^30.0.5",
-    "pg": "^8.16.3",
     "supertest": "^7.1.4",
     "testcontainers": "^11.4.0"
   }
