@@ -1,6 +1,7 @@
 import { useLoaderData } from "@remix-run/react";
 import PersonInfo from "../components/PersonInfo/PersonInfo";
 import ValihuudotList from "../components/ValihuudotList/ValihuudotList";
+import Menu from '../components/Menu/Menu';
 import { useEffect, useState } from 'react';
 
 export const loader = async ({ params }) => {
@@ -31,9 +32,12 @@ export default function MemberPage() {
     <>
       <PersonInfo member={member} />
       <div className="main-content">
-        {isHydrated && (
-          <ValihuudotList personId={member.person_id} />
-        )}
+        <Menu />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          {isHydrated && (
+            <ValihuudotList personId={member.person_id} />
+          )}
+        </div>
       </div>
 
     </>

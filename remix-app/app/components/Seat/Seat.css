@@ -5,16 +5,15 @@
   aspect-ratio: 1;
   border-radius: 50%;
   box-shadow: 0 0 7px hsla(0, 0%, 0%, 0.9);
-  cursor: pointer;
-  transform: translate(-50%, -50%); /* Shifts seat so its center aligns with its position */
+  transform: translate(-50%, -50%);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* 🌟 Hover effect */
 .seat:hover,
 .chairman:hover {
-  transform: translate(-50%, -50%) scale(1.2); /* combines center shift with gentle enlargement */
+  transform: translate(-50%, -50%) scale(1.2);
   box-shadow:
     0 0 14px hsla(0, 0%, 0%, 0.6),
-    0 0 8px hsla(220, 100%, 70%, 0.6); /* stacked shadow for punchier glow */
+    0 0 8px hsla(220, 100%, 70%, 0.6);
 }
