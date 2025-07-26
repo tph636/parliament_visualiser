@@ -22,10 +22,27 @@ header {
     max-width: 1100px;
     width: 100%;
     margin: 10px auto;
-    padding: 0 16px;
+    padding: 16px;
+    gap: 16px; /* Space between menu and content */
 }
 
+/* Left side menu container */
+.main-content__menu {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
+/* Right side content container */
+.main-content__content {
+    flex: 1; /* Take remaining space */
+    min-width: 0; /* Allow content to shrink below its natural size */
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack content vertically */
+    width: 100%; /* Ensure it takes full width */
+    min-height: 0; /* Allow it to shrink */
+}
 
 /* Make card grid switch to single column when screen width is less than 900px */
 @media (max-width: 1100px) {
@@ -39,5 +56,10 @@ header {
         margin: 0;
         width: 100vw;
         min-width: initial;
+        flex-direction: column; /* Stack menu and content vertically on mobile */
+    }
+    
+    .main-content__menu {
+        flex-shrink: 1; /* Allow menu to shrink on mobile */
     }
 }

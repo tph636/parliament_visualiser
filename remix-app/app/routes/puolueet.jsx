@@ -2,8 +2,8 @@ import { useLoaderData } from "@remix-run/react";
 import Menu from '../components/Menu/Menu';
 
 
-
 export default function Index() {
+
   const menuItems = [
     { name: "Etusivu", path: "/" },
     { name: "Kansanedustajat", path: "/kansanedustajat" },
@@ -13,13 +13,7 @@ export default function Index() {
 
   return (
     <div className="main-content">
-      <div className="main-content__menu">
-        <Menu items={menuItems} />
-      </div>
-      <div className="main-content__content">
-        <h1>Tervetuloa välihuutoon!</h1>
-        <p>"Välihuuto on lyhyt, äänekäs huomautus, jonka kansanedustaja voi esittää täysistunnossa toisen kansanedustajan pitämän puheenvuoron aikana."</p>
-      </div>
+      <Menu items={menuItems} />
     </div>
   );
 }

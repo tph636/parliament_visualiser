@@ -1,6 +1,7 @@
 .card-list {
   background-color: white;
-  box-shadow: 0 0 5px hsla(0, 0%, 0%, 0.1);
+  box-shadow: 0 4px 16px rgba(55,49,81,0.07);
+  border: 1.5px solid #ece8f6;
   margin-top: 10px;
   padding: 13px;
 }

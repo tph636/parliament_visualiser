@@ -4,7 +4,7 @@ import "./Card.css";
 
 const Card = ({ member }) => {
   return (
-    <Link to={`/${member.person_id}`} className="card" state={{ member }}>
+    <Link to={`/kansanedustaja/${member.person_id}`} className="card" state={{ member }}>
       <img
         loading='lazy'
         src={`${import.meta.env.VITE_BACKEND_API_URL}/images/low-res/${member.image}`}

@@ -20,10 +20,18 @@ export const headers = () => ({
   "Cache-Control": "max-age=3600"
 });
 
+
+
+
 export default function MemberPage() {
   const { member } = useLoaderData();
   const [isHydrated, setIsHydrated] = useState(false);
 
+  const menuItems = [
+    { name: "Tietoa", path: `/kansanedustaja/${member.person_id}` },
+    { name: "Välihuudot", path: `/kansanedustaja/${member.person_id}/välihuudot` },
+  ];
+  
   useEffect(() => {
     setIsHydrated(true);
   }, []);
@@ -31,15 +39,20 @@ export default function MemberPage() {
   return (
     <>
       <PersonInfo member={member} />
+
       <div className="main-content">
-        <Menu />
-        <div style={{ flex: 1, minWidth: 0 }}>
+      
+        <div className="main-content__menu">
+          <Menu items={menuItems} />
+        </div>
+
+        <div className="main-content__content">
           {isHydrated && (
             <ValihuudotList personId={member.person_id} />
           )}
         </div>
-      </div>
 
+      </div>
     </>
   );
 }

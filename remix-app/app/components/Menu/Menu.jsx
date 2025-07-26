@@ -2,15 +2,16 @@ import React from "react";
 import "./Menu.css";
 import { Link } from "@remix-run/react";
 
-export default function Menu() {
+export default function Menu({ items }) {
   return (
     <nav className="menu">
       <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/members">Members</Link></li>
-        <li><Link to="/valihuudot">Välihuudot</Link></li>
-        {/* Add more links as needed */}
+        {items.map(({ name, path }, index) => (
+          <li key={index}>
+            <Link to={path}>{name}</Link>
+          </li>
+        ))}
       </ul>
     </nav>
   );
-} 
+}
