@@ -1,13 +1,16 @@
 import './Seatingplan.css';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Seat from '../Seat/Seat';
 import type { Member } from "../../types/Member";
 
+// Calculate the X/Y coordinates of a point on an ellipse given arc distance
 function ellipsePoint(a: number, b: number, arcLength: number) {
+  // Helper to calculate Euclidean distance between two points
   function distance(x1: number, y1: number, x2: number, y2: number) {
-    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
   }
 
+  // X/Y positions on the ellipse using parametric equations
   function ellipseX(theta: number) {
     return a * Math.cos(theta);
   }
@@ -20,6 +23,7 @@ function ellipsePoint(a: number, b: number, arcLength: number) {
     return Math.atan2(b * Math.cos(theta), -a * Math.sin(theta));
   }
 
+  // Walk along the ellipse until desired arc length is reached
   let theta = Math.PI / 2;
   let length = 0;
   const step = 0.001;
@@ -36,6 +40,11 @@ function ellipsePoint(a: number, b: number, arcLength: number) {
   return { x: ellipseX(theta), y: ellipseY(theta), angle: ellipseAngle(theta) };
 }
 
+// Format floating-point numbers into deterministic percentages for SSR hydration
+function formatPercentage(value: number): string {
+  return `${parseFloat(value.toFixed(4))}%`;
+}
+
 type SeatingplanProps = {
   members: Member[];
 };
@@ -44,11 +53,11 @@ const Seatingplan = ({ members }: SeatingplanProps) => {
   const [hoveredSeat, setHoveredSeat] = useState<Member | null>(null);
   const [infoboxPosition, setInfoboxPosition] = useState({ top: 0, left: 0 });
 
-  // Top-down seating plan; each row is split into 4 sections just like in the parliament
+  // Configuration: Number of seats per row, split into sections (like real parliament seating)
   const plan = [
-    [1],          // Chairman
-    [5, 3, 3, 5], // 1st. row
-    [7, 4, 4, 7], // 2nd. row ...
+    [1],
+    [5, 3, 3, 5],
+    [7, 4, 4, 7],
     [8, 5, 5, 8],
     [10, 6, 6, 10],
     [8, 7, 7, 8],
@@ -57,17 +66,70 @@ const Seatingplan = ({ members }: SeatingplanProps) => {
     [0, 9, 9, 0]
   ];
 
-  let a = 3;
-  let b = 2.5;
   const ellipseArcLen = 15;
-  const seatWidth = ellipseArcLen / 37; // Width of the seat
-  const gapWidth = seatWidth * 2; // Gap between seat groups (width of the hallway)
-  const margin = seatWidth * 0.2; // Gap between each individual seat
+  const seatWidth = ellipseArcLen / 37;
+  const gapWidth = seatWidth * 2;
+  const margin = seatWidth * 0.2;
 
-  let seatIndex = -1;
-  let rowNum = 1;
+  // 🧠 Precompute all seat layout and style props to ensure SSR/client consistency
+  const precomputedLayout = useMemo(() => {
+    let a = 3, b = 2.5;
+    let seatIndex = -1;
+    const layout: { member: Member; style: React.CSSProperties; type: string }[] = [];
 
-  const handleMouseEnter = (member: Member, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    plan.forEach((row, rowIndex) => {
+      const seatsInRow = row.reduce((sum, n) => sum + n, 0);
+      seatIndex += seatsInRow;
+      let currentSeatIndex = seatIndex;
+      let nthSeatInRow = 1;
+      const seatsBeforeMiddle = row.length > 1 ? row[0] + row[1] : 0;
+
+      for (let countIndex = 0; countIndex < row.length; countIndex++) {
+        const count = row[countIndex];
+
+        for (let i = 0; i < count; i++) {
+          const seatFromMiddle = nthSeatInRow <= seatsBeforeMiddle
+            ? Math.abs(nthSeatInRow - seatsBeforeMiddle) + 1
+            : Math.abs(nthSeatInRow - seatsBeforeMiddle);
+
+          const distFromMiddle = row[1] < seatFromMiddle
+            ? gapWidth / 2 + seatWidth * seatFromMiddle + margin * seatFromMiddle
+            : seatWidth * seatFromMiddle + margin * seatFromMiddle;
+
+          const pointFromMiddle = ellipsePoint(a, b, distFromMiddle);
+          const seat_x = nthSeatInRow <= seatsBeforeMiddle ? pointFromMiddle.x : -pointFromMiddle.x;
+          const seat_y = pointFromMiddle.y;
+
+          const member = members.find(mem => mem.seat_number === currentSeatIndex);
+          if (member) {
+            layout.push({
+              member,
+              type: seatsInRow === 1 ? "chairman" : "seat",
+              style: {
+                position: "absolute",
+                width: formatPercentage((seatWidth * 100) / 15),
+                left: formatPercentage(seatsInRow === 1 ? 50 : 50 + (seat_x * 100) / 15),
+                top: formatPercentage(seatsInRow === 1 ? 10 : (seat_y * 100) / 10)
+              }
+            });
+          }
+
+          nthSeatInRow++;
+          currentSeatIndex--;
+        }
+      }
+
+      // Expand ellipse for next row (to simulate visual depth)
+      const oldb = b;
+      b += seatWidth + gapWidth / 2;
+      a = a * b / oldb;
+    });
+
+    return layout;
+  }, [members]);
+
+  // 🖱️ Handle hover to display infobox over hovered seat
+  const handleMouseEnter = (member: Member, event: React.MouseEvent<HTMLDivElement>) => {
     setHoveredSeat(member);
 
     const container = document.querySelector('.seating-plan');
@@ -76,111 +138,35 @@ const Seatingplan = ({ members }: SeatingplanProps) => {
     const seatRect = (event.target as HTMLDivElement).getBoundingClientRect();
 
     setInfoboxPosition({
-      top: seatRect.top - containerRect.top - 10, // slightly above
-      left: seatRect.left - containerRect.left + seatRect.width / 2 // centered horizontally
+      top: seatRect.top - containerRect.top - 10,
+      left: seatRect.left - containerRect.left + seatRect.width / 2
     });
-  };
-
-
-  const generateRow = (row: number[], rowIndex: number) => {
-    const seatsInRow = row.reduce((sum: number, i: number) => sum + i, 0);
-    seatIndex += seatsInRow;
-    let currentSeatIndex = seatIndex;
-    let nthSeatInRow = 1;
-
-    const rowSeats = []; // Append Seat components here
-
-    const seatsBeforeMiddle = row.length > 1 ? row[0] + row[1] : 0; // Seats before the middle hallway
-
-    // Start generating seats from left to right. countIndex tells the seat group of the current row
-    for (let countIndex = 0; countIndex < row.length; countIndex++) {
-      const count = row[countIndex];
-      const seatGroup = [];
-
-      // Generate all the seats in a seat group
-      for (let i = 0; i < count; i++) {
-
-        // Number of the seat starting from the middle hallway
-        const seatFromMiddle = nthSeatInRow <= seatsBeforeMiddle ? 
-          Math.abs(nthSeatInRow - seatsBeforeMiddle) + 1 : 
-          Math.abs(nthSeatInRow - seatsBeforeMiddle);
-
-        // Distance from the middle hallway
-        const distFromMiddle = row[1] < seatFromMiddle ? 
-          gapWidth / 2 + seatWidth * seatFromMiddle + margin * seatFromMiddle : 
-          seatWidth * seatFromMiddle + margin * seatFromMiddle;
-
-        // Calculate the coordinates for the seat on the ellipse
-        const pointFromMiddle = ellipsePoint(a, b, distFromMiddle);
-
-        // Seat x-coordinate (either on the left or right of the middle hallway)
-        const seat_x = nthSeatInRow <= seatsBeforeMiddle ? 
-          pointFromMiddle.x : 
-          -pointFromMiddle.x;
-
-        // Seat y-coordinate
-        const seat_y = pointFromMiddle.y;
-
-        const member = members.find((mem: Member) => mem.seat_number === currentSeatIndex);
-        if (!member) {
-          nthSeatInRow += 1;
-          currentSeatIndex -= 1;
-          continue;
-        }
-
-        seatGroup.push(
-          <Seat
-            key={`seat-${currentSeatIndex}`}
-            style={{
-              position: "absolute", // Allows each seat to be placed freely within the seating-plan container
-
-              // Set the seat’s width as a percentage of the container, based on seatWidth and scaling factor
-              width: `${(seatWidth * 100) / 15}%`,
-
-
-              // Position seat horizontally:
-              // Chairman is centered at 50%; other seats are offset based on their elliptical X coordinate
-              left: `${seatsInRow === 1 ? 50 : 50 + (seat_x * 100) / 15}%`,
-
-              // Position seat vertically:
-              // Chairman is manually placed at 10%; other seats use their elliptical Y coordinate, plus offset to push them lower
-              top: `${seatsInRow === 1 ? 10 : (seat_y * 100) / 10}%`,
-
-
-            }}
-            type={seatsInRow === 1 ? "chairman" : "seat"} // Assign special type if seat is chairman
-            member={member} // Member data for that seat
-            onMouseEnter={(e) => handleMouseEnter(member, e)}
-            onMouseLeave={() => setHoveredSeat(null)} 
-          />
-        );
-
-        nthSeatInRow += 1;
-        currentSeatIndex -= 1;
-      }
-
-      rowSeats.push(<div className='seatGroup' key={`group-${rowIndex}-${countIndex}`}>{seatGroup}</div>);
-    }
-
-
-    // Make the ellipse larger for the next row by updating a and b
-    rowNum += 1;
-    const oldb = b;
-    b += seatWidth + gapWidth / 2;
-    a = a * b / oldb;
-
-    return (
-      <div className='row' key={`row-${rowIndex}`}>
-        {rowSeats}
-      </div>
-    );
   };
 
   return (
     <div className="seating-plan">
-      {plan.map((row, rowIndex) => generateRow(row, rowIndex))}
+      {/* Render precomputed seat layout */}
+      {precomputedLayout.map(({ member, style, type }) => (
+        <Seat
+          key={`seat-${member.seat_number}`}
+          style={style}
+          type={type}
+          member={member}
+          onMouseEnter={(e) => handleMouseEnter(member, e)}
+          onMouseLeave={() => setHoveredSeat(null)}
+        />
+      ))}
+
+      {/* Tooltip-style infobox when a seat is hovered */}
       {hoveredSeat && (
-        <div className="infobox" style={{ top: `${infoboxPosition.top}px`, left: `${infoboxPosition.left}px`, transform: 'translateX(-50%) translateY(-100%)' }}>
+        <div
+          className="infobox"
+          style={{
+            top: `${infoboxPosition.top}px`,
+            left: `${infoboxPosition.left}px`,
+            transform: 'translateX(-50%) translateY(-100%)'
+          }}
+        >
           <p>{hoveredSeat.firstname} {hoveredSeat.lastname}</p>
           <p>{hoveredSeat.party}</p>
         </div>
