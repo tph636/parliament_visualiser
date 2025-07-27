@@ -20,8 +20,8 @@ services:
     networks:
       - app-network
 
-  remix-app:
-    build: ./remix-app
+  frontend:
+    build: ./frontend
     environment:
       PORT: ${FRONTEND_PORT:-3001}
     depends_on:

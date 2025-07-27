@@ -32,9 +32,9 @@ services:
     networks:
       - app-network
 
-  remix-app:
+  frontend:
     build:
-      context: ./remix-app
+      context: ./frontend
       target: development
     env_file: .env.dev
     environment:
@@ -42,7 +42,7 @@ services:
     ports:
       - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     volumes:
-      - ./remix-app:/app
+      - ./frontend:/app
     networks:
       - app-network
 
