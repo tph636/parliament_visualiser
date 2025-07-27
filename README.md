@@ -73,7 +73,7 @@ Before you begin, ensure you have the following installed on your system:
 
   # Remix app
   FRONTEND_PORT=3001
-  VITE_BACKEND_API_URL=/api
+  VITE_BACKEND_API_URL=
   INTERNAL_BACKEND_API_URL=http://backend:3000
   ```
 
@@ -124,3 +124,9 @@ Before you begin, ensure you have the following installed on your system:
 5. **Additional information**
 
    Ports can be disabled on the system; docker will automatically open ports when the containers are started
+
+   Purge all containers:
+    docker stop $(docker ps -aq) && \
+    docker rm -f $(docker ps -aq) && \
+    docker system prune -a --volumes -f
+
