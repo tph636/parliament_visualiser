@@ -51,6 +51,7 @@ export default function MemberPage(): JSX.Element {
       <PersonInfo member={member} />
       <div className="main-content">
         <div className="main-content__menu">
+          <BackButton />
           <Menu items={menuItems} />
         </div>
 

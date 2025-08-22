@@ -108,15 +108,11 @@ Before you begin, ensure you have the following installed on your system:
    docker compose --env-file .env.prod -f compose.yaml -f compose.prod.yaml start
    ```
 
-5. **Completely reset the containers and their volumes**
+5. **Completely delete the containers and their volumes and networks**
 
    ```bash
-   docker compose down
-   docker volume prune -f
-   docker compose down -v
-
-   # (Optional) Remove Images (if you want a full rebuild)
-   docker compose down --rmi all -v
+   docker compose down --volumes --rmi all --remove-orphans
+   docker volume rm $(docker volume ls -q | grep '_postgres_data$')
    ```
 
    After build as normal
