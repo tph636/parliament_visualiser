@@ -44,7 +44,6 @@ export default function MemberPage() {
       <div className="main-content">
       
         <div className="main-content__menu">
-          <BackButton />
           <Menu items={menuItems} />
         </div>
 
