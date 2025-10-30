@@ -60,8 +60,9 @@ data/
 tmp/
 
 # Environment files (if used)
-.env
-.env.*
+**/.env
+**/.env.*
+!**/.env.example
 
 # Build artifacts
 *.tar

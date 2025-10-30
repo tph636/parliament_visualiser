@@ -1,13 +1,18 @@
 const { Pool } = require('pg');
-require('dotenv').config(); // Load environment variables from .env file
+const path = require('path');
 
-// Configure your PostgreSQL connection parameters
+// Load environment variables from per-folder env files
+const nodeEnv = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+const envPath = path.resolve(__dirname, `../.env.${nodeEnv}`);
+require('dotenv').config({ path: envPath });
+
+// Configure PostgreSQL using POSTGRES_* first, fallback to legacy DB_*
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
-  password: process.env.DB_PASSWORD
+  user: process.env.POSTGRES_USER || process.env.DB_USER,
+  host: process.env.POSTGRES_HOST || process.env.DB_HOST,
+  database: process.env.POSTGRES_DB || process.env.DB_NAME,
+  port: Number(process.env.POSTGRES_PORT || process.env.DB_PORT),
+  password: process.env.POSTGRES_PASSWORD || process.env.DB_PASSWORD,
 });
 
 // Function to fetch all rows from a query
