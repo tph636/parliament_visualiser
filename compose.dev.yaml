@@ -1,8 +1,9 @@
 services:
   postgres:
-    env_file: .env.dev
+    env_file:
+      - ./backend/.env.dev
     ports:
-      - "${DB_PORT:-5432}:${DB_PORT:-5432}"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -12,11 +13,10 @@ services:
     build:
       context: ./backend
       target: development
-    env_file: .env.dev
-    environment:
-      - PORT=${BACKEND_PORT}
+    env_file:
+      - ./backend/.env.dev
     ports:
-      - "${BACKEND_PORT}:${BACKEND_PORT}"
+      - "3000:3000"
     volumes:
       - ./shared_assets:/app/assets
     networks:
@@ -26,7 +26,8 @@ services:
     build:
       context: ./data_management
       target: development
-    env_file: .env.dev
+    env_file:
+      - ./data_management/.env.dev
     volumes:
       - ./shared_assets:/app/assets
     networks:
@@ -36,11 +37,10 @@ services:
     build:
       context: ./frontend
       target: development
-    env_file: .env.dev
-    environment:
-      - PORT=${FRONTEND_PORT}
+    env_file:
+      - ./frontend/.env.dev
     ports:
-      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+      - "3001:3001"
     volumes:
       - ./frontend:/app
     networks:
