@@ -26,59 +26,8 @@ Before you begin, ensure you have the following installed on your system:
 
 
 2. **Create Environment Files:**
-
-   You need to create two environment files in project root: `.env.dev` and `.env.prod`. These files will contain environment-specific variables.
-
-- **`.env.dev`** (Development environment):
-
-  ```plaintext
-  # Postgres variables used by the Postgres image
-  POSTGRES_USER=postgres
-  POSTGRES_PASSWORD=securepassword
-  POSTGRES_DB=project_db
-
-  # Postgres variables used by backend and data_management
-  DB_HOST=postgres
-  DB_USER=postgres
-  DB_PASSWORD=securepassword
-  DB_NAME=project_db
-  DB_PORT=5432
-
-  # Express backend
-  BACKEND_PORT=3000
-
-  # Remix app
-  FRONTEND_PORT=3001
-  VITE_BACKEND_API_URL=http://localhost:3000
-  INTERNAL_BACKEND_API_URL=http://backend:3000
-  ```
-
-- **`.env.prod`** (Production environment):
-
-  ```plaintext
-  # Postgres variables used by the Postgres image
-  POSTGRES_USER=postgres
-  POSTGRES_PASSWORD=securepassword
-  POSTGRES_DB=project_db
-
-  # Postgres variables used by backend and data_management
-  DB_HOST=postgres
-  DB_USER=postgres
-  DB_PASSWORD=securepassword
-  DB_NAME=project_db
-  DB_PORT=5432
-
-  # Express backend
-  BACKEND_PORT=3000
-
-  # Remix app
-  FRONTEND_PORT=3001
-  VITE_BACKEND_API_URL=
-  INTERNAL_BACKEND_API_URL=http://backend:3000
-  ```
-
-   Replace the placeholder values with your actual configuration.
-
+   Follow .env.example files and create .env.dev or .env.prod files in frontend, backend and data_management folders.
+   
 3. **Build and Start the Containers:**
 
    Build and start development:
