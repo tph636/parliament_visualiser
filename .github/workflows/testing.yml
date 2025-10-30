@@ -1,0 +1,24 @@
+name: Automated testing for main push
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test project
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Test application
+        working-directory: ./backend
+        run: npm test
+
+      - name: Run application
+        working-directory: ./backend
+        run: npm start
