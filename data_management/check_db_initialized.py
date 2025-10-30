@@ -3,11 +3,11 @@ import psycopg2
 
 def table_exists():
     conn = psycopg2.connect(
-        dbname=os.environ.get("POSTGRES_DB") or os.environ["DB_NAME"],
-        user=os.environ.get("POSTGRES_USER") or os.environ["DB_USER"],
-        password=(os.environ.get("POSTGRES_PASSWORD") or os.environ.get("DB_PASSWORD", "")),
-        host=(os.environ.get("POSTGRES_HOST") or os.environ.get("DB_HOST", "postgres")),
-        port=(os.environ.get("POSTGRES_PORT") or os.environ.get("DB_PORT", 5432)),
+        dbname=os.environ["POSTGRES_DB"],
+        user=os.environ["POSTGRES_USER"],
+        password=os.environ.get("POSTGRES_PASSWORD", ""),
+        host=os.environ.get("POSTGRES_HOST", "postgres"),
+        port=os.environ.get("POSTGRES_PORT", 5432),
     )
     cur = conn.cursor()
     cur.execute("SELECT to_regclass('public.valihuudot') IS NOT NULL;")
