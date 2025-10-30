@@ -13,11 +13,11 @@ describe("/api/valihuudot/:person_id/:page", () => {
   beforeAll(async () => {
     container = await new PostgreSqlContainer("postgres:16").start();
 
-    process.env.DB_HOST = container.getHost();
-    process.env.DB_PORT = container.getPort().toString();
-    process.env.DB_USER = container.getUsername();
-    process.env.DB_PASSWORD = container.getPassword();
-    process.env.DB_NAME = container.getDatabase();
+    process.env.POSTGRES_HOST = container.getHost();
+    process.env.POSTGRES_PORT = container.getPort().toString();
+    process.env.POSTGRES_USER = container.getUsername();
+    process.env.POSTGRES_PASSWORD = container.getPassword();
+    process.env.POSTGRES_DB = container.getDatabase();
 
     app = require("../app");
     pool = require("../utils/dbUtils").pool;

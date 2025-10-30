@@ -16,11 +16,11 @@ describe("/api/member_of_parliament", () => {
     container = await new PostgreSqlContainer("postgres:16").start();
 
     // Map container values to env variables for dbUtils.js
-    process.env.DB_HOST = container.getHost();
-    process.env.DB_PORT = container.getPort().toString();
-    process.env.DB_USER = container.getUsername();
-    process.env.DB_PASSWORD = container.getPassword();
-    process.env.DB_NAME = container.getDatabase();
+    process.env.POSTGRES_HOST = container.getHost();
+    process.env.POSTGRES_PORT = container.getPort().toString();
+    process.env.POSTGRES_USER = container.getUsername();
+    process.env.POSTGRES_PASSWORD = container.getPassword();
+    process.env.POSTGRES_DB = container.getDatabase();
 
     // Load app and pool after env variables are set
     app = require("../app");
