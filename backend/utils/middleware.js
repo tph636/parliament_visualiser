@@ -10,8 +10,6 @@ const unknownEndPoint = (request, response) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-    // Add errors when they are discovered
-
     logger.error(error.message)
     next(error)
 }

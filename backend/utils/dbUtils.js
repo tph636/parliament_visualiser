@@ -6,7 +6,6 @@ const nodeEnv = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
 const envPath = path.resolve(__dirname, `../.env.${nodeEnv}`);
 require('dotenv').config({ path: envPath });
 
-// Configure PostgreSQL using POSTGRES_* variables exclusively
 const pool = new Pool({
   user: process.env.POSTGRES_USER,
   host: process.env.POSTGRES_HOST,

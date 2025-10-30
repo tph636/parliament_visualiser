@@ -45,7 +45,7 @@ valihuutoRouter.get('/:person_id/:page', async (request, response) => {
       person_id,
       page: pageNumber,
       results: valihuudot,
-      total // <-- Add this line
+      total
     });
   } catch (err) {
     console.error('Error:', err.message);
