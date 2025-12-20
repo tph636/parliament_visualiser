@@ -1,7 +1,7 @@
 services:
   postgres:
     env_file:
-      - ./backend/.env.prod
+      - ./env/backend.prod.env
     expose:
       - "5432"
     volumes:
@@ -14,7 +14,7 @@ services:
       context: ./backend
       target: production
     env_file:
-      - ./backend/.env.prod
+      - ./env/backend.prod.env
     ports:
       - "3000:3000"
     volumes:
@@ -27,7 +27,7 @@ services:
       context: ./data_management
       target: production
     env_file:
-      - ./data_management/.env.prod
+      - ./env/datamanagement.prod.env
     volumes:
       - ./shared_assets:/app/assets
     networks:
@@ -40,7 +40,7 @@ services:
       args:
         VITE_BACKEND_API_URL: "${VITE_BACKEND_API_URL}"
     env_file:
-      - ./frontend/.env.prod
+      - ./env/frontend.prod.env
     ports:
       - "3001:3001"
     networks:

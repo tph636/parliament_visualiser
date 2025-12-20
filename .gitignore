@@ -59,10 +59,16 @@ volumes/
 data/
 tmp/
 
-# Environment files (if used)
-**/.env
-**/.env.*
-!**/.env.example
+# Ignore all environment files
+env/*.env
+env/*.dev.env
+env/*.prod.env
+**/*.env
+**/*.env.*
+
+# Keep template env files
+!env/templates/*.template
+
 
 # Build artifacts
 *.tar
