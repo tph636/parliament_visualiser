@@ -13,7 +13,15 @@ export default function Index() {
 
   return (
     <div className="main-content">
-      <Menu items={menuItems} />
+      
+      <div className="main-content__menu">
+        <Menu items={menuItems} />
+      </div>
+
+      <div className="main-content__content">
+        <p>TODO</p>
+      </div>
+
     </div>
   );
 }

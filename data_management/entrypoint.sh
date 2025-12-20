@@ -19,6 +19,9 @@ if [ ! -d "$IMG_DIR" ] || [ -z "$(ls -A $IMG_DIR 2>/dev/null)" ]; then
     NEED_INIT=1
 fi
 
+# Wait for postgres to start
+sleep 10
+
 # Check for database tables (example: check for 'valihuudot' table)
 TABLE_EXISTS=$(python check_db_initialized.py)
 if [ "$TABLE_EXISTS" != "1" ]; then

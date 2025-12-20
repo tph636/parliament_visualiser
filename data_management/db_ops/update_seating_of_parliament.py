@@ -9,6 +9,8 @@ def fetch_data():
     return response.json()
 
 def main(args=None):
+    print("Updating seating of parliament postgres")
+
     conn, cursor = connectToDb()
 
     # Drop the table if it already exists

@@ -14,6 +14,8 @@ def get_latest_downloaded_number(folder):
     return max_number
 
 def main(args=None):
+    print("Downloading pöytäkirjat")
+
     folder = './assets/documents/2024'
     base_url = 'https://s3-eu-west-1.amazonaws.com/eduskunta-avoindata-documents-prod/vaski%2FPTK-{}%2B2024-vp.pdf'
     
@@ -22,7 +24,7 @@ def main(args=None):
     
     latest_number = get_latest_downloaded_number(folder)
     startNum = latest_number + 1
-    
+        
     while True:
         url = base_url.format(startNum)
         response = requests.get(url)
@@ -34,7 +36,7 @@ def main(args=None):
             print(f'Downloaded: {file_path}')
             startNum += 1
         else:
-            print(f'Failed to download: PTK-{startNum}+2024-vp.pdf (Status code: {response.status_code})')
+            print(f'FINISHED DOWNLOADING. Failed to download: PTK-{startNum}+2024-vp.pdf (Status code: {response.status_code}), this is likely unimportant if PTK number is not 1.')
             break
 
 if __name__ == "__main__":

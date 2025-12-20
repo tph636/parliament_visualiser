@@ -6,6 +6,8 @@ from db_ops.extractVälihuudot import extract_välihuudot
 from db_ops.välihuuto import Välihuuto
 
 def main(args=None):
+    print("Updating valihuudot postgres")
+
     # Connect to the database
     conn, cursor = connectToDb()
 

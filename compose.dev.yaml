@@ -32,6 +32,9 @@ services:
       - ./shared_assets:/app/assets
     networks:
       - app-network
+    depends_on:
+      - postgres
+      
 
   frontend:
     build:

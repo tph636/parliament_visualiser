@@ -1,0 +1,26 @@
+.member-details {
+    background-color: white;
+    box-shadow: 0 4px 16px rgba(55,49,81,0.07);
+    border: 1.5px solid #ece8f6;
+    line-height: 1.6;
+    padding: 30px;
+  }
+  
+  .member-details h2 {
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: rgb(55, 49, 81);
+    border-bottom: 2px solid #eee;
+    padding-bottom: 4px;
+  }
+  
+  .member-details ul {
+    padding-left: 20px;
+  }
+  
+  .member-details li {
+    margin-bottom: 6px;
+  }
+  

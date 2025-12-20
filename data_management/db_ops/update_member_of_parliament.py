@@ -2,8 +2,12 @@ import requests
 from time import sleep
 from db_ops.db_util import connectToDb
 import xml.etree.ElementTree as ET
+import json
+
 
 def extract_person_data(xml_str):
+    print("Updating member of parliament postgres")
+
     if not xml_str:
         return None
 
@@ -76,18 +80,27 @@ def extract_person_data(xml_str):
 
         # Sidonnaisuudet
         for affiliation in root.findall('.//Sidonnaisuudet/Sidonnaisuus'):
+            group = affiliation.findtext('RyhmaOtsikko')
             sidonta = affiliation.findtext('Sidonta')
+
+            # Skip gifts
+            if group == "Lahjailmoitus":
+                continue
+
             if sidonta and sidonta != "Ei ilmoitettavia sidonnaisuuksia":
                 data['affiliations'].append(sidonta)
 
         # Lahjailmoitukset
         for gift in root.findall('.//Sidonnaisuudet/Sidonnaisuus[RyhmaOtsikko="Lahjailmoitus"]'):
-            data['gifts'].append(gift.findtext('Sidonta'))
+            sidonta = gift.findtext('Sidonta')
+            if sidonta:
+                data['gifts'].append(sidonta)
 
     except Exception as e:
         print(f"Error parsing XML: {e}")
 
     return data
+
 
 def main(args=None):
     conn, cursor = connectToDb()
@@ -111,6 +124,7 @@ def main(args=None):
 
     row_data = [row for id in member_ids for row in fetch_data(id[0])["rowData"]]
 
+    # Drop and recreate table with JSONB fields
     cursor.execute("DROP TABLE IF EXISTS member_of_parliament")
     cursor.execute('''
         CREATE TABLE member_of_parliament (
@@ -124,13 +138,13 @@ def main(args=None):
             current_municipality TEXT,
             profession TEXT,
             parliament_group TEXT,
-            education TEXT,
-            work_history TEXT,
-            minister_roles TEXT,
-            current_committees TEXT,
-            previous_committees TEXT,
-            affiliations TEXT,
-            gifts TEXT
+            education JSONB,
+            work_history JSONB,
+            minister_roles JSONB,
+            current_committees JSONB,
+            previous_committees JSONB,
+            affiliations JSONB,
+            gifts JSONB
         )
     ''')
 
@@ -153,17 +167,18 @@ def main(args=None):
             person_data['current_municipality'],
             person_data['profession'],
             person_data['parliament_group'],
-            str(person_data['education']),
-            str(person_data['work_history']),
-            str(person_data['minister_roles']),
-            str(person_data['current_committees']),
-            str(person_data['previous_committees']),
-            str(person_data['affiliations']),
-            str(person_data['gifts'])
+            json.dumps(person_data['education']),
+            json.dumps(person_data['work_history']),
+            json.dumps(person_data['minister_roles']),
+            json.dumps(person_data['current_committees']),
+            json.dumps(person_data['previous_committees']),
+            json.dumps(person_data['affiliations']),
+            json.dumps(person_data['gifts'])
         ))
 
     conn.commit()
     conn.close()
+
 
 if __name__ == "__main__":
     main()
