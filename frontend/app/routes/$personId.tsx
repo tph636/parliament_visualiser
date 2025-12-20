@@ -1,7 +1,6 @@
 import { useLoaderData } from "react-router";
 import PersonInfo from "../components/PersonInfo/PersonInfo";
 import ValihuudotList from "../components/ValihuudotList/ValihuudotList";
-import BackButton from "../components/BackButton/BackButton";
 import Menu from "../components/Menu/Menu";
 import { useEffect, useState } from "react";
 import type { Member } from "../types/Member";
@@ -51,7 +50,6 @@ export default function MemberPage(): JSX.Element {
       <PersonInfo member={member} />
       <div className="main-content">
         <div className="main-content__menu">
-          <BackButton />
           <Menu items={menuItems} />
         </div>
 

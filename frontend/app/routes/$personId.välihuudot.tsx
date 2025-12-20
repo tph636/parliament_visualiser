@@ -3,7 +3,6 @@ import PersonInfo from "../components/PersonInfo/PersonInfo";
 import ValihuudotList from "../components/ValihuudotList/ValihuudotList";
 import Menu from '../components/Menu/Menu';
 import { useEffect, useState } from 'react';
-import BackButton from "~/components/BackButton/BackButton";
 
 export const loader = async ({ params }) => {
   const baseURL = process.env.INTERNAL_BACKEND_API_URL;

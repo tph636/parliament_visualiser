@@ -93,12 +93,12 @@ const ValihuudotList = ({ personId }: ValihuudotListProps) => {
         <ReactPaginate
           previousLabel={"⬅"}
           nextLabel={"➡"}
-          breakLabel={"..."}
-          breakClassName={"break-me"}
+          breakLabel={null}
           pageCount={pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={3}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={1}
           onPageChange={handlePageClick}
+          breakClassName={"break-me"}
           containerClassName={"pagination"}
           activeClassName={"active"}
           pageLinkClassName="pagination-link"
