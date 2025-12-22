@@ -6,7 +6,6 @@ import json
 
 
 def extract_person_data(xml_str):
-    print("Updating member of parliament postgres")
 
     if not xml_str:
         return None

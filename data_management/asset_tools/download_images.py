@@ -29,7 +29,6 @@ def download_and_resize_images(image_name):
         print(f"Failed to download {image_name}: {e}")
 
 def main(args=None):
-    print("Downloading member images")
 
     # Connect to the database
     conn, cursor = connectToDb()

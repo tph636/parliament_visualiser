@@ -6,7 +6,6 @@ from db_ops.extractVälihuudot import extract_välihuudot
 from db_ops.välihuuto import Välihuuto
 
 def main(args=None):
-    print("Updating valihuudot postgres")
 
     # Connect to the database
     conn, cursor = connectToDb()
@@ -25,10 +24,10 @@ def main(args=None):
     ''')
 
     # Define the documents folder
-    folder = './assets/documents/2024'
+    folder = './assets/documents/2025'
 
     # Regular expression to match the filenames
-    pattern = re.compile(r'PTK-(\d+)\+2024-vp\.pdf')
+    pattern = re.compile(r'PTK-(\d+)\+2025-vp\.pdf')
     count = 1
 
     # Process files in the documents folder

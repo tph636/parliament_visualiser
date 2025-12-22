@@ -11,8 +11,8 @@ def main():
     parser_download_images.set_defaults(func='asset_tools.download_images.main')
 
     # Subcommand for downloading documents
-    parser_download_images = subparsers.add_parser('download_documents_2024', help='Download 2024 PTK documents from the web')
-    parser_download_images.set_defaults(func='asset_tools.download_documents_2024.main')
+    parser_download_images = subparsers.add_parser('download_documents_2025', help='Download 2025 PTK documents from the web')
+    parser_download_images.set_defaults(func='asset_tools.download_documents_2025.main')
 
     # Subcommand for updating member of parliament
     parser_update_member = subparsers.add_parser('update_member_of_parliament', help='Update member of parliament data')

@@ -1,4 +1,3 @@
-import React from "react";
 import Menu from "../components/Menu/Menu";
 
 export default function Index(): JSX.Element {
@@ -19,6 +18,9 @@ export default function Index(): JSX.Element {
         <p>
           "Välihuuto on lyhyt, äänekäs huomautus, jonka kansanedustaja voi esittää
           täysistunnossa toisen kansanedustajan pitämän puheenvuoron aikana."
+        </p>
+        <p>
+          Välihuuto.fi näyttää Eduskunnan kauden 2025 tietoa.
         </p>
       </div>
     </div>
