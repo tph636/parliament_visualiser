@@ -21,7 +21,7 @@ Before you begin, ensure you have the following installed on your system:
 1. **Clone the Repository:**
 
    ```bash
-   git clone git@github.com:kar4nka/parliament_visualiser.git
+   git clone git@github.com:tph636/parliament_visualiser.git
    ```
 
 
@@ -63,7 +63,7 @@ Before you begin, ensure you have the following installed on your system:
    ```
 
    Production environment:
-   
+
    ```bash
    <site IP/domain>
    ```
