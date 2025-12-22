@@ -35,6 +35,7 @@ if [ "$NEED_INIT" = "1" ]; then
     python main.py update_member_of_parliament
     python main.py update_valihuudot
     python main.py download_images
+    echo "Finished initialization."
 else
     echo "Data already initialized. Skipping initialization."
 fi

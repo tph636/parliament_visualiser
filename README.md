@@ -1,6 +1,6 @@
 TODO: 
-* Do not download duplicate images if download_images.py is ran twice
-* Fix image width of cards for different party members
+* Puolueiden omat tilastot
+* Kansanedustajien pitämät puheet ja keyword search
 
 # Docker Setup Guide
 
@@ -26,38 +26,50 @@ Before you begin, ensure you have the following installed on your system:
 
 
 2. **Create Environment Files:**
-   Follow .env.example files and create .env.dev or .env.prod files in frontend, backend and data_management folders.
+   ```bash
+   chmod -x generate-template-envs.sh
+   ./generate-template-envs.sh
+   ```
    
 3. **Build and Start the Containers:**
 
    Build and start development:
 
    ```bash
-   docker compose --env-file .env.dev -f compose.yaml -f compose.dev.yaml up --build -d
+   docker compose -f compose.dev.yaml up --build -d
    ```
 
    Build and start production:
 
    ```bash
-   docker compose --env-file .env.prod -f compose.yaml -f compose.prod.yaml up --build -d
+   docker compose -f compose.prod.yaml up --build -d
    ```
 
 
-4. **Temporarily Stop and Start Containers (used in production to disable access to the site)**
+4. **Wait for the setup/download**
 
-   Stop production:
+   You can follow the initialization via logs:
 
    ```bash
-   docker compose --env-file .env.prod -f compose.yaml -f compose.prod.yaml stop
+   docker logs <data_management container name>
    ```
 
-   Start production:
+5. **Connect to the site**
+
+   Development environment:
 
    ```bash
-   docker compose --env-file .env.prod -f compose.yaml -f compose.prod.yaml start
+   localhost:3001
    ```
 
-5. **Completely delete the containers and their volumes and networks**
+   Production environment:
+   
+   ```bash
+   <site IP/domain>
+   ```
+
+
+6. **Completely delete the containers and their volumes and networks**
 
    ```bash
    docker compose down --volumes --rmi all --remove-orphans
@@ -65,13 +77,6 @@ Before you begin, ensure you have the following installed on your system:
    ```
 
    After build as normal
-   
-5. **Additional information**
-
-   Ports can be disabled on the system; docker will automatically open ports when the containers are started
-
-   Purge all containers:
-    docker stop $(docker ps -aq) && \
-    docker rm -f $(docker ps -aq) && \
-    docker system prune -a --volumes -f
+ 
+ 
 
