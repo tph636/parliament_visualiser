@@ -1,4 +1,3 @@
-import React from "react";
 import Menu from "../components/Menu/Menu";
 
 export default function Index(): JSX.Element {
@@ -16,7 +15,7 @@ export default function Index(): JSX.Element {
       </div>
       <div className="main-content__content">
         <p>
-          Info
+          Contact: valihuuto.raft613@passinbox.com
         </p>
       </div>
     </div>
