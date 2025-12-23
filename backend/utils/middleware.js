@@ -10,9 +10,15 @@ const unknownEndPoint = (request, response) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-    logger.error(error.message)
-    next(error)
-}
+  console.error("Error:", error);
+
+  response.status(500).json({
+    error: error.message,
+    detail: error.detail || null,
+    hint: error.hint || null
+  });
+};
+
 
 module.exports = {
     requestLogger,

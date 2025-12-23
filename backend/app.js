@@ -22,9 +22,11 @@ app.use(middleware.requestLogger);
 // Routers
 const memberOfParliamentRouter = require('./controllers/memberofparliament');
 const valihuutoRouter = require('./controllers/valihuuto');
+const partyRouter = require('./controllers/party');
 
 app.use('/api/member_of_parliament', memberOfParliamentRouter);
 app.use('/api/valihuudot', valihuutoRouter);
+app.use('/api/party', partyRouter);
 
 app.use(middleware.unknownEndPoint);
 app.use(middleware.errorHandler);
