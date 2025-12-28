@@ -22,16 +22,12 @@ export const headers = () => ({
 
 export default function MemberPage() {
   const { member } = useLoaderData();
-  const [isHydrated, setIsHydrated] = useState(false);
 
   const menuItems = [
     { name: "Tietoa", path: `/kansanedustaja/${member.person_id}` },
     { name: "Välihuudot", path: `/kansanedustaja/${member.person_id}/välihuudot` },
+    { name: "Puheenvuorot", path: `/kansanedustaja/${member.person_id}/puheenvuorot` },
   ];
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
 
   return (
     <>

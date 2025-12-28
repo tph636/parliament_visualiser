@@ -48,6 +48,7 @@ def main(args=None):
                             ptk_num, date, huuto_num
                         ) 
                         VALUES (%s, %s, %s, %s, to_date(%s, 'DD.MM.YYYY'), %s)
+                        ON CONFLICT (firstname, lastname, valihuuto, date, huuto_num) DO NOTHING
                     ''', (
                         huuto.firstName, huuto.lastName, huuto.huuto,
                         currentPtkNum, huuto.date, huuto.huutoNum

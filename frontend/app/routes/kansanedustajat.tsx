@@ -22,10 +22,11 @@ export const headers = () => {
 export default function Index() {
   const { members } = useLoaderData();
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { name: "Etusivu", path: "/" },
     { name: "Kansanedustajat", path: "/kansanedustajat" },
     { name: "Puolueet", path: "/puolueet" },
+    { name: "Puheenvuorot", path: "/puheenvuorot" },
     { name: "Info", path: "/info" },
   ];
 

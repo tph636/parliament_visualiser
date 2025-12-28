@@ -16,11 +16,40 @@ def main(args=None):
             lastname TEXT NOT NULL,
             content TEXT NOT NULL,
             date DATE NOT NULL,
-            ptk_num SMALLINT NOT NULL
+            ptk_num SMALLINT NOT NULL,
+            search_vector tsvector
         )
     ''')
     conn.commit()
 
+    # Create GIN index for fast full‑text search
+    cursor.execute('''
+        CREATE INDEX IF NOT EXISTS speeches_search_idx
+        ON speeches
+        USING GIN (search_vector);
+    ''')
+    conn.commit()
+
+    # Create trigger function for auto‑updating search_vector
+    cursor.execute('''
+        CREATE OR REPLACE FUNCTION speeches_search_vector_update()
+        RETURNS trigger AS $$
+        BEGIN
+            NEW.search_vector :=
+                to_tsvector('finnish', NEW.content);
+            RETURN NEW;
+        END
+        $$ LANGUAGE plpgsql;
+    ''')
+    conn.commit()
+
+    # Create trigger
+    cursor.execute('''
+        CREATE TRIGGER tsvectorupdate
+        BEFORE INSERT OR UPDATE ON speeches
+        FOR EACH ROW EXECUTE FUNCTION speeches_search_vector_update();
+    ''')
+    conn.commit()
 
     folder = './assets/documents/2025'
 
@@ -64,8 +93,14 @@ def main(args=None):
             except Exception as e:
                 print(f"Failed to process {file_path}: {e}")
 
-
+    # Backfill search_vector for any rows inserted before trigger existed
+    cursor.execute('''
+        UPDATE speeches
+        SET search_vector = to_tsvector('finnish', content)
+        WHERE search_vector IS NULL;
+    ''')
     conn.commit()
+
     cursor.close()
     conn.close()
 

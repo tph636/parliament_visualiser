@@ -23,10 +23,12 @@ app.use(middleware.requestLogger);
 const memberOfParliamentRouter = require('./controllers/memberofparliament');
 const valihuutoRouter = require('./controllers/valihuuto');
 const partyRouter = require('./controllers/party');
+const speechRouter = require('./controllers/speech');
 
 app.use('/api/member_of_parliament', memberOfParliamentRouter);
 app.use('/api/valihuudot', valihuutoRouter);
 app.use('/api/party', partyRouter);
+app.use('/api/speeches', speechRouter);
 
 app.use(middleware.unknownEndPoint);
 app.use(middleware.errorHandler);

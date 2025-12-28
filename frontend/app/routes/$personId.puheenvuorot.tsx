@@ -1,8 +1,7 @@
 import { useLoaderData } from "react-router";
 import PersonInfo from "../components/PersonInfo/PersonInfo";
-import ValihuudotList from "../components/ValihuudotList/ValihuudotList";
 import Menu from '../components/Menu/Menu';
-import { useEffect, useState } from 'react';
+import SearchBar from "../components/SearchBar/SearchBar";
 
 export const loader = async ({ params }) => {
   const baseURL = process.env.INTERNAL_BACKEND_API_URL;
@@ -21,19 +20,16 @@ export const headers = () => ({
 });
 
 
+
+
 export default function MemberPage() {
   const { member } = useLoaderData();
-  const [isHydrated, setIsHydrated] = useState(false);
 
   const menuItems = [
     { name: "Tietoa", path: `/kansanedustaja/${member.person_id}` },
     { name: "Välihuudot", path: `/kansanedustaja/${member.person_id}/välihuudot` },
     { name: "Puheenvuorot", path: `/kansanedustaja/${member.person_id}/puheenvuorot` },
   ];
-  
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
 
   return (
     <>
@@ -46,9 +42,7 @@ export default function MemberPage() {
         </div>
 
         <div className="main-content__content">
-          {isHydrated && (
-            <ValihuudotList personId={member.person_id} />
-          )}
+          <SearchBar personId={member.person_id} />
         </div>
 
       </div>

@@ -1,10 +1,12 @@
 import Menu from "../components/Menu/Menu";
 
 export default function Index(): JSX.Element {
+
   const menuItems: MenuItem[] = [
     { name: "Etusivu", path: "/" },
     { name: "Kansanedustajat", path: "/kansanedustajat" },
     { name: "Puolueet", path: "/puolueet" },
+    { name: "Puheenvuorot", path: "/puheenvuorot" },
     { name: "Info", path: "/info" },
   ];
 

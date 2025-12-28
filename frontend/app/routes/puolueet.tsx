@@ -17,11 +17,12 @@ export const loader = async () => {
 export default function Index() {
   const { parties } = useLoaderData();
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { name: "Etusivu", path: "/" },
     { name: "Kansanedustajat", path: "/kansanedustajat" },
     { name: "Puolueet", path: "/puolueet" },
-    { name: "Info", path: "/info" }
+    { name: "Puheenvuorot", path: "/puheenvuorot" },
+    { name: "Info", path: "/info" },
   ];
 
   return (

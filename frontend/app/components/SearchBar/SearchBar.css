@@ -1,0 +1,62 @@
+.searchbar-wrapper {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.searchbar-form {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.searchbar-input {
+  width: 60%;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+}
+
+.searchbar-input:focus {
+  outline: none;
+  border-color: #0077cc;
+}
+
+.searchbar-button {
+  padding: 10px 18px;
+  font-size: 16px;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.searchbar-button:hover {
+  background-color: #005fa3;
+}
+
+.searchbar-loading {
+  text-align: center;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.searchbar-results {
+  margin-top: 20px;
+}
+
+.speech-card {
+  padding: 12px;
+  background: #f8f8f8;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.speech-date {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 6px;
+}

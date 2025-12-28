@@ -1,4 +1,5 @@
 import Menu from "../components/Menu/Menu";
+import SearchBar from "../components/SearchBar/SearchBar";
 
 export default function Index(): JSX.Element {
 
@@ -16,9 +17,8 @@ export default function Index(): JSX.Element {
         <Menu items={menuItems} />
       </div>
       <div className="main-content__content">
-        <p>
-          Contact: valihuuto.raft613@passinbox.com
-        </p>
+        <h2>Hae kansanedustajien puheita</h2>
+        <SearchBar />
       </div>
     </div>
   );
