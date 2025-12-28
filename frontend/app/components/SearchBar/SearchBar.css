@@ -1,6 +1,12 @@
 .searchbar-wrapper {
+  background-color: white;
+  box-shadow: 0 4px 16px rgba(55,49,81,0.07);
+  border: 1.5px solid #ece8f6;
+  line-height: 1.6;
+  border-radius: 6px;
+  padding: 20px;
   width: 100%;
-  margin: 20px 0;
+  box-sizing: border-box;
 }
 
 .searchbar-form {
@@ -49,14 +55,49 @@
 }
 
 .speech-card {
-  padding: 12px;
+  padding: 16px;
   background: #f8f8f8;
   border-radius: 6px;
   margin-bottom: 12px;
+  border: 1px solid #ece8f6;
+  box-shadow: 0 2px 8px rgba(55,49,81,0.05);
 }
 
 .speech-date {
   font-size: 14px;
   color: #666;
   margin-bottom: 6px;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 1rem auto;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.pagination li {
+  cursor: pointer;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  padding: 0;
+}
+
+.pagination li.active {
+  background-color: #0077cc;
+  color: white;
+}
+
+.pagination-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
 }

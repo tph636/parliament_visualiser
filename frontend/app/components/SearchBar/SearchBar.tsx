@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import ReactPaginate from "react-paginate";
 import "./SearchBar.css";
 
 type SearchBarProps = {
-  personId?: number; // optional
+  personId?: number;
 };
 
 const SearchBar = ({ personId }: SearchBarProps) => {
@@ -10,9 +11,17 @@ const SearchBar = ({ personId }: SearchBarProps) => {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
 
+  const itemsPerPage = 1;
+
+  // Reset page when query changes
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [query]);
+
+  const fetchResults = async () => {
     if (!query.trim()) return;
 
     setLoading(true);
@@ -20,27 +29,49 @@ const SearchBar = ({ personId }: SearchBarProps) => {
     try {
       const base = import.meta.env.VITE_BACKEND_API_URL;
 
-      // If personId is given, search only that MP
       const url = personId
-        ? `${base}/api/speeches/${personId}?q=${encodeURIComponent(query)}`
-        : `${base}/api/speeches?q=${encodeURIComponent(query)}`;
+        ? `${base}/api/speeches/${personId}?q=${encodeURIComponent(
+            query
+          )}&page=${currentPage + 1}`
+        : `${base}/api/speeches?q=${encodeURIComponent(
+            query
+          )}&page=${currentPage + 1}`;
 
       const response = await fetch(url);
       const data = await response.json();
-      setResults(data);
+
+      setResults(data.results || []);
+      setPageCount(Math.ceil((data.total || 0) / itemsPerPage));
     } catch (err) {
       console.error("Search error:", err);
-    } finally {
-      setLoading(false);
+      setResults([]);
     }
+
+    setLoading(false);
   };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    fetchResults();
+  };
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  // Fetch when page changes
+  useEffect(() => {
+    if (query.trim()) {
+      fetchResults();
+    }
+  }, [currentPage]);
 
   return (
     <div className="searchbar-wrapper">
       <form onSubmit={handleSearch} className="searchbar-form">
         <input
           type="text"
-          placeholder="Hae puheita (esim. lapsilisä, sosiaaliturva, asumistuki...)"
+          placeholder="Hae puheenvuoroja (esim. nato, sosiaaliturva, asumistuki...)"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="searchbar-input"
@@ -65,6 +96,22 @@ const SearchBar = ({ personId }: SearchBarProps) => {
         ))}
       </div>
 
+      {pageCount > 1 && (
+        <ReactPaginate
+          previousLabel={"⬅"}
+          nextLabel={"➡"}
+          breakLabel={null}
+          pageCount={pageCount}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={1}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+          pageLinkClassName="pagination-link"
+          previousLinkClassName="pagination-link"
+          nextLinkClassName="pagination-link"
+        />
+      )}
     </div>
   );
 };

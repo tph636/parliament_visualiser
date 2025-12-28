@@ -17,7 +17,6 @@ export default function Index(): JSX.Element {
         <Menu items={menuItems} />
       </div>
       <div className="main-content__content">
-        <h2>Hae kansanedustajien puheita</h2>
         <SearchBar />
       </div>
     </div>
