@@ -44,6 +44,9 @@ if [ "$NEED_INIT" = "1" ]; then
     echo "Updating Postgres update_valihuudot..."
     python main.py update_valihuudot
 
+    echo "Updating Postgres update_speeches..."
+    python main.py update_speeches
+
     echo "Downloading member images..."
     python main.py download_images
 

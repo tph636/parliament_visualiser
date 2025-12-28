@@ -26,6 +26,10 @@ def main():
     parser_update_valihuudot = subparsers.add_parser('update_valihuudot', help='Update valihuudot data')
     parser_update_valihuudot.set_defaults(func='db_ops.update_valihuudot.main')
 
+    # Subcommand for updating valihuudot
+    parser_update_speeches = subparsers.add_parser('update_speeches', help='Update speeches data')
+    parser_update_speeches.set_defaults(func='db_ops.update_speeches.main')
+
     # Parse and execute
     args = parser.parse_args()
 

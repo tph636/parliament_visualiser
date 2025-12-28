@@ -1,7 +1,7 @@
 import os
 import re
 from db_ops.db_util import connectToDb
-from db_ops.extract_välihuudot import extract_välihuudot
+from db_ops.extract_speeches import extract_speeches
 
 def main(args=None):
 
@@ -9,16 +9,18 @@ def main(args=None):
 
     # Create the table if it does not exist
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS valihuudot (
+        CREATE TABLE IF NOT EXISTS speeches (
+            id SERIAL PRIMARY KEY,
+            timestamp TEXT NOT NULL,
             firstname TEXT NOT NULL,
             lastname TEXT NOT NULL,
-            valihuuto TEXT NOT NULL,
-            ptk_num SMALLINT NOT NULL,
+            content TEXT NOT NULL,
             date DATE NOT NULL,
-            huuto_num SMALLINT NOT NULL,
-            PRIMARY KEY (firstname, lastname, valihuuto, date, huuto_num)
+            ptk_num SMALLINT NOT NULL
         )
     ''')
+    conn.commit()
+
 
     folder = './assets/documents/2025'
 
@@ -39,31 +41,35 @@ def main(args=None):
             print(f"Processing: {file_path}")
 
             try:
-                välihuudot = extract_välihuudot(file_path)
+                speeches = extract_speeches(file_path)
 
-                for huuto in välihuudot:
+                for speech in speeches:
                     cursor.execute('''
-                        INSERT INTO valihuudot (
-                            firstname, lastname, valihuuto,
-                            ptk_num, date, huuto_num
-                        ) 
+                        INSERT INTO speeches (
+                            timestamp, firstname, lastname, content, date, ptk_num
+                        )
                         VALUES (%s, %s, %s, %s, to_date(%s, 'DD.MM.YYYY'), %s)
                     ''', (
-                        huuto.firstName, huuto.lastName, huuto.huuto,
-                        currentPtkNum, huuto.date, huuto.huutoNum
+                        speech.timestamp,
+                        speech.firstname,
+                        speech.lastname,
+                        speech.content,
+                        speech.date,
+                        currentPtkNum
                     ))
 
-                    print(f'{count}. {huuto.firstName} {huuto.lastName}: {huuto.huuto} PTK({currentPtkNum}) {huuto.date} (Huuto #{huuto.huutoNum})')
-                    
+                    print(f"{count}. {speech.date} {speech.firstname} {speech.lastname} {speech.content[:30]}")
                     count += 1
 
             except Exception as e:
                 print(f"Failed to process {file_path}: {e}")
 
-    # Commit changes and close connections
+
     conn.commit()
     cursor.close()
     conn.close()
+
+    print("\nDone! All speeches processed.")
 
 if __name__ == "__main__":
     main()
