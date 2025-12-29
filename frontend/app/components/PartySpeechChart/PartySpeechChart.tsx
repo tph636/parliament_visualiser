@@ -76,8 +76,8 @@ export default function PartySpeechChart({
           }
         >
           {mode === "total"
-            ? "Näytä puheet / edustaja"
-            : "Näytä puheet yhteensä"}
+            ? "Näytä puheenvuorot / edustaja"
+            : "Näytä puheenvuorot yhteensä"}
         </button>
       </div>
 
