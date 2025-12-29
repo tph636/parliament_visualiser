@@ -1,5 +1,6 @@
 const timestamp = () => {
     return new Date().toLocaleString("fi-FI", {
+        timeZone: "Europe/Helsinki",
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
