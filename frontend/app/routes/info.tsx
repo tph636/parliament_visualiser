@@ -16,9 +16,19 @@ export default function Index(): JSX.Element {
         <Menu items={menuItems} />
       </div>
       <div className="main-content__content">
-        <p>
-          Contact: valihuuto.raft613@passinbox.com
-        </p>
+
+        <div style={{
+            backgroundColor: "white",
+            boxShadow: "0 4px 16px rgba(55,49,81,0.07)",
+            border: "1.5px solid #ece8f6",
+            lineHeight: 1.6,
+            padding: 30,
+          }}>
+          <p>
+            Email: valihuuto.raft613@passinbox.com
+          </p>
+        </div>
+
       </div>
     </div>
   );

@@ -16,14 +16,30 @@ export default function Index(): JSX.Element {
         <Menu items={menuItems} />
       </div>
       <div className="main-content__content">
-        <h1>Tervetuloa välihuutoon!</h1>
-        <p>
-          "Välihuuto on lyhyt, äänekäs huomautus, jonka kansanedustaja voi esittää
-          täysistunnossa toisen kansanedustajan pitämän puheenvuoron aikana."
-        </p>
-        <p>
-          Välihuuto.fi näyttää Eduskunnan kauden 2025 tietoa.
-        </p>
+
+        <div
+          style={{
+            backgroundColor: "white",
+            boxShadow: "0 4px 16px rgba(55,49,81,0.07)",
+            border: "1.5px solid #ece8f6",
+            lineHeight: 1.6,
+            padding: 30,
+          }}
+        >
+          <h1>Tervetuloa välihuutoon!</h1>
+          <i>
+            "Välihuuto on lyhyt, äänekäs huomautus, jonka kansanedustaja voi esittää
+            täysistunnossa toisen kansanedustajan pitämän puheenvuoron aikana."
+          </i>
+          <p>
+            Tutki kansanedustajien välihuutoja, puheenvuoroja ja taustoja kaudella 2025. Sivustolta löydät myös tietoa edustajien saamista lahjoituksista ja muista taustatiedoista.
+            Selaa, etsi ja löydä, mitä kansanedustajat ovat todella sanoneet?
+          </p>
+          <p>
+            Sivuston tiedot ovat peräisin Eduskunnan avoimesta tietokannasta ja voi sisältää virheitä.
+          </p>
+        </div>
+      
       </div>
     </div>
   );
