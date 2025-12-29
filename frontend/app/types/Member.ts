@@ -8,6 +8,7 @@ export type Member = {
   image: string;
   seat_number: number;
   valihuuto_count: number;
+  speech_count: number;
   birth_year: number;
   parliament_group: string;
 };

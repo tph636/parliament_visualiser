@@ -4,8 +4,6 @@ import Card from '../Card/Card';
 import './CardList.css';
 import type { Member } from "../../types/Member";
 
-
-// Props for the CardList component
 type CardListProps = {
   members: Member[];
   onCardClick?: (member: Member) => void;
@@ -34,18 +32,24 @@ export default function CardList({ members, onCardClick }: CardListProps): React
     sessionStorage.setItem('parliamentGroup', parliamentGroup);
   }, [searchTerm, sortOrder, parliamentGroup]);
 
-  // Filter and sort logic
+  // Filter + sort logic
   const filteredMembers = members
     .filter(member => {
       const fullName = `${member.firstname} ${member.lastname}`.toLowerCase();
+      const matchesName = fullName.includes(searchTerm.toLowerCase());
+
       if (parliamentGroup !== 'Kaikki eduskuntaryhmät') {
-        return fullName.includes(searchTerm.toLowerCase()) && member.parliament_group === parliamentGroup;
+        return matchesName && member.parliament_group === parliamentGroup;
       }
-      return fullName.includes(searchTerm.toLowerCase());
+      return matchesName;
     })
     .sort((a, b) => {
       const huutoA = a.valihuuto_count ?? 0;
       const huutoB = b.valihuuto_count ?? 0;
+
+      const speechA = a.speech_count ?? 0;
+      const speechB = b.speech_count ?? 0;
+
       const birthYearA = a.birth_year;
       const birthYearB = b.birth_year;
 
@@ -54,10 +58,17 @@ export default function CardList({ members, onCardClick }: CardListProps): React
           return huutoA - huutoB;
         case 'valihuuto-descending':
           return huutoB - huutoA;
+
+        case 'speech-ascending':
+          return speechA - speechB;
+        case 'speech-descending':
+          return speechB - speechA;
+
         case 'age-ascending':
           return birthYearA - birthYearB;
         case 'age-descending':
           return birthYearB - birthYearA;
+
         default:
           return 0;
       }
@@ -98,6 +109,10 @@ export default function CardList({ members, onCardClick }: CardListProps): React
           >
             <option value="valihuuto-ascending">Vähiten välihuutoja</option>
             <option value="valihuuto-descending">Eniten välihuutoja</option>
+
+            <option value="speech-ascending">Vähiten puheenvuoroja</option>
+            <option value="speech-descending">Eniten puheenvuoroja</option>
+
             <option value="age-descending">Nuorin</option>
             <option value="age-ascending">Vanhin</option>
           </select>
@@ -105,15 +120,12 @@ export default function CardList({ members, onCardClick }: CardListProps): React
       </div>
 
       <div className="cards" key={`${searchTerm}-${sortOrder}-${parliamentGroup}`}>
-        {filteredMembers.map(member => {
-          const huuto = member.valihuuto_count ?? 0;
-          return (
-            <Card
-              key={member.person_id}
-              member={member}
-            />
-          );
-        })}
+        {filteredMembers.map(member => (
+          <Card
+            key={member.person_id}
+            member={member}
+          />
+        ))}
       </div>
     </div>
   );

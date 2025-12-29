@@ -30,6 +30,7 @@ export default function Card({ member }: CardProps): React.ReactElement {
         <p>{member.birth_year}</p>
         <p>{member.parliament_group}</p>
         <p>Välihuutoja: {member.valihuuto_count}</p>
+        <p>Puheenvuoroja: {member.speech_count}</p>
       </div>
     </Link>
   );

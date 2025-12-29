@@ -4,34 +4,38 @@ const { fetchAll, fetchFirst } = require('../utils/dbUtils');
 // Route to get all members of parliament
 memberOfParliamentRouter.get('', async (request, response) => {
   try {
-    const members = await fetchAll(`SELECT 
-                                      member_of_parliament.person_id, 
-                                      member_of_parliament.lastname, 
-                                      member_of_parliament.firstname, 
-                                      member_of_parliament.minister, 
-                                      seating_of_parliament.heteka_id,
-                                      seating_of_parliament.party,
-                                      seating_of_parliament.party_color,
-                                      seating_of_parliament.image,
-                                      seating_of_parliament.seat_number,
-                                      COUNT(valihuudot.valihuuto) AS valihuuto_count, 
-                                      member_of_parliament.birth_year,
-                                      member_of_parliament.parliament_group
-                                    FROM 
-                                      member_of_parliament
-                                    LEFT JOIN
-                                      seating_of_parliament
-                                    ON
-                                      member_of_parliament.person_id = seating_of_parliament.heteka_id
-                                    LEFT JOIN
-                                      valihuudot
-                                    ON
-                                      member_of_parliament.firstname = valihuudot.firstname 
-                                    AND 
-                                      member_of_parliament.lastname = valihuudot.lastname 
-                                    GROUP BY 
-                                      member_of_parliament.person_id, 
-                                      seating_of_parliament.heteka_id`);
+    const members = await fetchAll(`
+      SELECT 
+        member_of_parliament.person_id, 
+        member_of_parliament.lastname, 
+        member_of_parliament.firstname, 
+        member_of_parliament.minister, 
+        seating_of_parliament.heteka_id,
+        seating_of_parliament.party,
+        seating_of_parliament.party_color,
+        seating_of_parliament.image,
+        seating_of_parliament.seat_number,
+
+        COUNT(DISTINCT valihuudot.valihuuto) AS valihuuto_count,
+        COUNT(DISTINCT speeches.id) AS speech_count,
+
+        member_of_parliament.birth_year,
+        member_of_parliament.parliament_group
+
+      FROM member_of_parliament
+      LEFT JOIN seating_of_parliament
+        ON member_of_parliament.person_id = seating_of_parliament.heteka_id
+      LEFT JOIN valihuudot
+        ON member_of_parliament.firstname = valihuudot.firstname 
+       AND member_of_parliament.lastname = valihuudot.lastname
+      LEFT JOIN speeches
+        ON member_of_parliament.firstname = speeches.firstname
+       AND member_of_parliament.lastname = speeches.lastname
+
+      GROUP BY 
+        member_of_parliament.person_id, 
+        seating_of_parliament.heteka_id
+    `);
 
     const updatedMembers = members.map(member => ({
       person_id: member.person_id,
@@ -43,59 +47,68 @@ memberOfParliamentRouter.get('', async (request, response) => {
       image: member.image,
       seat_number: member.seat_number,
       valihuuto_count: member.valihuuto_count,
+      speech_count: member.speech_count,   // KEEP THIS
       birth_year: member.birth_year,
       parliament_group: member.parliament_group
     }));
 
-    response.json(updatedMembers)
+    response.json(updatedMembers);
   } catch (err) {
     console.error('Error:', err.message);
     response.status(500).send('Internal Server Error');
   }
 });
 
-/// Route to get a specific member of parliament by person_id
+
+/// Route to get more detailed information of a specific member of parliament by person_id
 memberOfParliamentRouter.get('/:person_id', async (request, response) => {
   const { person_id } = request.params;
 
   try {
-    const member = await fetchFirst(
-      `SELECT 
-          mp.person_id,
-          mp.lastname,
-          mp.firstname,
-          mp.party,
-          mp.minister,
-          mp.birth_year,
-          mp.birth_place,
-          mp.current_municipality,
-          mp.profession,
-          mp.parliament_group,
-          mp.education,
-          mp.work_history,
-          mp.minister_roles,
-          mp.current_committees,
-          mp.previous_committees,
-          mp.affiliations,
-          mp.gifts,
-          sp.heteka_id,
-          sp.party AS seating_party,
-          sp.party_color,
-          sp.image,
-          sp.seat_number,
-          COUNT(v.valihuuto) AS valihuuto_count
-        FROM member_of_parliament mp
-        LEFT JOIN seating_of_parliament sp
-          ON mp.person_id = sp.heteka_id
-        LEFT JOIN valihuudot v
-          ON mp.firstname = v.firstname
-         AND mp.lastname = v.lastname
-        WHERE mp.person_id = $1
-        GROUP BY 
-          mp.person_id,
-          sp.heteka_id`,
-      [person_id]
-    );
+    const member = await fetchFirst(`
+      SELECT 
+        member_of_parliament.person_id,
+        member_of_parliament.lastname,
+        member_of_parliament.firstname,
+        member_of_parliament.party,
+        member_of_parliament.minister,
+        member_of_parliament.birth_year,
+        member_of_parliament.birth_place,
+        member_of_parliament.current_municipality,
+        member_of_parliament.profession,
+        member_of_parliament.parliament_group,
+        member_of_parliament.education,
+        member_of_parliament.work_history,
+        member_of_parliament.minister_roles,
+        member_of_parliament.current_committees,
+        member_of_parliament.previous_committees,
+        member_of_parliament.affiliations,
+        member_of_parliament.gifts,
+
+        seating_of_parliament.heteka_id,
+        seating_of_parliament.party AS seating_party,
+        seating_of_parliament.party_color,
+        seating_of_parliament.image,
+        seating_of_parliament.seat_number,
+
+        COUNT(DISTINCT valihuudot.valihuuto) AS valihuuto_count
+
+      FROM member_of_parliament
+      LEFT JOIN seating_of_parliament
+        ON member_of_parliament.person_id = seating_of_parliament.heteka_id
+      LEFT JOIN valihuudot
+        ON member_of_parliament.firstname = valihuudot.firstname
+       AND member_of_parliament.lastname = valihuudot.lastname
+      LEFT JOIN speeches
+        ON member_of_parliament.firstname = speeches.firstname
+       AND member_of_parliament.lastname = speeches.lastname
+
+      WHERE member_of_parliament.person_id = $1
+
+      GROUP BY 
+        member_of_parliament.person_id,
+        seating_of_parliament.heteka_id
+    `, [person_id]);
 
     if (!member) {
       return response.status(404).json({ message: 'Member not found' });
@@ -108,7 +121,6 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
       party: member.party,
       minister: member.minister,
 
-      // Extended fields
       birth_year: member.birth_year,
       birth_place: member.birth_place,
       current_municipality: member.current_municipality,
@@ -122,12 +134,10 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
       affiliations: member.affiliations,
       gifts: member.gifts,
 
-      // Seating data
       party_color: member.party_color,
       image: member.image,
       seat_number: member.seat_number,
 
-      // Derived
       valihuuto_count: member.valihuuto_count
     };
 
