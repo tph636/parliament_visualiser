@@ -9,18 +9,18 @@ import {
   Legend
 } from "chart.js";
 
-import "./PartyBarChart.css";
+import "./PartySpeechChart.css";
 import type { Party } from "../../types/Party";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-type PartyBarChartProps = {
+type PartySpeechChartProps = {
   parties: Party[];
 };
 
-export default function PartyBarChart({
+export default function PartySpeechChart({
   parties
-}: PartyBarChartProps): React.ReactElement {
+}: PartySpeechChartProps): React.ReactElement {
   const [mode, setMode] = useState<"total" | "average">("total");
 
   const labels = parties.map((p) => p.party);
@@ -28,10 +28,10 @@ export default function PartyBarChart({
 
   const values =
     mode === "total"
-      ? parties.map((p) => p.total_valihuudot)
+      ? parties.map((p) => p.total_speeches)
       : parties.map((p) =>
           p.member_count > 0
-            ? Number((p.total_valihuudot / p.member_count).toFixed(2))
+            ? Number((p.total_speeches / p.member_count).toFixed(2))
             : 0
         );
 
@@ -41,8 +41,8 @@ export default function PartyBarChart({
       {
         label:
           mode === "total"
-            ? "Välihuudot yhteensä"
-            : "Välihuudot per kansanedustaja",
+            ? "Puheet yhteensä"
+            : "Puheet per kansanedustaja",
         data: values,
         backgroundColor: colors,
         borderColor: colors,
@@ -65,19 +65,19 @@ export default function PartyBarChart({
   };
 
   return (
-    <div className="party-chart-container">
-      <div className="party-chart-header">
-        <h2 className="party-chart-title">Välihuudot puolueittain</h2>
+    <div className="party-speech-chart-container">
+      <div className="party-speech-chart-header">
+        <h2 className="party-speech-chart-title">Puheet puolueittain</h2>
 
         <button
-          className="party-chart-toggle"
+          className="party-speech-chart-toggle"
           onClick={() =>
             setMode((prev) => (prev === "total" ? "average" : "total"))
           }
         >
           {mode === "total"
-            ? "Näytä välihuudot / edustaja"
-            : "Näytä välihuudot yhteensä"}
+            ? "Näytä puheet / edustaja"
+            : "Näytä puheet yhteensä"}
         </button>
       </div>
 

@@ -1,0 +1,44 @@
+.party-speech-chart-container {
+  padding: 32px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 16px rgba(55,49,81,0.07);
+  border: 1.5px solid #ece8f6;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.party-speech-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.party-speech-chart-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.party-speech-chart-toggle {
+  padding: 0.5rem 1rem;
+  background: #eee;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+.party-speech-chart-toggle:hover {
+  background: #ddd;
+}
+
+.party-speech-chart-container canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100%;
+  display: block;
+}

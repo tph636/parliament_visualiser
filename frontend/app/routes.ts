@@ -19,6 +19,6 @@ export default [
   ...prefix("kansanedustaja", [
     route(":personId", "./routes/$personId.tsx"),
     route(":personId/välihuudot", "./routes/$personId.välihuudot.tsx"),
-    route(":personId/puheenvuorot", "./routes/$personId.puheenvuorot.tsx"), // ← ADD THIS
+    route(":personId/puheenvuorot", "./routes/$personId.puheenvuorot.tsx"),
   ]),
 ] satisfies RouteConfig;
