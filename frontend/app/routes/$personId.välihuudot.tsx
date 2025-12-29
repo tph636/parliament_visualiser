@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router";
-import PersonInfo from "../components/PersonInfo/PersonInfo";
+import PersonInfo from "../components/PersonInfoBanner/PersonInfoBanner";
 import ValihuudotList from "../components/ValihuudotList/ValihuudotList";
 import Menu from '../components/Menu/Menu';
 import { useEffect, useState } from 'react';

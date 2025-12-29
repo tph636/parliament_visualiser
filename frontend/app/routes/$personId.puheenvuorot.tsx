@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router";
-import PersonInfo from "../components/PersonInfo/PersonInfo";
+import PersonInfo from "../components/PersonInfoBanner/PersonInfoBanner";
 import Menu from '../components/Menu/Menu';
 import SearchBar from "../components/SearchBar/SearchBar";
 

@@ -1,5 +1,4 @@
-import React from 'react';
-import "./PersonInfo.css";
+import "./PersonInfoBanner.css";
 import type { Member } from "../../types/Member";
 
 type PersonInfoProps = {
