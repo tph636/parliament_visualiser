@@ -38,7 +38,7 @@ export default function Index(): JSX.Element {
             Selaa, etsi ja löydä, mitä kansanedustajat ovat todella sanoneet?
           </p>
           <p>
-            Sivuston tiedot ovat peräisin Eduskunnan avoimesta tietokannasta ja voi sisältää virheitä.
+            Sivuston tiedot ovat peräisin Eduskunnan avoimesta tietokannasta sekä Eduskunnan pöytäkirjoista ja voi sisältää virheitä.
           </p>
         </div>
       
