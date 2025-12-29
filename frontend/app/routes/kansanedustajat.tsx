@@ -2,6 +2,7 @@ import { useLoaderData } from 'react-router';
 import Seatingplan from '../components/Seatingplan/Seatingplan';
 import CardList from '../components/CardList/CardList';
 import Menu from '../components/Menu/Menu';
+import { useEffect } from "react";
 
 export const loader = async () => {
   const baseURL = process.env.INTERNAL_BACKEND_API_URL;
@@ -20,6 +21,8 @@ export const headers = () => {
 };
 
 export default function Index() {
+  useEffect(() => { document.title = "Kansanedustajat"; }, []);
+
   const { members } = useLoaderData();
 
   const menuItems: MenuItem[] = [

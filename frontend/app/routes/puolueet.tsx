@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router";
 import Menu from "../components/Menu/Menu";
 import PartyValihuutoChart from "../components/PartyValihuutoChart/PartyValihuutoChart";
 import PartySpeechChart from "../components/PartySpeechChart/PartySpeechChart";
+import { useEffect } from "react";
 
 export const loader = async () => {
   const baseURL = process.env.INTERNAL_BACKEND_API_URL;
@@ -23,6 +24,8 @@ export const loader = async () => {
 
 
 export default function Index() {
+  useEffect(() => { document.title = "Puolueet"; }, []);
+
   const { valihuudot, speeches } = useLoaderData() as {
     valihuudot: Party[];
     speeches: Party[];

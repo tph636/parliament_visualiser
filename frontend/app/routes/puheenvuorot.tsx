@@ -1,7 +1,9 @@
 import Menu from "../components/Menu/Menu";
 import SearchBar from "../components/SearchBar/SearchBar";
+import { useEffect } from "react";
 
 export default function Index(): JSX.Element {
+  useEffect(() => { document.title = "Puheenvuorot"; }, []);
 
   const menuItems: MenuItem[] = [
     { name: "Etusivu", path: "/" },

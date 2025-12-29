@@ -2,7 +2,7 @@ import { useLoaderData } from "react-router";
 import PersonInfo from "../components/PersonInfoBanner/PersonInfoBanner";
 import Menu from "../components/Menu/Menu";
 import MemberDetails from "../components/MemberDetails/MemberDetails";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const loader = async ({ params }) => {
   const baseURL = process.env.INTERNAL_BACKEND_API_URL;
@@ -21,6 +21,8 @@ export const headers = () => ({
 });
 
 export default function MemberPage() {
+  useEffect(() => { document.title = `${member.firstname} ${member.lastname}`; }, []);
+
   const { member } = useLoaderData();
 
   const menuItems = [

@@ -1,7 +1,9 @@
 import Menu from "../components/Menu/Menu";
+import { useEffect } from "react";
 
 export default function Index(): JSX.Element {
-
+  useEffect(() => { document.title = "Etusivu"; }, []);
+  
   const menuItems: MenuItem[] = [
     { name: "Etusivu", path: "/" },
     { name: "Kansanedustajat", path: "/kansanedustajat" },
