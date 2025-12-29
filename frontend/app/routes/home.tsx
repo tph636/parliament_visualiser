@@ -26,7 +26,7 @@ export default function Index(): JSX.Element {
             padding: 30,
           }}
         >
-          <h1>Tervetuloa välihuutoon!</h1>
+          <h1>Tervetuloa Välihuutoon!</h1>
           <i>
             "Välihuuto on lyhyt, äänekäs huomautus, jonka kansanedustaja voi esittää
             täysistunnossa toisen kansanedustajan pitämän puheenvuoron aikana."
