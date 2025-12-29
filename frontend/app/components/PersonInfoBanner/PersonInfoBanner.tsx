@@ -21,6 +21,7 @@ const PersonInfo = ({ member }: PersonInfoProps) => {
           <h2>{member.firstname} {member.lastname}</h2>
           <p>{member.parliament_group}</p>
           <p>Välihuutoja: {member.valihuuto_count}</p>
+          <p>Puheenvuoroja: {member.speech_count}</p>
         </div>
       </div>
     </div>

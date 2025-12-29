@@ -47,7 +47,7 @@ memberOfParliamentRouter.get('', async (request, response) => {
       image: member.image,
       seat_number: member.seat_number,
       valihuuto_count: member.valihuuto_count,
-      speech_count: member.speech_count,   // KEEP THIS
+      speech_count: member.speech_count,
       birth_year: member.birth_year,
       parliament_group: member.parliament_group
     }));
@@ -91,7 +91,8 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
         seating_of_parliament.image,
         seating_of_parliament.seat_number,
 
-        COUNT(DISTINCT valihuudot.valihuuto) AS valihuuto_count
+        COUNT(DISTINCT valihuudot.valihuuto) AS valihuuto_count,
+        COUNT(DISTINCT speeches.id) AS speech_count
 
       FROM member_of_parliament
       LEFT JOIN seating_of_parliament
@@ -138,7 +139,8 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
       image: member.image,
       seat_number: member.seat_number,
 
-      valihuuto_count: member.valihuuto_count
+      valihuuto_count: member.valihuuto_count,
+      speech_count: member.speech_count,
     };
 
     response.json(updatedMember);
