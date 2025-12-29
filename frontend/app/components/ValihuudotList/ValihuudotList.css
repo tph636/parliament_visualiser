@@ -4,6 +4,8 @@
   border: 1.5px solid #ece8f6;
   line-height: 1.6;
   padding: 30px;
+  box-sizing: border-box;
+
 }
 
 .pagination {

@@ -7,6 +7,8 @@
   box-shadow: 0 4px 16px rgba(55,49,81,0.07);
   border: 1.5px solid #ece8f6;
   margin: auto;
+  box-sizing: border-box;
+
 }
 
 
