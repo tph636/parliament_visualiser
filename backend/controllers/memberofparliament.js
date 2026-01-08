@@ -70,7 +70,6 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
         member_of_parliament.person_id,
         member_of_parliament.lastname,
         member_of_parliament.firstname,
-        member_of_parliament.party,
         member_of_parliament.minister,
         member_of_parliament.birth_year,
         member_of_parliament.birth_place,
@@ -86,7 +85,7 @@ memberOfParliamentRouter.get('/:person_id', async (request, response) => {
         member_of_parliament.gifts,
 
         seating_of_parliament.heteka_id,
-        seating_of_parliament.party AS seating_party,
+        seating_of_parliament.party,
         seating_of_parliament.party_color,
         seating_of_parliament.image,
         seating_of_parliament.seat_number,

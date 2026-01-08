@@ -6,7 +6,6 @@ TODO:
 
 This guide will help you set up and use the Docker environment for this project.
 
-
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your system:

@@ -14,7 +14,17 @@ async function createMemberTable(client) {
       firstname VARCHAR(100),
       minister BOOLEAN,
       birth_year INTEGER,
-      parliament_group VARCHAR(100)
+      birth_place TEXT,
+      current_municipality TEXT,
+      profession TEXT,
+      parliament_group VARCHAR(100),
+      education JSONB,
+      work_history JSONB,
+      minister_roles JSONB,
+      current_committees JSONB,
+      previous_committees JSONB,
+      affiliations JSONB,
+      gifts JSONB
     );
   `;
   await client.query(sql);
@@ -49,6 +59,48 @@ async function createValihuudotTable(client) {
     );
   `;
   await client.query(sql);
+}
+
+async function createSpeechesTable(client) {
+  const sql = `
+    CREATE TABLE IF NOT EXISTS speeches (
+      id SERIAL PRIMARY KEY,
+      timestamp TEXT NOT NULL,
+      firstname TEXT NOT NULL,
+      lastname TEXT NOT NULL,
+      content TEXT NOT NULL,
+      date DATE NOT NULL,
+      ptk_num SMALLINT NOT NULL,
+      search_vector tsvector
+    );
+  `;
+  await client.query(sql);
+
+  // Create trigger function for auto-updating search_vector
+  await client.query(`
+    CREATE OR REPLACE FUNCTION speeches_search_vector_update()
+    RETURNS trigger AS $$
+    BEGIN
+      NEW.search_vector := to_tsvector('finnish', NEW.content);
+      RETURN NEW;
+    END
+    $$ LANGUAGE plpgsql;
+  `);
+
+  // Create trigger
+  await client.query(`
+    DROP TRIGGER IF EXISTS tsvectorupdate ON speeches;
+    CREATE TRIGGER tsvectorupdate
+    BEFORE INSERT OR UPDATE ON speeches
+    FOR EACH ROW EXECUTE FUNCTION speeches_search_vector_update();
+  `);
+
+  // Create GIN index for fast full-text search
+  await client.query(`
+    CREATE INDEX IF NOT EXISTS speeches_search_idx
+    ON speeches
+    USING GIN (search_vector);
+  `);
 }
 
 async function populateMembers(client) {
@@ -213,13 +265,68 @@ async function populateValihuudot(client) {
   }
 }
 
+async function populateSpeeches(client) {
+  const speeches = [
+    {
+      timestamp: '10:15:00',
+      firstname: 'Anna',
+      lastname: 'Korhonen',
+      content: 'Tämä on ympäristöasioiden puheenvuoro. Ilmastonmuutos on vakava ongelma.',
+      date: '2024-05-01',
+      ptk_num: 12
+    },
+    {
+      timestamp: '10:30:00',
+      firstname: 'Mikko',
+      lastname: 'Laine',
+      content: 'Sosiaaliturvaa on parannettava. Työttömyys on kasvussa.',
+      date: '2024-05-01',
+      ptk_num: 12
+    },
+    {
+      timestamp: '11:00:00',
+      firstname: 'Jari',
+      lastname: 'Virtanen',
+      content: 'Talouspolitiikka vaatii vastuullisuutta. Budjetti on tasapainotettava.',
+      date: '2024-06-02',
+      ptk_num: 13
+    },
+    {
+      timestamp: '11:15:00',
+      firstname: 'Anna',
+      lastname: 'Korhonen',
+      content: 'Uusiutuvat energiat ovat tulevaisuus. Vihreä siirtymä on välttämätön.',
+      date: '2024-06-02',
+      ptk_num: 13
+    }
+  ];
+
+  for (const speech of speeches) {
+    await client.query(`
+      INSERT INTO speeches (
+        timestamp, firstname, lastname, content, date, ptk_num
+      )
+      VALUES ($1, $2, $3, $4, $5, $6)
+    `, [
+      speech.timestamp,
+      speech.firstname,
+      speech.lastname,
+      speech.content,
+      speech.date,
+      speech.ptk_num
+    ]);
+  }
+}
+
 async function setup(client) {
   await createMemberTable(client);
   await createSeatingTable(client);
   await createValihuudotTable(client);
+  await createSpeechesTable(client);
   await populateMembers(client);
   await populateSeating(client);
   await populateValihuudot(client);
+  await populateSpeeches(client);
 }
 
 module.exports = { setup };
