@@ -1,20 +1,30 @@
-name: Automated testing for main push
+name: Backend Tests
+
 on:
   push:
-    branches:
-      - main
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test project
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
 
       - name: Install dependencies
         working-directory: ./backend
         run: npm ci
 
-      - name: Test application
+      - name: Run tests
         working-directory: ./backend
         run: npm test
