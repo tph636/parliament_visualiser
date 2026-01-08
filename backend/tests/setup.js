@@ -1,8 +1,4 @@
 /*
-!!!!!!!!!!!!!!!!!!!
-Nämä testit ovat mielestäni melko turhia backendin yksinkertaisuuden takia, 
-mutta ne on tehty harjoituksen ja github actionsien opettelun vuoksi.
-
 https://medium.com/@sohail_saifi/why-your-unit-tests-are-a-complete-waste-of-time-and-what-to-do-instead-50916ef5eecc
 */
 

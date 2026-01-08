@@ -1,7 +1,3 @@
-/*
-https://medium.com/@sohail_saifi/why-your-unit-tests-are-a-complete-waste-of-time-and-what-to-do-instead-50916ef5eecc
-*/
-
 const { PostgreSqlContainer } = require("@testcontainers/postgresql");
 const { Client } = require("pg");
 const supertest = require("supertest");
