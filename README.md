@@ -1,10 +1,6 @@
-TODO: 
-* Puolueiden omat tilastot
-* Kansanedustajien pitämät puheet ja keyword search
-
 ## About This Project
 
-This project is a visualization tool for Finnish Parliament data that aggregates information from the Finnish Parliament's open data API. Documents, data, and images are downloaded from the Finnish Parliament's open data sources and processed using regex patterns to extract relevant information. All this processed data is stored in a PostgreSQL database, allowing for fast specialized queries without needing to access the Parliament's databases directly. The entire setup and data downloading process is automated using Docker containers, which handle the initial data fetching, processing, and database population. The frontend provides an interactive web interface that visualizes this data, allowing users to explore member information, speeches, interjections (välihuudot), and party statistics in an intuitive way.
+This project is a visualization tool for Finnish Parliament data that aggregates information from the Finnish Parliament's open data API. Documents, data, and images are downloaded from the Finnish Parliament's open data sources and processed using regex patterns to extract relevant information. All this processed data is stored in a PostgreSQL database, allowing for fast specialized queries without needing to access the Parliament's databases directly. The entire setup and data downloading process is automated using Docker containers, which handle the initial data fetching, processing, and database population. The frontend provides an interactive web interface that visualizes this data, allowing users to explore member information, speeches, interjections (välihuudot), and party statistics in an intuitive way. This project is ongoing.
 
 # Docker Setup Guide
 
